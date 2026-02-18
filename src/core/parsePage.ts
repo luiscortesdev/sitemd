@@ -5,7 +5,7 @@ import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import { unified } from 'unified'
 
-export async function buildPage(path: string) {
+export async function parsePage(path: string) {
     const processor = unified()
         .use(remarkParse)
         .use(remarkGfm)
