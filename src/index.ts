@@ -2,6 +2,7 @@
 import { program } from "commander"
 import { listfiles } from "./commands/listfiles.js"
 import { build } from "./commands/build.js"
+import { dev } from "./commands/dev.js"
 
 program
     .command("listfiles")
@@ -12,5 +13,10 @@ program
     .command("build")
     .description("Parses your markdown files in content into html")
     .action(build)
+
+program
+    .command("dev")
+    .description("Starts up a development server to see your changes in real-time")
+    .action(dev)
 
 program.parse()

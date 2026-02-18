@@ -5,7 +5,7 @@ import { cleanOuput } from "./cleanOutput.js"
 import { buildPage } from "./buildPage.js"
 import { copyPublic } from "./copyPublic.js"
 
-export async function buildSite() {
+export async function buildSite({ dev }: { dev: boolean }) {
     const root = process.cwd()
     const contentDir = path.join(root, "content")
     const publicDir = path.join(root, "public")
@@ -17,7 +17,7 @@ export async function buildSite() {
 
 
     for (const page of pages) {
-        const parsedPage = await buildPage(page)
+        let parsedPage = await buildPage(page)
         const safeRoute = page.route.replace(/^\//, "")
 
         const outputPath = path.join(
@@ -25,6 +25,17 @@ export async function buildSite() {
             page.route === "/" ? "" : safeRoute,
             "index.html"
         )
+
+        if (dev === true) {
+            parsedPage = parsedPage.replace(
+                "</body>",
+                `<script>
+                    const ws = new WebSocket("ws://localhost:3000");
+                    ws.onmessage = () => location.reload();
+                </script>
+                </body>`
+            )
+        } 
 
         await mkdir(path.dirname(outputPath), { recursive: true })
         await writeFile(outputPath, parsedPage)
