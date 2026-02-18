@@ -2,7 +2,7 @@ import path from "path"
 import { mkdir, writeFile } from "fs/promises"
 import { scanDir } from "./scanDir.js"
 import { cleanOuput } from "./cleanOutput.js"
-import { parsePage } from "./parsePage.js"
+import { buildPage } from "./buildPage.js"
 
 export async function buildSite() {
     const root = process.cwd()
@@ -14,7 +14,7 @@ export async function buildSite() {
 
 
     for (const page of pages) {
-        const parsedPage = await parsePage(page.absolutePath)
+        const parsedPage = await buildPage(page)
         const safeRoute = page.route.replace(/^\//, "")
 
         const outputPath = path.join(
