@@ -1,15 +1,18 @@
 import path from "path"
 import { mkdir, writeFile } from "fs/promises"
+import { loadConfig } from "../config.js"
 import { scanDir } from "./scanDir.js"
 import { cleanOuput } from "./cleanOutput.js"
 import { buildPage } from "./buildPage.js"
 import { copyPublic } from "./copyPublic.js"
 
 export async function buildSite({ dev }: { dev: boolean }) {
+    const config = await loadConfig()
     const root = process.cwd()
-    const contentDir = path.join(root, "content")
-    const publicDir = path.join(root, "public")
-    const outputDir = path.join(root, "output")
+
+    const contentDir = path.join(root, config.contentDir)
+    const publicDir = path.join(root, config.publicDir)
+    const outputDir = path.join(root, config.outDir)
 
     await cleanOuput(outputDir)
     await copyPublic(publicDir, outputDir)

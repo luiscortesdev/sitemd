@@ -3,11 +3,17 @@ import { program } from "commander"
 import { listfiles } from "./commands/listfiles.js"
 import { build } from "./commands/build.js"
 import { dev } from "./commands/dev.js"
+import { init } from "./commands/init.js"
 
 program
     .command("listfiles")
     .description("List all of the current files in the content directory")
     .action(listfiles)
+
+program
+    .command("init")
+    .description("Initialize a new SiteMD project")
+    .action(init)
 
 program
     .command("build")
