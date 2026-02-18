@@ -12,14 +12,20 @@ const env = nunjucks.configure(config.layoutsDir, {
 
 export async function buildPage(page: PageFile) {
     const { html, data } = await parsePage(page.absolutePath)
+    
+    if (data) {
+        const layoutName = data.layout ? data.layout : "default"
 
-    const layout = data.layout.endsWith(".njk") ? data.layout : data.layout + ".njk"
+        const layout = layoutName.endsWith(".njk") ? layoutName : layoutName + ".njk"
 
-    const outputHtml = env.render(layout, {
-        ...data,
-        site: config.site,
-        content: html
-    })
+        const outputHtml = env.render(layout, {
+            ...data,
+            site: config.site,
+            content: html
+        })
 
-    return outputHtml
+        return outputHtml
+    }
+
+    return html
 }
