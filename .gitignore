@@ -1,7 +1,7 @@
 node_modules
 dist
-content
+/content
 output
-layouts
-public
-sitemd.config.js
+/layouts
+/public
+/sitemd.config.js
