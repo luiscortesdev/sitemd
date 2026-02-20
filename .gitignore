@@ -1,7 +1,12 @@
+# CLI Local Dependencies and Output
 node_modules
 dist
+
+# Development Folders
 /content
-output
+/output
 /layouts
 /public
+
+# Development Config
 /sitemd.config.js
