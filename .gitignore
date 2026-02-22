@@ -7,6 +7,7 @@ dist
 /output
 /layouts
 /public
+/theme
 
 # Development Config
 /sitemd.config.js

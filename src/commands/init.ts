@@ -6,6 +6,7 @@ import chalk from "chalk"
 import fs from "fs"
 
 import { initTheme } from "../core/initTheme.js"
+import { initConfig } from "../core/initConfig.js"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -23,6 +24,7 @@ export async function init(options: { theme: string }) {
     console.log(chalk.blue("INITIALIZING PROJECT..."))
 
     await initTheme(options.theme)
+    await initConfig()
 
     console.log(chalk.greenBright("✅ PROJECT INITIALIZED!"))
 }
