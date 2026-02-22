@@ -13,7 +13,7 @@ export async function initTheme(theme: string) {
     try {
         await fs.access(themeDir)
     } catch {
-        console.error(`${theme} DOES NOT EXIST!`)
+        console.error(`${theme} DOES NOT EXIST AT ${themeDir}!`)
         process.exit(1)
     }
 
@@ -27,4 +27,15 @@ export async function initTheme(theme: string) {
         destinationDir,
         { recursive: true, errorOnExist: true }
     )
+    
+    const contentPath = path.join(themeDir, "content")
+    if (existsSync(contentPath)) {
+        await fs.cp(contentPath, path.join(process.cwd(), "content"), { recursive: true })
+        await fs.rm(path.join(destinationDir, "content"), { recursive: true })
+    } else {
+        await fs.mkdir(path.join(process.cwd(), "content"))
+    }
+
+    await fs.mkdir(path.join(process.cwd(), "public"))
+    await fs.mkdir(path.join(process.cwd(), "layouts"))
 }
