@@ -12,6 +12,7 @@ program
 
 program
     .command("init")
+    .option("-t, --theme <theme>", "Choose a pre-built theme to start building with or to add to your project.", "default")
     .description("Initialize a new SiteMD project")
     .action(init)
 
