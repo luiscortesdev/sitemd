@@ -9,5 +9,8 @@ dist
 /public
 /theme
 
+# Development Cache Folders
+/.sitemd
+
 # Development Config
 /sitemd.config.js
