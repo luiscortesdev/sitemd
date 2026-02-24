@@ -2,7 +2,7 @@ import path from "path"
 import nunjucks from "nunjucks"
 import type { PageFile } from "../types/PageFile.js";
 import { parsePage } from "./parsePage.js";
-import { loadConfig } from "../config.js";
+import { loadConfig } from "./config/config.js";
 
 import { resolveLayout } from "./resolveLayout.js";
 

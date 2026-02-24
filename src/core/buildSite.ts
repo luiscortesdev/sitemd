@@ -1,6 +1,6 @@
 import path from "path"
 import { mkdir, writeFile } from "fs/promises"
-import { loadConfig } from "../config.js"
+import { loadConfig } from "./config/config.js"
 import { scanDir } from "./scanDir.js"
 import { cleanOuput } from "./cleanOutput.js"
 import { buildPage } from "./buildPage.js"

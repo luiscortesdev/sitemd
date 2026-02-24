@@ -3,7 +3,7 @@ import { attachLiveReload } from "../core/attachLiveReload.js"
 import { buildSite } from "../core/buildSite.js"
 import { startServer } from "../core/devServer.js"
 import { watchFiles } from "../core/watchFiles.js"
-import { loadConfig } from "../config.js"
+import { loadConfig } from "../core/config/config.js"
 
 export async function dev() {
 
