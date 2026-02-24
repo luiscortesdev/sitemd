@@ -1,3 +1,4 @@
+import path from "path"
 import nunjucks from "nunjucks"
 import type { PageFile } from "../types/PageFile.js";
 import { parsePage } from "./parsePage.js";
@@ -8,10 +9,14 @@ import { resolveLayout } from "./resolveLayout.js";
 const config = await loadConfig()
 const root = process.cwd()
 
-const env = nunjucks.configure(config.layoutsDir, {
-    autoescape: true,
-    noCache: true
-})
+// Load the user's layouts first, then put theme layouts that do not overlap.
+const env = new nunjucks.Environment(
+    new nunjucks.FileSystemLoader([
+        path.join(root, "layouts"),
+        path.join(root, "theme/layouts"),
+    ]),
+    { autoescape: true }
+)
 
 export async function buildPage(page: PageFile) {
     const { html, data } = await parsePage(page.absolutePath)
@@ -21,14 +26,12 @@ export async function buildPage(page: PageFile) {
 
         const layout = layoutName.endsWith(".njk") ? layoutName : layoutName + ".njk"
 
-        const layoutPath = await resolveLayout(root, layout)
-
-        const outputHtml = env.render(layoutPath, {
+        const outputHtml = env.render(layout, {
             ...data,
             site: config.site,
             content: html
         })
-
+        
         return outputHtml
     }
 
