@@ -1,6 +1,6 @@
 const config = {
     contentDir: "content",
-    outDir: "output",
+    outputDir: "output",
     layoutsDir: "layouts",
     publicDir: "public",
 

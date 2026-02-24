@@ -12,7 +12,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
 
     const contentDir = path.join(root, config.contentDir)
     const publicDir = path.join(root, config.publicDir)
-    const outputDir = path.join(root, config.outDir)
+    const outputDir = path.join(root, config.outputDir)
 
     await cleanOuput(outputDir)
     await copyPublic(publicDir, outputDir)
