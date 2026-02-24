@@ -24,3 +24,6 @@ export const ConfigSchema = z.object({
     site: SiteConfigSchema,
     dev: DevConfigSchema.default({}),
 })
+
+export type UserConfig = z.input<typeof ConfigSchema>
+export type SiteMDConfig = z.output<typeof ConfigSchema>
