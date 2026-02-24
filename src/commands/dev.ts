@@ -10,7 +10,7 @@ export async function dev() {
     const config = await loadConfig()
 
     const root = process.cwd()
-    const outputDir = path.join(root, config.outDir)
+    const outputDir = path.join(root, config.outputDir)
 
     await buildSite({ dev: true })
 
