@@ -12,7 +12,9 @@ const config = {
 
     dev: {
         port: 3000
-    }
+    },
+
+    theme: "default",
 }
 
 export default config
