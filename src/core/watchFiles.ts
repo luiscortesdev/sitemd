@@ -2,7 +2,7 @@ import chokidar from "chokidar"
 
 export function watchFiles(onChange: () => Promise<void>) {
     const watcher = chokidar.watch(
-        ["content", "layouts", "public"],
+        ["content", "layouts", "public", "theme"],
         { ignoreInitial: true }
     )
 

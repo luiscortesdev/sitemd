@@ -15,16 +15,28 @@ const env = new nunjucks.Environment(
         path.join(root, "layouts"),
         path.join(root, "theme/layouts"),
     ]),
-    { autoescape: true }
+    { autoescape: true, noCache: true }
 )
 
+function createNunjucksEnvironment(root: string) {
+    return new nunjucks.Environment(
+        new nunjucks.FileSystemLoader([
+            path.join(root, "layouts"),
+            path.join(root, "theme/layouts"),
+        ], { noCache: true }),
+        { autoescape: true }
+    )
+}
 export async function buildPage(page: PageFile) {
+    const env = createNunjucksEnvironment(root)
+
     const { html, data } = await parsePage(page.absolutePath)
     
     if (data) {
         const layoutName = data.layout ? data.layout : "default"
 
         const layout = layoutName.endsWith(".njk") ? layoutName : layoutName + ".njk"
+        console.log(layout)
 
         const outputHtml = env.render(layout, {
             ...data,

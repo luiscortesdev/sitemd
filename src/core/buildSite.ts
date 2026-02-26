@@ -2,13 +2,14 @@ import path from "path"
 import fs from "fs/promises"
 import { loadConfig } from "./config/config.js"
 import { scanDir } from "./scanDir.js"
-import { cleanOuput } from "./cleanOutput.js"
 import { buildPage } from "./buildPage.js"
 import { copyPublic } from "./copyPublic.js"
 import { loadCache, saveCache } from "../cache/cache.js"
 import { hashContent } from "../utils/hash.js"
-import { invalidateLayout } from "../cache/invalidateLayout.js"
 import { outputExists } from "../utils/fs.js"
+import { buildLayoutGraph } from "../layouts/layoutGraph.js"
+import { invalidateLayoutCascade } from "../cache/getDependentLayouts.js"
+import { getLayoutStat } from "../layouts/getLayoutStat.js"
 
 export async function buildSite({ dev }: { dev: boolean }) {
     const config = await loadConfig()
@@ -20,34 +21,48 @@ export async function buildSite({ dev }: { dev: boolean }) {
     const layoutsDir = path.join(root, config.layoutsDir)
     const publicDir = path.join(root, config.publicDir)
     const outputDir = path.join(root, config.outputDir)
+    const themeDir = path.join(root, config.themeDir)
+    const themeLayouts = path.join(themeDir, "layouts")
 
-    const layoutFiles = await fs.readdir(layoutsDir)
+    const layoutGraph = await buildLayoutGraph(layoutsDir, themeLayouts)
 
-    for (const file of layoutFiles) {
-        if (!file.endsWith(".njk")) continue
+    console.log(layoutGraph)
 
-        const layoutPath = path.join(layoutsDir, file)
-        const stat = await fs.stat(layoutPath)
-        const cached = cache.layouts[file]
+    const changedLayouts: string[] = []
 
-        if (!cached || cached.mtimeMs !== stat.mtimeMs) {
-            invalidateLayout(file, cache)
-            cache.layouts[file] = { mtimeMs: stat.mtimeMs }
+    for (const layout of layoutGraph.keys()) {
+        const stat = await getLayoutStat(layout, layoutsDir, themeLayouts)
+
+        const cached = cache.layouts[layout]
+
+        if (!cached || stat.mtimeMs !== cached.mtimeMs) {
+            console.log("INVALIDATED", layout)
+            changedLayouts.push(layout)
+            cache.layouts[layout] = { mtimeMs: stat.mtimeMs }
         }
+    }
+
+    for (const layout of changedLayouts) {
+        invalidateLayoutCascade(layout, layoutGraph, cache)
+        console.log(layoutGraph)
     }
 
     await copyPublic(publicDir, outputDir)
 
     const pages = await scanDir(contentDir, contentDir)
 
+    console.log(changedLayouts)
+    console.log(cache)
     for (const page of pages) {
         const source = await fs.readFile(page.absolutePath, "utf-8")
         const hash = hashContent(source)
         const cached  = cache.pages[page.absolutePath]
 
-        if (cached && hash === cached.hash && await outputExists(cached.outputDir)) {
+        if (cached && hash === cached.hash && !changedLayouts.includes(cached.layout) && await outputExists(cached.outputDir)) {
             // Page's current hash matches cached hash. Therefore, the file 
             // has not been changed and we don't need to rebuild it.
+            console.log("SKIPPED ", page)
+            
             continue
         }
 

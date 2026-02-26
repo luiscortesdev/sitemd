@@ -1,5 +1,3 @@
-import { cp } from "fs/promises"
-
 import { fileURLToPath } from "url"
 import path from "path"
 import chalk from "chalk"
@@ -10,8 +8,6 @@ import { initConfig } from "../core/initConfig.js"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
-
-const templatesDir = path.join(__dirname, "../templates")
 
 export async function init(options: { theme: string }) {
     const cwd = process.cwd()

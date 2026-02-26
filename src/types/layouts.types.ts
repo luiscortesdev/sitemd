@@ -1,0 +1,1 @@
+export type LayoutMap = Map<string, string[]>

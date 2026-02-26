@@ -20,9 +20,11 @@ export const ConfigSchema = z.object({
     outputDir: z.string().default("output"),
     layoutsDir: z.string().default("layouts"),
     publicDir: z.string().default("public"),
+    themeDir: z.string().default("theme"),
 
     site: SiteConfigSchema,
     dev: DevConfigSchema.default({}),
+    theme: z.string().default("default"),
 })
 
 export type UserConfig = z.input<typeof ConfigSchema>
