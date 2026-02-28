@@ -7,15 +7,8 @@ import { loadConfig } from "./config/config.js";
 const config = await loadConfig()
 const root = process.cwd()
 
-// Load the user's layouts first, then put theme layouts that do not overlap.
-const env = new nunjucks.Environment(
-    new nunjucks.FileSystemLoader([
-        path.join(root, "layouts"),
-        path.join(root, "theme/layouts"),
-    ]),
-    { autoescape: true, noCache: true }
-)
-
+// Create a new nunjucks environment each buildPage to prevent stale layouts and
+// stale layout inheritance chains from being reused.
 function createNunjucksEnvironment(root: string) {
     return new nunjucks.Environment(
         new nunjucks.FileSystemLoader([
@@ -25,6 +18,7 @@ function createNunjucksEnvironment(root: string) {
         { autoescape: true }
     )
 }
+
 export async function buildPage(page: PageFile) {
     const env = createNunjucksEnvironment(root)
 
