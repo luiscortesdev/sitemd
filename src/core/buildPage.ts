@@ -4,8 +4,6 @@ import type { PageFile } from "../types/PageFile.js";
 import { parsePage } from "./parsePage.js";
 import { loadConfig } from "./config/config.js";
 
-import { resolveLayout } from "./resolveLayout.js";
-
 const config = await loadConfig()
 const root = process.cwd()
 
