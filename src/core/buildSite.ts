@@ -8,7 +8,7 @@ import { loadCache, saveCache } from "../cache/cache.js"
 import { hashContent } from "../utils/hash.js"
 import { outputExists } from "../utils/fs.js"
 import { buildLayoutGraph } from "../layouts/layoutGraph.js"
-import { invalidateLayoutCascade } from "../cache/getDependentLayouts.js"
+import { invalidateLayoutCascade } from "../cache/invalidateLayoutCascade.js"
 import { getLayoutStat } from "../layouts/getLayoutStat.js"
 
 export async function buildSite({ dev }: { dev: boolean }) {
