@@ -1,7 +1,5 @@
-import path from "path"
-import { scanDir } from "../core/scanDir.js"
+import { runListFiles } from "../content/index.js"
 
 export async function listfiles() {
-    let files = await scanDir(path.resolve(import.meta.dirname, "../../content"), path.resolve(import.meta.dirname, "../../content"))
-    console.log(files)
+    await runListFiles()
 }

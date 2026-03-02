@@ -1,7 +1,7 @@
 import path from "path"
 import nunjucks from "nunjucks"
 import type { PageFile } from "../types/PageFile.js";
-import { parsePage } from "../core/parsePage.js";
+import { parsePage } from "../content/index.js";
 import { loadConfig } from "../core/config/config.js";
 
 const config = await loadConfig()
