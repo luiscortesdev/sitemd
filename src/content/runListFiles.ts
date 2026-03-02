@@ -1,6 +1,6 @@
 import path from "path";
 import { scanDir } from "../content/index.js"
-import { loadConfig } from "../core/config/config.js";
+import { loadConfig } from "../config/config.js";
 
 const root = process.cwd()
 
