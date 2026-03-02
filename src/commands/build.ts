@@ -1,4 +1,4 @@
-import { buildSite } from "../core/buildSite.js"
+import { buildSite } from "../build/index.js"
 import chalk from "chalk"
 
 export async function build() {

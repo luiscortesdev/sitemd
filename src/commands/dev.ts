@@ -1,6 +1,6 @@
 import path from "path"
 import { attachLiveReload } from "../core/attachLiveReload.js"
-import { buildSite } from "../core/buildSite.js"
+import { buildSite } from "../build/index.js"
 import { startServer } from "../core/devServer.js"
 import { watchFiles } from "../core/watchFiles.js"
 import { loadConfig } from "../core/config/config.js"
