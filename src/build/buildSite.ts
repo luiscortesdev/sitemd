@@ -1,7 +1,7 @@
 import path from "path"
 import fs from "fs/promises"
-import { loadConfig } from "./config/config.js"
-import { scanDir } from "./scanDir.js"
+import { loadConfig } from "../config/index.js";
+import { scanDir } from "../content/index.js"
 import { buildPage } from "./buildPage.js"
 import { copyPublic } from "./copyPublic.js"
 import { loadCache, saveCache } from "../cache/cache.js"

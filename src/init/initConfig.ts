@@ -1,4 +1,4 @@
-import { existsSync } from "fs"
+import fsSync from "fs"
 import fs from "fs/promises"
 import path from "path"
 import { fileURLToPath } from "url"
@@ -13,14 +13,14 @@ export async function initConfig() {
     try {
         await fs.access(configPath)
     } catch {
-        console.log("CONFIG FILE DOESN'T EXIST IN CORE TEMPLATE FILES. TRY REINSTALLING")
+        console.log("CONFIG FILE DOESN'T EXIST IN CORE TEMPLATE FILES. TRY REINSTALLING THE MODULE.")
         process.exit(1)
     }
     
-    if (existsSync(path.join(process.cwd(), "sitemd.config.js"))) {
+    if (fsSync.existsSync(path.join(process.cwd(), "sitemd.config.js"))) {
         console.error("SITEMD.CONFIG.JS ALREADY EXISTS")
         process.exit(1)
     }
 
     await fs.copyFile(configPath, destinationPath)
-}   
+}

@@ -16,8 +16,6 @@ export async function parsePage(path: string) {
         .use(rehypeRaw)
         .use(rehypeStringify)
 
-    
-
     const file = await readFile(path, "utf-8")
 
     const { content, data } = matter(file)
