@@ -1,4 +1,4 @@
-import { existsSync } from "fs";
+import fsSync from "fs";
 import fs from "fs/promises";
 import path from "path"
 import { fileURLToPath } from "url";
@@ -17,7 +17,7 @@ export async function initTheme(theme: string) {
         process.exit(1)
     }
 
-    if (existsSync(destinationDir)) {
+    if (fsSync.existsSync(destinationDir)) {
         console.error(`A THEME FOLDER ALREADY EXISTS AT ${destinationDir}`)
         process.exit(1)
     }
@@ -29,7 +29,7 @@ export async function initTheme(theme: string) {
     )
     
     const contentPath = path.join(themeDir, "content")
-    if (existsSync(contentPath)) {
+    if (fsSync.existsSync(contentPath)) {
         await fs.cp(contentPath, path.join(process.cwd(), "content"), { recursive: true })
         await fs.rm(path.join(destinationDir, "content"), { recursive: true })
     } else {

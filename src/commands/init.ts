@@ -1,26 +1,5 @@
-import { fileURLToPath } from "url"
-import path from "path"
-import chalk from "chalk"
-import fs from "fs"
-
-import { initTheme } from "../core/initTheme.js"
-import { initConfig } from "../core/initConfig.js"
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+import { runInit } from "../init/index.js"
 
 export async function init(options: { theme: string }) {
-    const cwd = process.cwd()
-
-    if (fs.existsSync(path.join(cwd, "/layouts")) || fs.existsSync(path.join(cwd, "/public")) || fs.existsSync(path.join(cwd, "/content"))) {
-        console.log(chalk.yellowBright("🚨 PROJECT IS ALREADY INTIALIZED!"))
-        return
-    }
-
-    console.log(chalk.blue("INITIALIZING PROJECT..."))
-
-    await initTheme(options.theme)
-    await initConfig()
-
-    console.log(chalk.greenBright("✅ PROJECT INITIALIZED!"))
+    await runInit(options)
 }
