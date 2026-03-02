@@ -9,7 +9,7 @@ import { hashContent } from "../utils/hash.js"
 import { outputExists } from "../utils/fs.js"
 import { buildLayoutGraph } from "../layouts/layoutGraph.js"
 import { invalidateLayoutCascade } from "../cache/invalidateLayoutCascade.js"
-import { getLayoutStat } from "../layouts/getLayoutStat.js"
+import { resolveLayout } from "../layouts/resolveLayout.js"
 
 export async function buildSite({ dev }: { dev: boolean }) {
     const config = await loadConfig()
@@ -31,7 +31,8 @@ export async function buildSite({ dev }: { dev: boolean }) {
     const changedLayouts: string[] = []
 
     for (const layout of layoutGraph.keys()) {
-        const stat = await getLayoutStat(layout, layoutsDir, themeLayouts)
+        const resolvedLayout = await resolveLayout(layout, layoutsDir, themeLayouts)
+        const stat = await fs.stat(resolvedLayout)
 
         const cached = cache.layouts[layout]
 
