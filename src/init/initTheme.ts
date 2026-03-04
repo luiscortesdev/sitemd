@@ -13,7 +13,7 @@ export async function initTheme(theme: string) {
     try {
         await fs.access(themeDir)
     } catch {
-        console.error(`${theme} DOES NOT EXIST AT ${themeDir}!`)
+        console.error(`${theme} DOES NOT EXIST IN ${themeDir}! PLEASE ENTER A VALID THEME!`)
         process.exit(1)
     }
 
