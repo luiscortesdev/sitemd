@@ -1,0 +1,1 @@
+export type NewFolderTypes = "layouts" | "public" | "content"
