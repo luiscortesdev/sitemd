@@ -28,6 +28,7 @@ export async function initTheme(theme: string) {
         { recursive: true, errorOnExist: true }
     )
     
+    // If the theme has content, we copy it to the user's content folder.
     const contentPath = path.join(themeDir, "content")
     if (fsSync.existsSync(contentPath)) {
         await fs.cp(contentPath, path.join(process.cwd(), "content"), { recursive: true })
