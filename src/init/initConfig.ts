@@ -1,6 +1,7 @@
-import fsSync from "fs"
 import fs from "fs/promises"
+import fsSync from "fs"
 import path from "path"
+import chalk from "chalk"
 import { fileURLToPath } from "url"
 
 const __filename = fileURLToPath(import.meta.url)
@@ -13,13 +14,12 @@ export async function initConfig() {
     try {
         await fs.access(configPath)
     } catch {
-        console.log("CONFIG FILE DOESN'T EXIST IN CORE TEMPLATE FILES. TRY REINSTALLING THE MODULE.")
+        console.log("CONFIG FILE DOESN'T EXIST IN CORE TEMPLATE FILES. TRY REINSTALLING SITEMD.")
         process.exit(1)
     }
     
     if (fsSync.existsSync(path.join(process.cwd(), "sitemd.config.js"))) {
-        console.error("SITEMD.CONFIG.JS ALREADY EXISTS")
-        process.exit(1)
+        console.log(chalk.yellowBright("SITEMD.CONFIG.JS ALREADY EXISTS. SKIPPING..."))
     }
 
     await fs.copyFile(configPath, destinationPath)
