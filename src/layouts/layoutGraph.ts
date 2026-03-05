@@ -1,7 +1,7 @@
 import path from "path"
 import fs from "fs/promises"
 
-import { getLayoutParent } from "./getLayoutDependencies.js"
+import { getLayoutParent } from "./getLayoutParent.js"
 
 import type { LayoutMap } from "../types/layouts.types.js"
 

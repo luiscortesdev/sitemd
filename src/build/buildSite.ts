@@ -4,12 +4,12 @@ import { loadConfig } from "../config/index.js";
 import { scanDir } from "../content/index.js"
 import { buildPage } from "./buildPage.js"
 import { copyPublic } from "./copyPublic.js"
-import { loadCache, saveCache } from "../cache/cache.js"
+import { loadCache, saveCache } from "../cache/index.js"
 import { hashContent } from "../utils/hash.js"
 import { outputExists } from "../utils/fs.js"
-import { buildLayoutGraph } from "../layouts/layoutGraph.js"
-import { invalidateLayoutCascade } from "../cache/invalidateLayoutCascade.js"
-import { resolveLayout } from "../layouts/resolveLayout.js"
+import { buildLayoutGraph } from "../layouts/index.js"
+import { invalidateLayoutCascade } from "../cache/index.js"
+import { resolveLayout } from "../layouts/index.js"
 
 export async function buildSite({ dev }: { dev: boolean }) {
     const config = await loadConfig()
