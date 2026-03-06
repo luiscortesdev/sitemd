@@ -19,7 +19,7 @@ function createNunjucksEnvironment(root: string) {
     )
 }
 
-export async function buildPage(page: PageFile) {
+export async function buildPage(page: PageFile): Promise<{ html: string, data: any }> {
     const env = createNunjucksEnvironment(root)
 
     const { html, data } = await parsePage(page.absolutePath)
