@@ -1,4 +1,4 @@
-import path, { parse } from "path"
+import path from "path"
 import fs from "fs/promises"
 import { loadConfig } from "../config/index.js";
 import { scanDir } from "../content/index.js"
