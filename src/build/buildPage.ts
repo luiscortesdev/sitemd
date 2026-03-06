@@ -36,8 +36,8 @@ export async function buildPage(page: PageFile) {
             content: html
         })
         
-        return { html: outputHtml, layout }
+        return { html: outputHtml, data }
     }
 
-    return { html, layout: "" }
+    return { html, data: {} }
 }

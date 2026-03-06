@@ -1,4 +1,4 @@
-import path from "path"
+import path, { parse } from "path"
 import fs from "fs/promises"
 import { loadConfig } from "../config/index.js";
 import { scanDir } from "../content/index.js"
@@ -72,8 +72,10 @@ export async function buildSite({ dev }: { dev: boolean }) {
         }
         
         // The file has been changed, so we rebuild it.
-        let pageData = await buildPage(page)
-        let parsedPage = pageData.html
+        let parsedPage = await buildPage(page)
+        console.log("PARSED PAGE: ", parsedPage)
+        let parsedPageHtml = parsedPage.html
+        let pageData = parsedPage.data
         let pageLayout = pageData.layout
 
         const safeRoute = page.route.replace(/^\//, "")
@@ -85,7 +87,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
         )
 
         if (dev === true) {
-            parsedPage = parsedPage.replace(
+            parsedPageHtml = parsedPageHtml.replace(
                 "</body>",
                 `<script>
                     const ws = new WebSocket("ws://localhost:3000");
@@ -102,7 +104,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
         }
 
         await fs.mkdir(path.dirname(outputPath), { recursive: true })
-        await fs.writeFile(outputPath, parsedPage)
+        await fs.writeFile(outputPath, parsedPageHtml)
         saveCache(root, cache)
     }
 }
