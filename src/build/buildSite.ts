@@ -1,7 +1,7 @@
 import path from "path"
 import fs from "fs/promises"
 import { loadConfig } from "../config/index.js";
-import { scanDir } from "../content/index.js"
+import { parsePage, scanDir } from "../content/index.js"
 import { buildPage } from "./buildPage.js"
 import { copyPublic } from "./copyPublic.js"
 import { loadCache, saveCache } from "../cache/index.js"
@@ -10,6 +10,7 @@ import { outputExists } from "../utils/fs.js"
 import { buildLayoutGraph } from "../layouts/index.js"
 import { invalidateLayoutCascade } from "../cache/index.js"
 import { resolveLayout } from "../layouts/index.js"
+import { buildCollections } from "../content/buildCollections.js";
 
 export async function buildSite({ dev }: { dev: boolean }) {
     const config = await loadConfig()
@@ -54,9 +55,43 @@ export async function buildSite({ dev }: { dev: boolean }) {
 
     console.log(changedLayouts)
     console.log(cache)
+
+    const parsedPages = []
+
+    for (const page of pages) {
+        const source = await fs.readFile(page.absolutePath, "utf-8")
+        const hash = hashContent(source) 
+
+        const cached = cache.pages[page.absolutePath]
+
+        let parsed
+
+        if (cached && cached.hash == hash && cached.parsed) {
+            parsed = cached.parsed
+        } else {
+            parsed = await parsePage(page.absolutePath)
+            
+            if (cached) {
+                cache.pages[page.absolutePath] = {
+                    ...cached,
+                    hash,
+                    parsed,
+                }
+            }
+        }
+
+        parsedPages.push({
+            page,
+            parsed,
+        })
+    }
+
+    const collections = buildCollections(parsedPages)
+
     for (const page of pages) {
         const source = await fs.readFile(page.absolutePath, "utf-8")
         const hash = hashContent(source)
+
         const cached  = cache.pages[page.absolutePath]
 
         if (cached && hash === cached.hash && !changedLayouts.includes(cached.layout) && await outputExists(cached.outputDir)) {
@@ -71,7 +106,9 @@ export async function buildSite({ dev }: { dev: boolean }) {
             delete cache.pages[page.absolutePath]
         }
         
-        // The file has been changed, so we rebuild it.
+
+        
+        
         let parsedPage = await buildPage(page)
         console.log("PARSED PAGE: ", parsedPage)
         let parsedPageHtml = parsedPage.html

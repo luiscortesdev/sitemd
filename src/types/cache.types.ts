@@ -1,10 +1,17 @@
-export interface PageCacheEntry {
+export interface ParsedPageCache {
+    html: string;
+    data: Record<string, any>;
+}
+
+interface PageCacheEntry {
     hash: string;
     layout: string;
     outputDir: string;
+
+    parsed?: ParsedPageCache;
 }
 
-export interface LayoutCacheEntry {
+interface LayoutCacheEntry {
     mtimeMs: number;
 }
 
