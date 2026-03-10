@@ -1,7 +1,7 @@
 import path from "path"
 import fs from "fs/promises"
 import { loadConfig } from "../config/index.js";
-import { scanDir } from "../content/index.js"
+import { parsePage, scanDir } from "../content/index.js"
 import { buildPage } from "./buildPage.js"
 import { copyPublic } from "./copyPublic.js"
 import { loadCache, saveCache } from "../cache/index.js"
@@ -10,6 +10,7 @@ import { outputExists } from "../utils/fs.js"
 import { buildLayoutGraph } from "../layouts/index.js"
 import { invalidateLayoutCascade } from "../cache/index.js"
 import { resolveLayout } from "../layouts/index.js"
+import { buildCollections } from "../content/buildCollections.js";
 
 export async function buildSite({ dev }: { dev: boolean }) {
     const config = await loadConfig()
@@ -26,10 +27,10 @@ export async function buildSite({ dev }: { dev: boolean }) {
 
     const layoutGraph = await buildLayoutGraph(layoutsDir, themeLayouts)
 
-    console.log(layoutGraph)
+    
 
-    const changedLayouts: string[] = []
-
+    let changedLayouts: string[] = []
+    let invalidatedLayouts: string[] = []
     for (const layout of layoutGraph.keys()) {
         const resolvedLayout = await resolveLayout(layout, layoutsDir, themeLayouts)
         const stat = await fs.stat(resolvedLayout)
@@ -37,29 +38,61 @@ export async function buildSite({ dev }: { dev: boolean }) {
         const cached = cache.layouts[layout]
 
         if (!cached || stat.mtimeMs !== cached.mtimeMs) {
-            console.log("INVALIDATED", layout)
+            
             changedLayouts.push(layout)
             cache.layouts[layout] = { mtimeMs: stat.mtimeMs }
         }
     }
 
     for (const layout of changedLayouts) {
-        invalidateLayoutCascade(layout, layoutGraph, cache)
-        console.log(layoutGraph)
+        const allInvalidLayouts = invalidateLayoutCascade(layout, layoutGraph, cache)
+        for (const invalidLayout of allInvalidLayouts) {
+            invalidatedLayouts.push(invalidLayout)
+        }
+        
     }
+
+    
 
     await copyPublic(publicDir, outputDir)
 
     const pages = await scanDir(contentDir, contentDir)
 
-    console.log(changedLayouts)
-    console.log(cache)
+    
+
+    const parsedPages = []
+
     for (const page of pages) {
         const source = await fs.readFile(page.absolutePath, "utf-8")
-        const hash = hashContent(source)
+        const hash = hashContent(source) 
+
+        const cached = cache.pages[page.absolutePath]
+
+        let parsed
+
+        if (cached && cached.hash === hash) {
+            parsed = cached.parsed
+        }
+        if (!parsed) {
+            parsed = await parsePage(page.absolutePath)
+        }
+
+        parsedPages.push({
+            page,
+            parsed,
+            hash
+        })
+    }
+
+    const collections = buildCollections(parsedPages)
+
+    for (const {page, parsed, hash} of parsedPages) {
+
         const cached  = cache.pages[page.absolutePath]
 
-        if (cached && hash === cached.hash && !changedLayouts.includes(cached.layout) && await outputExists(cached.outputDir)) {
+        const pageLayout = parsed.data.layout.endsWith(".njk") ? parsed.data.layout : parsed.data.layout + ".njk"
+
+        if (cached && hash === cached.hash && await outputExists(cached.outputDir) && !invalidatedLayouts.includes(pageLayout)) {
             // Page's current hash matches cached hash. Therefore, the file 
             // has not been changed and we don't need to rebuild it.
             console.log("SKIPPED ", page)
@@ -71,10 +104,8 @@ export async function buildSite({ dev }: { dev: boolean }) {
             delete cache.pages[page.absolutePath]
         }
         
-        // The file has been changed, so we rebuild it.
-        let pageData = await buildPage(page)
-        let parsedPage = pageData.html
-        let pageLayout = pageData.layout
+        let outputHtml = await buildPage(page, collections, parsed)
+        
 
         const safeRoute = page.route.replace(/^\//, "")
 
@@ -85,7 +116,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
         )
 
         if (dev === true) {
-            parsedPage = parsedPage.replace(
+            outputHtml = outputHtml.replace(
                 "</body>",
                 `<script>
                     const ws = new WebSocket("ws://localhost:3000");
@@ -97,12 +128,16 @@ export async function buildSite({ dev }: { dev: boolean }) {
 
         cache.pages[page.absolutePath] = {
             hash,
-            layout: pageLayout,
+            layout: parsed.data.layout,
             outputDir: outputPath,
+            parsed: {
+                html: parsed.html,
+                data: parsed.data
+            }
         }
 
         await fs.mkdir(path.dirname(outputPath), { recursive: true })
-        await fs.writeFile(outputPath, parsedPage)
+        await fs.writeFile(outputPath, outputHtml)
         saveCache(root, cache)
     }
 }
