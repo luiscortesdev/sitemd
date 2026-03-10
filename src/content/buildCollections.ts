@@ -8,7 +8,9 @@ export function buildCollections(pages: CollectionPages[]): Collections {
         const { data } = page.parsed
         const { route, absolutePath } = page.page
 
-        if (!data?.collection) continue
+        if (!data?.collection) { 
+            data.collection = "all"
+        }
 
         const collectionName = data.collection
 

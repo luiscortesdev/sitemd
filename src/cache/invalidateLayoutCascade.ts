@@ -10,7 +10,7 @@ function getDependentLayouts(changed: string, graph: LayoutMap) {
         layoutChanged = false
 
         for (const [layout, parents] of graph) {
-            if (parents.some(p => affectedLayouts.has(p) && !affectedLayouts.has(layout))) {
+            if (parents.some(p => affectedLayouts.has(p)) && !affectedLayouts.has(layout)) {
                 affectedLayouts.add(layout)
                 layoutChanged = true
             }
@@ -20,13 +20,17 @@ function getDependentLayouts(changed: string, graph: LayoutMap) {
     return affectedLayouts
 }
 
-export function invalidateLayoutCascade(layout: string, graph: LayoutMap, cache: SiteMDCache) {
+export function invalidateLayoutCascade(layout: string, graph: LayoutMap, cache: SiteMDCache): string[] {
     const affectedLayouts = getDependentLayouts(layout, graph)
-    if (!cache) return
 
+    console.log("AFFECTED LAYOUTS: ", affectedLayouts)
     for (const page in cache.pages) {
+        console.log("CACHE PAGES PAGE LAYOUT", cache.pages[page]?.layout)
         if (cache.pages[page] && affectedLayouts.has(cache.pages[page].layout)) {
+            console.log("IN MY INVALIDATE LAYOUT CASECADE I INVALIDATED: ", page)
             delete cache.pages[page]
         }
     }
+
+    return [...affectedLayouts]
 }

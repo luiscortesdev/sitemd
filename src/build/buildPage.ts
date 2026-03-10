@@ -1,8 +1,11 @@
 import path from "path"
 import nunjucks from "nunjucks"
-import type { PageFile } from "../types/PageFile.js";
 import { parsePage } from "../content/index.js";
 import { loadConfig } from "../config/index.js";
+
+import type { PageFile } from "../types/PageFile.js";
+import type { Collections } from "../content/content.types.js";
+import type { ParsedPage } from "./build.types.js";
 
 const config = await loadConfig()
 const root = process.cwd()
@@ -19,25 +22,24 @@ function createNunjucksEnvironment(root: string) {
     )
 }
 
-export async function buildPage(page: PageFile): Promise<{ html: string, data: Record<string, any> }> {
+export async function buildPage(page: PageFile, collections: Collections, parsed: ParsedPage): Promise<string> {
     const env = createNunjucksEnvironment(root)
 
-    const { html, data } = await parsePage(page.absolutePath)
+    const { html, data } = parsed
+
+    console.log("PAGE:", page.absolutePath, "LAYOUT:", data.layout)
     
-    if (data) {
-        const layoutName = data.layout ? data.layout : "default"
+    const layoutName = data.layout ?? "default"
 
-        const layout = layoutName.endsWith(".njk") ? layoutName : layoutName + ".njk"
-        console.log(layout)
+    const layout = layoutName.endsWith(".njk") ? layoutName : layoutName + ".njk"
+    console.log(layout)
 
-        const outputHtml = env.render(layout, {
-            ...data,
-            site: config.site,
-            content: html
-        })
+    const outputHtml = env.render(layout, {
+        ...data,
+        site: config.site,
+        collections,
+        content: html
+    })
         
-        return { html: outputHtml, data }
-    }
-
-    return { html, data: {} }
+    return outputHtml
 }
