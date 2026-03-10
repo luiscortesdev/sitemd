@@ -1,6 +1,6 @@
 import path from "path"
 import nunjucks from "nunjucks"
-import { parsePage } from "../content/index.js";
+
 import { loadConfig } from "../config/index.js";
 
 import type { PageFile } from "../types/PageFile.js";
@@ -26,8 +26,6 @@ export async function buildPage(page: PageFile, collections: Collections, parsed
     const env = createNunjucksEnvironment(root)
 
     const { html, data } = parsed
-
-    console.log("PAGE:", page.absolutePath, "LAYOUT:", data.layout)
     
     const layoutName = data.layout ?? "default"
 

@@ -90,8 +90,6 @@ export async function buildSite({ dev }: { dev: boolean }) {
 
         const cached  = cache.pages[page.absolutePath]
 
-        console.log("BRUH LOOK AT THESE LAYOUTS", invalidatedLayouts, parsed.data.layout)
-
         const pageLayout = parsed.data.layout.endsWith(".njk") ? parsed.data.layout : parsed.data.layout + ".njk"
 
         if (cached && hash === cached.hash && await outputExists(cached.outputDir) && !invalidatedLayouts.includes(pageLayout)) {

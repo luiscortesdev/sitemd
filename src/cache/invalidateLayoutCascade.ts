@@ -27,7 +27,6 @@ export function invalidateLayoutCascade(layout: string, graph: LayoutMap, cache:
     for (const page in cache.pages) {
         console.log("CACHE PAGES PAGE LAYOUT", cache.pages[page]?.layout)
         if (cache.pages[page] && affectedLayouts.has(cache.pages[page].layout)) {
-            console.log("IN MY INVALIDATE LAYOUT CASECADE I INVALIDATED: ", page)
             delete cache.pages[page]
         }
     }
