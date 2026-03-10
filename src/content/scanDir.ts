@@ -1,7 +1,7 @@
 import { readdir } from "fs/promises"
 import path from "path"
 
-import type { PageFile } from "../types/PageFile.js"
+import type { PageFile } from "../content/content.types.js"
 
 export async function scanDir(dir: string, baseDir: string): Promise<PageFile[]> {
     const results: PageFile[] = []

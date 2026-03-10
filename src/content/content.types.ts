@@ -1,5 +1,11 @@
-import type { PageFile } from "../types/PageFile.js";
 import type { ParsedPageCache } from "../types/cache.types.js";
+
+export type PageFile = {
+    absolutePath: string;
+    relativePath: string;
+    route: string;
+    segments: string[];
+}
 
 interface CollectionItem {
     url: string;

@@ -3,7 +3,6 @@ import nunjucks from "nunjucks"
 
 import { loadConfig } from "../config/index.js";
 
-import type { PageFile } from "../types/PageFile.js";
 import type { Collections } from "../content/content.types.js";
 import type { ParsedPage } from "./build.types.js";
 
