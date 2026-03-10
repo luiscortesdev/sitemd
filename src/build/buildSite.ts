@@ -104,7 +104,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
             delete cache.pages[page.absolutePath]
         }
         
-        let outputHtml = await buildPage(page, collections, parsed)
+        let outputHtml = await buildPage(collections, parsed)
         
 
         const safeRoute = page.route.replace(/^\//, "")

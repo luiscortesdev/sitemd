@@ -22,7 +22,7 @@ function createNunjucksEnvironment(root: string) {
     )
 }
 
-export async function buildPage(page: PageFile, collections: Collections, parsed: ParsedPage): Promise<string> {
+export async function buildPage(collections: Collections, parsed: ParsedPage): Promise<string> {
     const env = createNunjucksEnvironment(root)
 
     const { html, data } = parsed
