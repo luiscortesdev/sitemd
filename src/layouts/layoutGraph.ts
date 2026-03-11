@@ -3,7 +3,7 @@ import fs from "fs/promises"
 
 import { getLayoutParent } from "./getLayoutParent.js"
 
-import type { LayoutMap } from "../types/layouts.types.js"
+import type { LayoutMap } from "./layouts.types.js"
 
 export async function buildLayoutGraph(layoutsDir: string, themeLayoutsDir: string) {
     const graph: LayoutMap = new Map()
