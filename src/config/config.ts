@@ -4,7 +4,7 @@ import chalk from "chalk"
 import { pathToFileURL } from "url"
 import { ConfigSchema, DevConfigSchema } from "./schema.js"
 
-import type { UserConfig, SiteMDConfig } from "./schema.js"
+import type { UserConfig, SiteMDConfig } from "./config.types.js"
 
 const CONFIG_FILE = "sitemd.config.js"
 

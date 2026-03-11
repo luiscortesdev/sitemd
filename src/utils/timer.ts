@@ -1,5 +1,5 @@
 import chalk from "chalk"
-import type { TimerLabels } from "../types/timer.types.js"
+import type { TimerLabels } from "./utils.types.js"
 
 export function timer(label: TimerLabels, start: number) {
     const ms = performance.now() - start

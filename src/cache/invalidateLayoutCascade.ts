@@ -1,5 +1,5 @@
-import type { LayoutMap } from "../types/layouts.types.js";
-import type { SiteMDCache } from "../types/cache.types.js";
+import type { LayoutMap } from "../layouts/index.js";
+import type { SiteMDCache } from "./cache.types.js";
 
 function getDependentLayouts(changed: string, graph: LayoutMap) {
     const affectedLayouts = new Set<string>([changed])
