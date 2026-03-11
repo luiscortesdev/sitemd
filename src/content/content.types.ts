@@ -1,4 +1,4 @@
-import type { ParsedPageCache } from "../types/cache.types.js";
+import type { ParsedPageCache } from "../cache/index.js";
 
 export type PageFile = {
     absolutePath: string;

@@ -1,7 +1,7 @@
 import path from "path"
 import fs from "fs/promises"
 
-import type { SiteMDCache } from "../types/cache.types.js"
+import type { SiteMDCache } from "./cache.types.js"
 
 const CACHE_DIR = ".sitemd"
 const CACHE_FILE = "cache.json"
