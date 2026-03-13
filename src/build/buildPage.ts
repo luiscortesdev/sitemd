@@ -3,7 +3,7 @@ import nunjucks from "nunjucks"
 
 import { loadConfig } from "../config/index.js";
 
-import type { Collections } from "../content/content.types.js";
+import type { Collections } from "../content/index.js";
 import type { Parsed } from "./build.types.js";
 
 const config = await loadConfig()

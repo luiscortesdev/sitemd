@@ -10,7 +10,7 @@ import { outputExists } from "../utils/fs.js"
 import { buildLayoutGraph } from "../layouts/index.js"
 import { invalidateLayoutCascade } from "../cache/index.js"
 import { resolveLayout } from "../layouts/index.js"
-import { buildCollections } from "../content/buildCollections.js";
+import { buildCollections } from "../content/index.js";
 
 import type { ParsedPages } from "./build.types.js";
 
