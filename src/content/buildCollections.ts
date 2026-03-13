@@ -19,9 +19,9 @@ export function buildCollections(pages: CollectionPages[]): Collections {
         }
 
         collections[collectionName].push({
+            ...data,
             url: route,
-            path: absolutePath,
-            data
+            path: absolutePath
         })
 
     }
