@@ -10,12 +10,11 @@ export type PageFile = {
 interface CollectionItem {
     url: string;
     path: string;
-    data: Record<string, any>;
 }
 
 export type Collections = Record<string, CollectionItem[]>
 
 export interface CollectionPages {
-    page: PageFile
-    parsed: ParsedPageCache
+    page: PageFile;
+    parsed: ParsedPageCache;
 }
