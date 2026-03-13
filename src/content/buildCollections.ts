@@ -8,21 +8,23 @@ export function buildCollections(pages: CollectionPages[]): Collections {
         const { data } = page.parsed
         const { route, absolutePath } = page.page
 
-        if (!data?.collection) { 
-            data.collection = "all"
+        if (!data?.collections) { 
+            data.collections = ["all"]
         }
 
-        const collectionName = data.collection
+        const collectionsArray: string[] = data.collections
+        
+        for (const collectionName of collectionsArray) {
+            if (!collections[collectionName]) {
+                collections[collectionName] = []
+            }
 
-        if (!collections[collectionName]) {
-            collections[collectionName] = []
+            collections[collectionName].push({
+                ...data,
+                url: route,
+                path: absolutePath
+            })
         }
-
-        collections[collectionName].push({
-            ...data,
-            url: route,
-            path: absolutePath
-        })
 
     }
 
