@@ -4,7 +4,7 @@ import nunjucks from "nunjucks"
 import { loadConfig } from "../config/index.js";
 
 import type { Collections } from "../content/content.types.js";
-import type { ParsedPage } from "./build.types.js";
+import type { Parsed } from "./build.types.js";
 
 const config = await loadConfig()
 const root = process.cwd()
@@ -21,7 +21,7 @@ function createNunjucksEnvironment(root: string) {
     )
 }
 
-export async function buildPage(collections: Collections, parsed: ParsedPage): Promise<string> {
+export async function buildPage(collections: Collections, parsed: Parsed): Promise<string> {
     const env = createNunjucksEnvironment(root)
 
     const { html, data } = parsed
@@ -29,7 +29,6 @@ export async function buildPage(collections: Collections, parsed: ParsedPage): P
     const layoutName = data.layout ?? "default"
 
     const layout = layoutName.endsWith(".njk") ? layoutName : layoutName + ".njk"
-    console.log(layout)
 
     const outputHtml = env.render(layout, {
         ...data,

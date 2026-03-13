@@ -12,6 +12,8 @@ import { invalidateLayoutCascade } from "../cache/index.js"
 import { resolveLayout } from "../layouts/index.js"
 import { buildCollections } from "../content/buildCollections.js";
 
+import type { ParsedPages } from "./build.types.js";
+
 export async function buildSite({ dev }: { dev: boolean }) {
     const config = await loadConfig()
     const root = process.cwd()
@@ -58,10 +60,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
 
     const pages = await scanDir(contentDir, contentDir)
 
-    
-
-    const parsedPages = []
-
+    const parsedPages: ParsedPages[] = []
     for (const page of pages) {
         const source = await fs.readFile(page.absolutePath, "utf-8")
         const hash = hashContent(source) 
