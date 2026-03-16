@@ -1,0 +1,1 @@
+export type { Collections } from "./collections.types.js"
