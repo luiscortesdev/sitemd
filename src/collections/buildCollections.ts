@@ -1,5 +1,5 @@
-import type { Collections } from "./content.types.js"
-import type { CollectionPages } from "./content.types.js"
+import type { Collections } from "./collections.types.js"
+import type { CollectionPages } from "./collections.types.js"
 
 export function buildCollections(pages: CollectionPages[]): Collections {
     const collections: Collections = {}
@@ -13,8 +13,10 @@ export function buildCollections(pages: CollectionPages[]): Collections {
             data.collections = ["none"]
         }
 
-        // Add the all tag to every page
-        data.collections.push("all")
+        // Add the all tag to every page if it does not already have it.
+        if (!data.collections.includes("all")) {
+            data.collections.push("all")
+        }
 
         const collectionsArray: string[] = data.collections
         
