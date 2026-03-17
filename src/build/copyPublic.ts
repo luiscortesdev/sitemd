@@ -1,11 +1,8 @@
 import fs from "fs/promises"
 import path from "path"
 
-const root = process.cwd()
-
-export async function copyPublic(publicDir: string, outDir: string) {
-    const themeDir = path.join(root, "theme")
-    const themePublicDir = path.join (themeDir, "public")
+export async function copyPublic(publicDir: string, themeDir: string, outDir: string) {
+    const themePublicDir = path.join(themeDir, "public")
 
     try {
         await fs.access(themePublicDir)

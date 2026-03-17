@@ -56,7 +56,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
 
     
 
-    await copyPublic(publicDir, outputDir)
+    await copyPublic(publicDir, themeDir, outputDir)
 
     const pages = await scanDir(contentDir, contentDir)
 
