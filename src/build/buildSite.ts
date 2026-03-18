@@ -11,10 +11,10 @@ import { buildLayoutGraph } from "../layouts/index.js"
 import { invalidateLayoutCascade } from "../cache/index.js"
 import { resolveLayout } from "../layouts/index.js"
 import { buildCollections } from "../collections/index.js"
+import { invalidateCollections } from "../cache/index.js";
+import { buildCollectionsGraph } from "../collections/index.js";
 
 import type { ParsedPages } from "./build.types.js";
-import { invalidateCollections } from "../cache/invalidateCollections.js";
-import { buildCollectionsGraph } from "../collections/collectionsGraph.js";
 
 export async function buildSite({ dev }: { dev: boolean }) {
     const config = await loadConfig()
