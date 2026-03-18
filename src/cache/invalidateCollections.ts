@@ -1,48 +1,23 @@
 import type { SiteMDCache } from "./index.js";
-import type { CollectionPages } from "../collections/index.js";
+import type { CollectionPages, Collections } from "../collections/index.js";
+import type { CollectionsGraph } from "../collections/collections.types.js";
 
-function getChangedPageCollections(cache: SiteMDCache, pages: CollectionPages[]): string[] {
+function getChangedPageCollections(cache: SiteMDCache, collectionsGraph: CollectionsGraph): string[] {
     const changedPageCollections: string[] = []
 
-    for (const page of pages) {
-        const { data } = page.parsed
-        const pageCache = cache.pages[page.page.absolutePath]
+    const cachedCollections = cache.collections
 
-        if (!pageCache || !data) continue
-
-        if (!data?.collections) { 
-            data.collections = ["none"]
+    for (const key in collectionsGraph) {
+        if (!cachedCollections[key] || cachedCollections[key] !== collectionsGraph[key]) {
+            changedPageCollections.push(key)
         }
-
-        // Add the all tag to every page if it does not already have it.
-        if (!data.collections.includes("all")) {
-            data.collections.push("all")
-        }
-        
-        const cachedCollections = pageCache.parsed?.data.collections
-        const currentCollections = data.collections
-
-        if (currentCollections !== cachedCollections) {
-            currentCollections.forEach((collection: string) => {
-                if (!cachedCollections.includes(collection) && !changedPageCollections.includes(collection)) {
-                    changedPageCollections.push(collection)
-                }
-            })
-
-            cachedCollections.forEach((collection: string) => {
-                if (!currentCollections.includes(collection) && !changedPageCollections.includes(collection)) {
-                    changedPageCollections.push(collection)
-                }
-            })
-        }
-
     }
 
     return changedPageCollections
 }
 
-export function invalidateCollections(cache: SiteMDCache, pages: CollectionPages[]) {
-    const changedCollections: string[] = getChangedPageCollections(cache, pages)
+export function invalidateCollections(cache: SiteMDCache, pages: CollectionPages[], collectionsGraph: CollectionsGraph) {
+    const changedCollections: string[] = getChangedPageCollections(cache, collectionsGraph)
     const invalidLayoutCollections: string[] = []
 
     for (const page of pages) {
