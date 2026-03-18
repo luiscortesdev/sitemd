@@ -13,6 +13,8 @@ import { resolveLayout } from "../layouts/index.js"
 import { buildCollections } from "../collections/index.js"
 
 import type { ParsedPages } from "./build.types.js";
+import { invalidateCollections } from "../cache/invalidateCollections.js";
+import { buildCollectionsGraph } from "../collections/collectionsGraph.js";
 
 export async function buildSite({ dev }: { dev: boolean }) {
     const config = await loadConfig()
@@ -84,6 +86,8 @@ export async function buildSite({ dev }: { dev: boolean }) {
     }
 
     const collections = buildCollections(parsedPages)
+    const collectionsGraph = buildCollectionsGraph(parsedPages)
+    const invalidLayoutCollections = invalidateCollections(cache, parsedPages, collectionsGraph)
 
     for (const {page, parsed, hash} of parsedPages) {
 
@@ -91,7 +95,13 @@ export async function buildSite({ dev }: { dev: boolean }) {
 
         const pageLayout = parsed.data.layout.endsWith(".njk") ? parsed.data.layout : parsed.data.layout + ".njk"
 
-        if (cached && hash === cached.hash && await outputExists(cached.outputDir) && !invalidatedLayouts.includes(pageLayout)) {
+        if (
+            cached &&
+            hash === cached.hash &&
+            await outputExists(cached.outputDir) &&
+            !invalidatedLayouts.includes(pageLayout) &&
+            !invalidLayoutCollections.includes(pageLayout)
+        ) {
             // Page's current hash matches cached hash. Therefore, the file 
             // has not been changed and we don't need to rebuild it.
             console.log("SKIPPED ", page)
@@ -134,6 +144,8 @@ export async function buildSite({ dev }: { dev: boolean }) {
                 data: parsed.data
             }
         }
+
+        cache.collections = collectionsGraph
 
         await fs.mkdir(path.dirname(outputPath), { recursive: true })
         await fs.writeFile(outputPath, outputHtml)

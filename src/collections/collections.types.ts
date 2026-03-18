@@ -12,3 +12,5 @@ export interface CollectionPages {
     page: PageFile;
     parsed: ParsedPageCache;
 }
+
+export type CollectionsGraph = Record<string, string[]>
