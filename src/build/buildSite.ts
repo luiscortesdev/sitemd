@@ -112,6 +112,14 @@ export async function buildSite({ dev }: { dev: boolean }) {
         if (cached && !(await outputExists(cached.outputDir))) {
             delete cache.pages[page.absolutePath]
         }
+
+        const { data } = parsed
+
+        if (data.paginate) {
+
+        } else {
+            
+        }
         
         let outputHtml = await buildPage(collections, parsed)
         

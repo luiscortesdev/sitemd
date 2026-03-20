@@ -36,7 +36,5 @@ async function buildPaginatedPages(page: PageFile, parsed: Parsed, collections: 
             items: pageItems,
             pagination: paginationInfo,
         }
-
-        const html = await buildPage(collections, parsed, )
     }
 }
