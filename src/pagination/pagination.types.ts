@@ -1,15 +1,16 @@
 import type { CollectionItem } from "../collections/collections.types.js"
 
-export interface PaginationInfo {
+export interface Pagination {
+    items: CollectionItem[]
     pageNumber: number;
     totalPages: number;
     hasNext: boolean;
     hasPrev: boolean;
-}
-
-export interface Pagination {
-    items: CollectionItem[]
-    pagination: PaginationInfo
+    nextPage: number;
+    prevPage: number;
+    nextUrl: string | null;
+    prevUrl: string | null;
+    baseUrl: string;
 }
 
 export interface PaginatedOutputs {

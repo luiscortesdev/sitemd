@@ -4,7 +4,7 @@ import { paginate } from "./paginate.js";
 import type { Collections } from "../collections/index.js";
 import type { Parsed } from "../build/build.types.js";
 import type { PageFile } from "../content/content.types.js";
-import type { Pagination, PaginationInfo, PaginatedOutputs } from "./pagination.types.js";
+import type { Pagination, PaginatedOutputs } from "./pagination.types.js";
 
 export async function buildPaginatedPages(page: PageFile, parsed: Parsed, collections: Collections): Promise<Array<PaginatedOutputs> | undefined> {
     const collectionName = parsed.data.paginate
@@ -26,16 +26,20 @@ export async function buildPaginatedPages(page: PageFile, parsed: Parsed, collec
         const pageItems = paginated[i]
         if (!pageItems) continue
 
-        const paginationInfo: PaginationInfo = {
-            pageNumber,
-            totalPages: paginated.length,
-            hasNext: pageNumber < paginated.length,
-            hasPrev: pageNumber > 0,
-        }
+        const prevUrl = i === 0 ? null : ( i === 1 ? page.route : `${page.route}/page/${pageNumber - 1}` )
+        const nextUrl = i + 1 < paginated.length ? `${page.route}/page/${pageNumber + 1}` : null
 
         const pagination: Pagination = {
             items: pageItems,
-            pagination: paginationInfo,
+            pageNumber: pageNumber,
+            totalPages: paginated.length,
+            hasNext: pageNumber < paginated.length,
+            hasPrev: pageNumber > 0,
+            nextPage: pageNumber + 1,
+            prevPage: pageNumber - 1,
+            prevUrl: prevUrl,
+            nextUrl: nextUrl,
+            baseUrl: page.route,
         }
 
         const html = await buildPage(collections, parsed, pagination)
