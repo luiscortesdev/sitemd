@@ -5,6 +5,7 @@ import { loadConfig } from "../config/index.js";
 
 import type { Collections } from "../collections/index.js";
 import type { Parsed } from "./build.types.js";
+import type { Pagination } from "../pagination/pagination.types.js";
 
 const config = await loadConfig()
 const root = process.cwd()
@@ -21,7 +22,7 @@ function createNunjucksEnvironment(root: string) {
     )
 }
 
-export async function buildPage(collections: Collections, parsed: Parsed): Promise<string> {
+export async function buildPage(collections: Collections, parsed: Parsed, pagination: Pagination | null = null): Promise<string> {
     const env = createNunjucksEnvironment(root)
 
     const { html, data } = parsed
@@ -34,7 +35,8 @@ export async function buildPage(collections: Collections, parsed: Parsed): Promi
         ...data,
         site: config.site,
         collections,
-        content: html
+        pagination: pagination,
+        content: html,
     })
         
     return outputHtml

@@ -1,7 +1,7 @@
 import type { ParsedPageCache } from "../cache/index.js";
 import type { PageFile } from "../content/index.js"
 
-interface CollectionItem {
+export interface CollectionItem {
     url: string;
     path: string;
 }

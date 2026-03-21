@@ -11,10 +11,11 @@ import { buildLayoutGraph } from "../layouts/index.js"
 import { invalidateLayoutCascade } from "../cache/index.js"
 import { resolveLayout } from "../layouts/index.js"
 import { buildCollections } from "../collections/index.js"
+import { invalidateCollections } from "../cache/index.js";
+import { buildCollectionsGraph } from "../collections/index.js";
 
 import type { ParsedPages } from "./build.types.js";
-import { invalidateCollections } from "../cache/invalidateCollections.js";
-import { buildCollectionsGraph } from "../collections/collectionsGraph.js";
+import { buildPaginatedPages } from "../pagination/buildPaginatedPages.js";
 
 export async function buildSite({ dev }: { dev: boolean }) {
     const config = await loadConfig()
@@ -112,11 +113,57 @@ export async function buildSite({ dev }: { dev: boolean }) {
         if (cached && !(await outputExists(cached.outputDir))) {
             delete cache.pages[page.absolutePath]
         }
+
+        const { data } = parsed
+        const safeRoute = page.route.replace(/^\//, "")
+
+        if (data.paginate) {
+            const paginatedOutputs = await buildPaginatedPages(page, parsed, collections)
+            if (!paginatedOutputs) continue
+
+            for (const { html, pageNumber } of paginatedOutputs) {
+                const pagePath = 
+                    pageNumber === 1 ? 
+                        path.join(outputDir, safeRoute, "index.html") : 
+                        path.join(outputDir, safeRoute, "page", String(pageNumber), "index.html")
+
+                let outputHtml = html
+
+                if (dev) {
+                    outputHtml = outputHtml.replace(
+                        "</body>",
+                        `<script>
+                            const ws = new WebSocket("ws://localhost:3000");
+                            ws.onmessage = () => location.reload();
+                        </script>
+                        </body>`
+                    )
+                }
+
+                await fs.mkdir(path.dirname(pagePath), { recursive: true })
+                await fs.writeFile(pagePath, outputHtml)
+            }
+
+            const baseOutputPath = path.join(
+                outputDir,
+                page.route === "/" ? "" : safeRoute,
+                "index.html"
+            )
+
+            cache.pages[page.absolutePath] = {
+                hash,
+                layout: parsed.data.layout,
+                outputDir: baseOutputPath,
+                parsed: {
+                    html: parsed.html,
+                    data: parsed.data
+                }
+            }
+
+            continue
+        }
         
         let outputHtml = await buildPage(collections, parsed)
-        
-
-        const safeRoute = page.route.replace(/^\//, "")
 
         const outputPath = path.join(
             outputDir,
