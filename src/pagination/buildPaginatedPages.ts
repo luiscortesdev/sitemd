@@ -1,12 +1,12 @@
+import { buildPage } from "../build/buildPage.js";
 import { paginate } from "./paginate.js";
 
 import type { Collections } from "../collections/index.js";
 import type { Parsed } from "../build/build.types.js";
 import type { PageFile } from "../content/content.types.js";
-import { buildPage } from "../build/buildPage.js";
-import type { Pagination, PaginationInfo } from "./pagination.types.js";
+import type { Pagination, PaginationInfo, PaginatedOutputs } from "./pagination.types.js";
 
-export async function buildPaginatedPages(page: PageFile, parsed: Parsed, collections: Collections) {
+export async function buildPaginatedPages(page: PageFile, parsed: Parsed, collections: Collections): Promise<Array<PaginatedOutputs> | undefined> {
     const collectionName = parsed.data.paginate
     const perPage = parsed.data.perPage ?? 10
 
@@ -44,7 +44,7 @@ export async function buildPaginatedPages(page: PageFile, parsed: Parsed, collec
             html,
             pageNumber,
         })
-
-        return outputs
     }
+
+    return outputs ?? []
 }

@@ -11,3 +11,8 @@ export interface Pagination {
     items: CollectionItem[]
     pagination: PaginationInfo
 }
+
+export interface PaginatedOutputs {
+    html: string;
+    pageNumber: number;
+}

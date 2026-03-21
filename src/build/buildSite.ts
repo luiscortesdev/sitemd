@@ -15,6 +15,7 @@ import { invalidateCollections } from "../cache/index.js";
 import { buildCollectionsGraph } from "../collections/index.js";
 
 import type { ParsedPages } from "./build.types.js";
+import { buildPaginatedPages } from "../pagination/buildPaginatedPages.js";
 
 export async function buildSite({ dev }: { dev: boolean }) {
     const config = await loadConfig()
@@ -114,17 +115,18 @@ export async function buildSite({ dev }: { dev: boolean }) {
         }
 
         const { data } = parsed
+        const safeRoute = page.route.replace(/^\//, "")
 
         if (data.paginate) {
+            const paginatedOutputs = await buildPaginatedPages(page, parsed, collections)
+            if (!paginatedOutputs) continue
 
-        } else {
-            
+            for (const { html, pageNumber } of paginatedOutputs) {
+                
+            }
         }
         
         let outputHtml = await buildPage(collections, parsed)
-        
-
-        const safeRoute = page.route.replace(/^\//, "")
 
         const outputPath = path.join(
             outputDir,
