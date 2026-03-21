@@ -6,11 +6,12 @@ import type { PageFile } from "../content/content.types.js";
 import { buildPage } from "../build/buildPage.js";
 import type { Pagination, PaginationInfo } from "./pagination.types.js";
 
-async function buildPaginatedPages(page: PageFile, parsed: Parsed, collections: Collections) {
+export async function buildPaginatedPages(page: PageFile, parsed: Parsed, collections: Collections) {
     const collectionName = parsed.data.paginate
     const perPage = parsed.data.perPage ?? 10
 
-    const items = collections[collectionName]
+    const items = collections[collectionName] || []
+    const outputs = []
 
     if (!items) {
         console.log(`COLLECTION ${collectionName} COULD NOT BE PAGINATED! ENSURE THE COLLECTION EXISTS!`)
@@ -36,5 +37,14 @@ async function buildPaginatedPages(page: PageFile, parsed: Parsed, collections: 
             items: pageItems,
             pagination: paginationInfo,
         }
+
+        const html = await buildPage(collections, parsed, pagination)
+
+        outputs.push({
+            html,
+            pageNumber,
+        })
+
+        return outputs
     }
 }
