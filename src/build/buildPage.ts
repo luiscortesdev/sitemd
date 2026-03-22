@@ -5,7 +5,7 @@ import { loadConfig } from "../config/index.js";
 
 import type { Collections } from "../collections/index.js";
 import type { Parsed } from "./build.types.js";
-import type { Pagination } from "../pagination/pagination.types.js";
+import type { Pagination } from "../pagination/index.js";
 
 const config = await loadConfig()
 const root = process.cwd()

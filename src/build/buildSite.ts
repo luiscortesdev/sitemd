@@ -13,9 +13,9 @@ import { resolveLayout } from "../layouts/index.js"
 import { buildCollections } from "../collections/index.js"
 import { invalidateCollections } from "../cache/index.js";
 import { buildCollectionsGraph } from "../collections/index.js";
+import { buildPaginatedPages } from "../pagination/index.js";
 
 import type { ParsedPages } from "./build.types.js";
-import { buildPaginatedPages } from "../pagination/buildPaginatedPages.js";
 
 export async function buildSite({ dev }: { dev: boolean }) {
     const config = await loadConfig()
