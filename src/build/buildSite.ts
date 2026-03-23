@@ -92,7 +92,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
 
     for (const {page, parsed, hash} of parsedPages) {
 
-        const cached  = cache.pages[page.absolutePath]
+        const cached = cache.pages[page.absolutePath]
 
         const pageLayout = parsed.data.layout.endsWith(".njk") ? parsed.data.layout : parsed.data.layout + ".njk"
 
