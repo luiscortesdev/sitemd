@@ -63,6 +63,8 @@ export async function buildSite({ dev }: { dev: boolean }) {
 
     const pages = await scanDir(contentDir, contentDir)
 
+    console.log("ALL PAGES: ", pages)
+
     const parsedPages: ParsedPages[] = []
     for (const page of pages) {
         const source = await fs.readFile(page.absolutePath, "utf-8")
