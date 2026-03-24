@@ -90,6 +90,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
 
     const collections = buildCollections(parsedPages)
     const collectionsGraph = buildCollectionsGraph(parsedPages)
+    console.log(collectionsGraph)
     const invalidLayoutCollections = invalidateCollections(cache, parsedPages, collectionsGraph)
 
     for (const {page, parsed, hash} of parsedPages) {
@@ -161,6 +162,10 @@ export async function buildSite({ dev }: { dev: boolean }) {
                     data: parsed.data
                 }
             }
+            
+            cache.collections = collectionsGraph
+
+            await saveCache(root, cache)
 
             continue
         }
@@ -198,6 +203,6 @@ export async function buildSite({ dev }: { dev: boolean }) {
 
         await fs.mkdir(path.dirname(outputPath), { recursive: true })
         await fs.writeFile(outputPath, outputHtml)
-        saveCache(root, cache)
+        await saveCache(root, cache)
     }
 }

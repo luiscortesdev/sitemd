@@ -26,5 +26,5 @@ export async function deleteCache(fullPath: string, fileName: string, topLevelDi
     }
 
 
-    saveCache(root, cache)
+    await saveCache(root, cache)
 }
