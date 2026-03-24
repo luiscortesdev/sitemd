@@ -3,6 +3,7 @@ const config = {
     outputDir: "output",
     layoutsDir: "layouts",
     publicDir: "public",
+    themeDir: "theme",
 
     site: {
         title: "My SiteMD Website",
