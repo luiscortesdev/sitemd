@@ -1,8 +1,13 @@
 import chokidar from "chokidar"
 
-export function watchFiles(onChange: () => Promise<void>, onDeletion: (path: string) => Promise<void>) {
+import { loadConfig } from "../config/config.js"
+
+export async function watchFiles(onChange: () => Promise<void>, onDeletion: (path: string) => Promise<void>) {
+    const config = await loadConfig()
+
+
     const watcher = chokidar.watch(
-        ["content", "layouts", "public", "theme"],
+        [config.contentDir, config.layoutsDir, config.publicDir, config.themeDir],
         { ignoreInitial: true }
     )
 
