@@ -13,4 +13,8 @@ export function timer(label: TimerLabels, start: number) {
         const reloadMessage = chalk.blueBright(`⚒️ Rebuilt project in ${ms.toFixed(1)}ms`)
         console.log(reloadMessage)
     }
+
+    if (label === "Cleanup") {
+        const cleanupMessage = chalk.yellowBright(`Cleaned up file in ${ms.toFixed(1)}ms`)
+    }
 }

@@ -32,6 +32,8 @@ export async function runDev() {
             const cleanupStart = performance.now()
 
             await handleCleanup(path)
+
+            timer("Cleanup", cleanupStart)
         }
     )
 }

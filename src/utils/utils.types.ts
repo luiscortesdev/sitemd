@@ -1,1 +1,1 @@
-export type TimerLabels = "Build" | "Reload"
+export type TimerLabels = "Build" | "Reload" | "Cleanup"
