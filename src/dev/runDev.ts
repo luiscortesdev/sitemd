@@ -18,12 +18,14 @@ export async function runDev() {
     const server = await startServer(outputDir, config.dev.port)
     const reload = attachLiveReload(server)
 
-    watchFiles(async () => {
-        const reloadBuildStart = performance.now()
+    watchFiles(
+        async () => {
+            const reloadBuildStart = performance.now()
 
-        await buildSite({ dev: true })
+            await buildSite({ dev: true })
 
-        timer("Reload", reloadBuildStart)
-        reload()
-    })
+            timer("Reload", reloadBuildStart)
+            reload()
+        }
+    )
 }
