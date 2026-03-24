@@ -1,5 +1,6 @@
 import path from "path"
 import { buildSite } from "../build/index.js"
+import { handleCleanup } from "../cleanup/handleCleanup.js"
 import { startServer, watchFiles, attachLiveReload } from "../dev/index.js"
 import { loadConfig } from "../config/index.js"
 import { timer } from "../utils/index.js"
@@ -18,12 +19,19 @@ export async function runDev() {
     const server = await startServer(outputDir, config.dev.port)
     const reload = attachLiveReload(server)
 
-    watchFiles(async () => {
-        const reloadBuildStart = performance.now()
+    await watchFiles(
+        async () => {
+            const reloadBuildStart = performance.now()
 
-        await buildSite({ dev: true })
+            await buildSite({ dev: true })
 
-        timer("Reload", reloadBuildStart)
-        reload()
-    })
+            timer("Reload", reloadBuildStart)
+            reload()
+        },
+        async (path) => {
+            const cleanupStart = performance.now()
+
+            await handleCleanup(path)
+        }
+    )
 }

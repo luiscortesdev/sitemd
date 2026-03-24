@@ -28,23 +28,3 @@ export async function directoryEmpty(path: string) {
         return false
     }
 }
-
-export async function removeFileFromOutput(path: string) {
-    try {
-        await fs.access(path)
-        await fs.rm(path)
-
-        const parentFolder = PATH.dirname(path)
-        
-        if (await directoryEmpty(parentFolder)) {
-            await fs.rmdir(parentFolder)
-        }
-
-        return
-
-    } catch {
-        console.log(`INTERNAL ERROR. COULD NOT REMOVE ${path} FROM OUTPUT!`)
-
-        return
-    }
-}
