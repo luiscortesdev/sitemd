@@ -1,10 +1,24 @@
 import PATH from "path"
+import { loadConfig } from "../config/index.js"
+import { deleteCache } from "./deleteCache.js"
 
 export async function handleCleanup(path: string) {
     const root = process.cwd()
+    const config = await loadConfig()
 
-    const topLevelDir = path.split(PATH.sep)[0]
-    const secondLevelDir = path.split(PATH.sep)[1]
+    const pathSplit = path.split(PATH.sep)
+    const topLevelDir = pathSplit[0]
+    const secondLevelDir = pathSplit[1]
+    const fileName = pathSplit[pathSplit.length - 1]
+
     const fullPath = PATH.join(root, path)
 
+    if (!topLevelDir || !secondLevelDir || !fileName) {
+        console.log(`${fullPath} IS NOT A VALID PATH!`)
+        return
+    }
+
+    if (topLevelDir === config.contentDir || topLevelDir === config.layoutsDir || PATH.join(topLevelDir, secondLevelDir) === PATH.join(config.themeDir, config.layoutsDir)) {
+        deleteCache(fullPath, fileName, topLevelDir, secondLevelDir)
+    }
 }
