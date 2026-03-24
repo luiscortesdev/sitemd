@@ -15,6 +15,7 @@ export function timer(label: TimerLabels, start: number) {
     }
 
     if (label === "Cleanup") {
-        const cleanupMessage = chalk.yellowBright(`Cleaned up file in ${ms.toFixed(1)}ms`)
+        const cleanupMessage = chalk.yellowBright(`❗ Cleaned up file in ${ms.toFixed(1)}ms`)
+        console.log(cleanupMessage)
     }
 }
