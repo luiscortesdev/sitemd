@@ -1,6 +1,5 @@
 import type { SiteMDCache } from "./index.js";
-import type { CollectionPages } from "../collections/index.js";
-import type { CollectionsGraph } from "../collections/index.js";
+import type { CollectionPages, CollectionsGraph } from "../collections/index.js";
 
 function getChangedPageCollections(cache: SiteMDCache, collectionsGraph: CollectionsGraph): string[] {
     const changedPageCollections: string[] = []
