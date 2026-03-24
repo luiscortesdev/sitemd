@@ -1,5 +1,6 @@
-import { buildSite } from "../build/index.js"
 import chalk from "chalk"
+
+import { buildSite } from "../build/index.js"
 
 export async function build() {
     console.log(chalk.blue("BUILDING SITE..."))

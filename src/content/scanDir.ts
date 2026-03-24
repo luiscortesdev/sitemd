@@ -1,4 +1,4 @@
-import { readdir } from "fs/promises"
+import fs from "fs/promises"
 import path from "path"
 
 import type { PageFile } from "../content/content.types.js"
@@ -6,7 +6,7 @@ import type { PageFile } from "../content/content.types.js"
 export async function scanDir(dir: string, baseDir: string): Promise<PageFile[]> {
     const results: PageFile[] = []
 
-    const entries = await readdir(dir, { withFileTypes: true })
+    const entries = await fs.readdir(dir, { withFileTypes: true })
 
     for (const entry of entries) {
         const fullPath = path.join(dir, entry.name)

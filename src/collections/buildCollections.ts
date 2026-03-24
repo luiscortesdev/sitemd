@@ -1,5 +1,4 @@
-import type { Collections } from "./collections.types.js"
-import type { CollectionPages } from "./collections.types.js"
+import type { Collections, CollectionPages } from "./collections.types.js"
 
 export function buildCollections(pages: CollectionPages[]): Collections {
     const collections: Collections = {}

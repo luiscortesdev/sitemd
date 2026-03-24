@@ -1,4 +1,5 @@
 import path from "path";
+
 import { scanDir } from "../content/index.js"
 import { loadConfig } from "../config/index.js";
 

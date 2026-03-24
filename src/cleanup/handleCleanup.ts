@@ -1,4 +1,5 @@
 import PATH from "path"
+
 import { loadConfig } from "../config/index.js"
 import { deleteCache } from "./deleteCache.js"
 import { deleteOutput } from "./deleteOutput.js"

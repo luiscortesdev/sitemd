@@ -1,5 +1,4 @@
 import fs from "fs/promises"
-import PATH from "path"
 
 export async function outputExists(path: string) {
     try {

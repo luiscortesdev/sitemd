@@ -5,7 +5,6 @@ import remarkGfm from 'remark-gfm'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import { unified } from 'unified'
-
 import matter from "gray-matter"
 
 export async function parsePage(path: string) {
