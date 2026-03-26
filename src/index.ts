@@ -1,9 +1,6 @@
 #!/usr/bin/env node
 import { program } from "commander"
-import { listfiles } from "./commands/listfiles.js"
-import { build } from "./commands/build.js"
-import { dev } from "./commands/dev.js"
-import { init } from "./commands/init.js"
+import { listfiles, build, dev, init } from "./commands/index.js"
 
 program
     .command("listfiles")
