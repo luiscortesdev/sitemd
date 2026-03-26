@@ -2,8 +2,8 @@ import fsSync from "fs"
 import path from "path"
 import chalk from "chalk"
 
-import { initTheme } from "../init/initTheme.js"
-import { initConfig } from "../init/initConfig.js"
+import { initTheme } from "./initTheme.js"
+import { initConfig } from "./initConfig.js"
 import { initFolders } from "./initFolders.js"
 
 export async function runInit(options: { theme: string }) {
