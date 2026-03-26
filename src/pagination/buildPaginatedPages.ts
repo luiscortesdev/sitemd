@@ -33,7 +33,7 @@ export async function buildPaginatedPages(page: PageFile, parsed: Parsed, collec
             items: pageItems,
             pageNumber: pageNumber,
             totalPages: paginated.length,
-            hasNext: i < paginated.length,
+            hasNext: i < (paginated.length - 1),
             hasPrev: i > 0,
             nextPage: pageNumber + 1,
             prevPage: pageNumber - 1,
