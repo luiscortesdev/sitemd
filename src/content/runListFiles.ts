@@ -3,9 +3,8 @@ import path from "path";
 import { scanDir } from "../content/index.js"
 import { loadConfig } from "../config/index.js";
 
-const root = process.cwd()
-
 export async function runListFiles() {
+    const root = process.cwd()
     const config = await loadConfig()
     const contentDir = config.contentDir
 
