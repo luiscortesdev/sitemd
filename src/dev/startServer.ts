@@ -1,5 +1,5 @@
 import { createServer } from "http"
-import { readFile, stat } from "fs/promises"
+import fs from "fs/promises"
 import path from "path"
 
 export async function startServer(outDir: string, port = 3000) {
@@ -8,13 +8,13 @@ export async function startServer(outDir: string, port = 3000) {
         let filePath = path.join(outDir, req.url || "")
 
         try {
-            let file = await stat(filePath)
+            let file = await fs.stat(filePath)
 
             if (file.isDirectory()) {
                 filePath = path.join(filePath, "index.html")
             }
 
-            const data = await readFile(filePath)
+            const data = await fs.readFile(filePath)
             res.writeHead(200)
             res.end(data)
         } catch {
