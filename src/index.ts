@@ -23,4 +23,9 @@ program
     .description("Starts up a development server to see your changes in real-time")
     .action(dev)
 
+program
+    .command("addTheme")
+    .option("-t, --theme <theme>", "Specify the theme you would like to add.", "none")
+    .description("Adds the specified theme to your project.")
+
 program.parse()
