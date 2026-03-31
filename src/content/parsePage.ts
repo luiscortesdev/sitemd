@@ -1,4 +1,4 @@
-import { readFile } from 'fs/promises'
+import fs from 'fs/promises'
 import rehypeRaw from 'rehype-raw'
 import rehypeStringify from 'rehype-stringify'
 import remarkGfm from 'remark-gfm'
@@ -15,7 +15,7 @@ export async function parsePage(path: string) {
         .use(rehypeRaw)
         .use(rehypeStringify)
 
-    const file = await readFile(path, "utf-8")
+    const file = await fs.readFile(path, "utf-8")
 
     const { content, data } = matter(file)
 
