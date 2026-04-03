@@ -24,7 +24,7 @@ program
     .action(dev)
 
 program
-    .command("addTheme")
+    .command("addtheme")
     .option("-t, --theme <theme>", "Specify the theme you would like to add.", "none")
     .description("Adds the specified theme to your project.")
 
