@@ -5,13 +5,16 @@ import chalk from "chalk";
 import { fileURLToPath } from "url";
 
 import { directoryEmpty } from "../utils/index.js";
+import { loadConfig, saveConfig } from "../config/index.js";
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 export async function initTheme(theme: string) {
+    const config = await loadConfig()
     const themeDir = path.join(__dirname, "../templates/themes", theme)
-    const destinationDir = path.join(process.cwd(), "theme")
+    const destinationDir = path.join(process.cwd(), config.themeDir)
+    
 
     try {
         await fs.access(themeDir)
@@ -48,4 +51,7 @@ export async function initTheme(theme: string) {
         }
 
     }
+
+    config.theme = theme
+    await saveConfig(process.cwd(), config)
 }
