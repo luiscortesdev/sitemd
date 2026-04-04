@@ -37,5 +37,5 @@ export async function runAddTheme(theme: string) {
         }
     })
 
-
+    const userThemePath = path.join(root, config.themeDir)
 }
