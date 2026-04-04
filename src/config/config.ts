@@ -47,7 +47,7 @@ export async function saveConfig(root=process.cwd(), config: SiteMDConfig): Prom
 
     const configObject = JSON.stringify(config, null, 4)
 
-    const configText = "const config=" + configObject + "\n" + "\n" + "export default config"
+    const configText = "const config = " + configObject + "\n" + "\n" + "export default config"
 
     await fs.writeFile(
         configPath,

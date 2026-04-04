@@ -1,1 +1,1 @@
-export { loadConfig } from "./config.js"
+export { loadConfig, saveConfig } from "./config.js"

@@ -4,7 +4,7 @@ import chalk from "chalk";
 import inquirer from "inquirer";
 import { fileURLToPath } from "url";
 
-import { loadConfig } from "../config/index.js";
+import { loadConfig, saveConfig } from "../config/index.js";
 import { clearFolder } from "../utils/index.js";
 
 const __filename = fileURLToPath(import.meta.url)
@@ -43,6 +43,13 @@ export async function runAddTheme(theme: string) {
             await clearFolder(userThemePath)
 
             await fs.cp(requestedThemePath, path.join(root, config.themeDir), { recursive: true })
+
+            config.theme = theme
+
+            await saveConfig(root, config)
+
+            console.log(chalk.greenBright(`✅ SUCESSFULLY ADDED THE ${theme} THEME TO YOUR PROJECT!`))
+            console.log(chalk.blueBright("THE CONTENT FOLDER WAS KEPT IN THE THEME FOLDER TO PREVENT CONTENT LOSS!"))
         }
     })
 }

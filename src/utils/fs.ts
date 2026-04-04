@@ -32,7 +32,6 @@ export async function directoryEmpty(path: string) {
 export async function clearFolder(path: string) {
     try {
         const entries = await fs.readdir(path)
-        console.log(entries)
 
         for (const entry of entries) {
             const fullPath = PATH.join(path, entry)
