@@ -2,9 +2,10 @@ import fs from "fs/promises"
 import path from "path";
 import chalk from "chalk";
 import inquirer from "inquirer";
-
 import { fileURLToPath } from "url";
+
 import { loadConfig } from "../config/index.js";
+import { clearFolder } from "../utils/index.js";
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -31,11 +32,17 @@ export async function runAddTheme(theme: string) {
                 message: `ARE YOU SURE YOU WANT TO REPLACE YOU CURRENT THEME ${config.theme} WITH ${theme}? `,
             }
         ],
-    ).then((answer) => {
+    ).then(async (answer) => {
         if (answer.rewriteTheme === false) {
             return
         }
-    })
 
-    const userThemePath = path.join(root, config.themeDir)
+        if (answer.rewriteTheme == true) {
+            const userThemePath = path.join(root, config.themeDir)
+
+            await clearFolder(userThemePath)
+
+            await fs.cp(requestedThemePath, path.join(root, config.themeDir), { recursive: true })
+        }
+    })
 }

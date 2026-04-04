@@ -1,4 +1,5 @@
 import fs from "fs/promises"
+import PATH from "path"
 
 export async function outputExists(path: string) {
     try {
@@ -31,16 +32,22 @@ export async function directoryEmpty(path: string) {
 export async function clearFolder(path: string) {
     try {
         const entries = await fs.readdir(path)
+        console.log(entries)
 
         for (const entry of entries) {
-            const stats = await fs.stat(entry)
+            const fullPath = PATH.join(path, entry)
+            
+
+            const stats = await fs.stat(fullPath)
 
             if (stats.isFile()) {
-                await fs.unlink(entry)
+                await fs.unlink(fullPath)
             } else if (stats.isDirectory()) {
-                await fs.rm(entry)
+                await fs.rm(fullPath, { recursive: true })
             }
         }
+
+        return
     } catch (error) {
         if (error instanceof Error) {
             console.error(`INTERNAL ERROR CLEARING FILES IN ${path}: ${error.message}`)
