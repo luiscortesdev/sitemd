@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { program } from "commander"
-import { listfiles, build, dev, init } from "./commands/index.js"
+import { listfiles, build, dev, init, addtheme } from "./commands/index.js"
 
 program
     .command("listfiles")
@@ -27,5 +27,7 @@ program
     .command("addtheme")
     .option("-t, --theme <theme>", "Specify the theme you would like to add.", "none")
     .description("Adds the specified theme to your project.")
+    .action(addtheme)
+
 
 program.parse()

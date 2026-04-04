@@ -19,6 +19,7 @@ export async function runAddTheme(options: { theme: string }) {
         
     } catch {
         console.log(chalk.redBright(`❌ COULD NOT FIND ${options.theme} THEME. ENSURE IT EXISTS!`))
+        return
     }
 
     inquirer.prompt(
@@ -30,6 +31,10 @@ export async function runAddTheme(options: { theme: string }) {
             }
         ],
     ).then((answer) => {
-        console.log(answer.rewriteTheme)
+        if (answer.rewriteTheme === false) {
+            return
+        }
     })
+
+
 }
