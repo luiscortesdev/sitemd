@@ -27,7 +27,6 @@ export async function buildSite({ dev }: { dev: boolean }) {
     const themeDir = path.join(root, config.themeDir)
     const themeLayouts = path.join(themeDir, "layouts")
 
-
     const layoutGraph = await buildLayoutGraph(layoutsDir, themeLayouts)
 
     let changedLayouts: string[] = []

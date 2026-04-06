@@ -4,6 +4,7 @@ const config = {
     layoutsDir: "layouts",
     publicDir: "public",
     themeDir: "theme",
+    _siteDir: "_site",
 
     site: {
         title: "My SiteMD Website",
