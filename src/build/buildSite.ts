@@ -6,7 +6,7 @@ import { parsePage, scanDir } from "../content/index.js"
 import { buildPage } from "./buildPage.js"
 import { copyPublic } from "./copyPublic.js"
 import { loadCache, saveCache } from "../cache/index.js"
-import { hashContent, outputExists } from "../utils/index.js"
+import { hashContent, outputExists, clearFolder } from "../utils/index.js"
 import { buildLayoutGraph, resolveLayout } from "../layouts/index.js"
 import { invalidateLayoutCascade, invalidateCollections } from "../cache/index.js"
 import { buildCollections, buildCollectionsGraph } from "../collections/index.js"
@@ -53,6 +53,10 @@ export async function buildSite({ dev }: { dev: boolean }) {
         
     }
 
+    // If we are in build mode then we must clear out the _siteDir before rebuilding to ensure fresh content
+    if (!dev) {
+        await clearFolder(_siteDir)
+    }
 
     await copyPublic(publicDir, themeDir, dev ? outputDir : _siteDir) // Switch folders based on dev bool
 
