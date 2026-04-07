@@ -24,6 +24,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
     const layoutsDir = path.join(root, config.layoutsDir)
     const publicDir = path.join(root, config.publicDir)
     const outputDir = path.join(root, config.outputDir)
+    const _siteDir = path.join(root, config._siteDir)
     const themeDir = path.join(root, config.themeDir)
     const themeLayouts = path.join(themeDir, "layouts")
 
@@ -53,7 +54,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
     }
 
 
-    await copyPublic(publicDir, themeDir, outputDir)
+    await copyPublic(publicDir, themeDir, dev ? outputDir : _siteDir) // Switch folders based on dev bool
 
     const pages = await scanDir(contentDir, contentDir)
 
@@ -65,11 +66,13 @@ export async function buildSite({ dev }: { dev: boolean }) {
         const cached = cache.pages[page.absolutePath]
 
         let parsed
-
-        if (cached && cached.hash === hash) {
+        
+        // Only reused cached parse if we are in dev mode
+        if (cached && cached.hash === hash && dev) {
             parsed = cached.parsed
         }
-        if (!parsed) {
+        // Always run parsePage when not in dev
+        if (!parsed || !dev) {
             parsed = await parsePage(page.absolutePath)
         }
 
