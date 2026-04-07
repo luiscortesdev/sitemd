@@ -103,12 +103,14 @@ export async function buildSite({ dev }: { dev: boolean }) {
 
         const pageLayout = parsed.data.layout.endsWith(".njk") ? parsed.data.layout : parsed.data.layout + ".njk"
 
+        // Only skip if we are in dev mode and all other conditions are true.
         if (
             cached &&
             hash === cached.hash &&
             await outputExists(cached.outputDir) &&
             !invalidatedLayouts.includes(pageLayout) &&
-            !invalidLayoutCollections.includes(pageLayout)
+            !invalidLayoutCollections.includes(pageLayout) &&
+            dev
         ) {
             // Page's current hash matches cached hash. Therefore, the file 
             // has not been changed and we don't need to rebuild it.
@@ -117,7 +119,8 @@ export async function buildSite({ dev }: { dev: boolean }) {
             continue
         }
 
-        if (cached && !(await outputExists(cached.outputDir))) {
+        // Only update the cache in dev mode
+        if (cached && !(await outputExists(cached.outputDir)) && dev) {
             delete cache.pages[page.absolutePath]
         }
 
@@ -131,8 +134,8 @@ export async function buildSite({ dev }: { dev: boolean }) {
             for (const { html, pageNumber } of paginatedOutputs) {
                 const pagePath = 
                     pageNumber === 1 ? 
-                        path.join(outputDir, safeRoute, "index.html") : 
-                        path.join(outputDir, safeRoute, "page", String(pageNumber), "index.html")
+                        path.join(dev ? outputDir : _siteDir, safeRoute, "index.html") : 
+                        path.join(dev ? outputDir : _siteDir, safeRoute, "page", String(pageNumber), "index.html")
 
                 let outputHtml = html
 
@@ -152,24 +155,26 @@ export async function buildSite({ dev }: { dev: boolean }) {
             }
 
             const baseOutputPath = path.join(
-                outputDir,
+                dev ? outputDir : _siteDir,
                 page.route === "/" ? "" : safeRoute,
                 "index.html"
             )
-
-            cache.pages[page.absolutePath] = {
-                hash,
-                layout: parsed.data.layout,
-                outputDir: baseOutputPath,
-                parsed: {
-                    html: parsed.html,
-                    data: parsed.data
-                }
-            }
             
-            cache.collections = collectionsGraph
+            if (dev) {
+                cache.pages[page.absolutePath] = {
+                    hash,
+                    layout: parsed.data.layout,
+                    outputDir: baseOutputPath,
+                    parsed: {
+                        html: parsed.html,
+                        data: parsed.data
+                    }
+                }
+                
+                cache.collections = collectionsGraph
 
-            await saveCache(root, cache)
+                await saveCache(root, cache)
+            }
 
             continue
         }
