@@ -182,7 +182,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
         let outputHtml = await buildPage(collections, parsed)
 
         const outputPath = path.join(
-            outputDir,
+            dev ? outputDir : _siteDir,
             page.route === "/" ? "" : safeRoute,
             "index.html"
         )
@@ -197,21 +197,24 @@ export async function buildSite({ dev }: { dev: boolean }) {
                 </body>`
             )
         }
-
-        cache.pages[page.absolutePath] = {
-            hash,
-            layout: parsed.data.layout,
-            outputDir: outputPath,
-            parsed: {
-                html: parsed.html,
-                data: parsed.data
+        
+        if (dev) {
+            cache.pages[page.absolutePath] = {
+                hash,
+                layout: parsed.data.layout,
+                outputDir: outputPath,
+                parsed: {
+                    html: parsed.html,
+                    data: parsed.data
+                }
             }
-        }
 
-        cache.collections = collectionsGraph
+            cache.collections = collectionsGraph
+
+            await saveCache(root, cache)
+        }
 
         await fs.mkdir(path.dirname(outputPath), { recursive: true })
         await fs.writeFile(outputPath, outputHtml)
-        await saveCache(root, cache)
     }
 }
