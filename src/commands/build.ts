@@ -1,11 +1,13 @@
 import chalk from "chalk"
 
 import { buildSite } from "../build/index.js"
+import { timer } from "../utils/timer.js"
 
 export async function build() {
     console.log(chalk.blue("BUILDING SITE..."))
+    const initialBuildStart = performance.now()
 
     await buildSite({ dev: false })
 
-    console.log(chalk.green("SUCESSFULLY BUILT SITE!!!"))
+    timer("Build", initialBuildStart)
 }

@@ -8,6 +8,7 @@ dist
 /layouts
 /public
 /theme
+/_site
 
 # Development Cache Folders
 /.sitemd
