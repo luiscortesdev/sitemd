@@ -1,7 +1,8 @@
 import { visit } from 'unist-util-visit';
 import type { Root, Element } from 'hast'
+import type { Plugin } from 'unified';
 
-export function rehypeCustomAttributes() {
+export function rehypeCustomAttributes(): ReturnType<Plugin<[], Root>> {
     return (tree: Root) => {
         
         visit(tree, 'element', (node: Element) => {
