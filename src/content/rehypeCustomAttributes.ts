@@ -22,7 +22,7 @@ export function rehypeCustomAttributes() {
                     
                     lastChild.value = lastChild.value.replace(/\s*\{[^}]+\}\s*$/, '');
             
-                    // 2. Parse attributes
+                    
                     const classes: string[] = [];
                     const parts = attrString.split(/\s+/);
             
