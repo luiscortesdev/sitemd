@@ -191,7 +191,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
             "index.html"
         )
 
-        if (dev === true) {
+        if (dev) {
             outputHtml = outputHtml.replace(
                 "</body>",
                 `<script>
