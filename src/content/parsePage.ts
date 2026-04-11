@@ -6,7 +6,7 @@ import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import { unified } from 'unified'
 import matter from "gray-matter"
-import { rehypeCustomAttributes } from './rehypeCustomAttributes.js'
+import { rehypeCustomAttributes } from '../plugins/rehypeCustomAttributes.js'
 
 export async function parsePage(path: string) {
     const processor = unified()
