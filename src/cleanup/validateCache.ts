@@ -1,8 +1,6 @@
-import path from "path"
 import fs from "fs/promises"
 
 import { loadCache, saveCache } from "../cache/cache.js"
-import { directoryEmpty } from "../utils/fs.js"
 
 export async function validateCache() {
     const root = process.cwd()
