@@ -1,7 +1,7 @@
 import path from "path"
 
 import { buildSite } from "../build/index.js"
-import { handleCleanup } from "../cleanup/index.js"
+import { handleCleanup, validateCache } from "../cleanup/index.js"
 import { startServer, watchFiles, attachLiveReload } from "../dev/index.js"
 import { loadConfig } from "../config/index.js"
 import { timer, clearFolder } from "../utils/index.js"
@@ -15,6 +15,7 @@ export async function runDev() {
 
     // Clear output folder and initially build site on running dev command
     await clearFolder(outputDir)
+    await validateCache()
     await buildSite({ dev: true })
 
     timer("Build", initialBuildStart)
