@@ -16,22 +16,6 @@ export async function validateCache() {
             await fs.access(file)
         } catch {
             console.log(`${file} NO LONGER EXISTS IN USER'S PROJECT. DELETING FROM CACHE...`)
-            const parentPath = path.dirname(entry.outputDir)
-
-            try {
-                await fs.access(entry.outputDir)
-            
-                await fs.rm(entry.outputDir)
-                    try {
-                        if (await directoryEmpty(parentPath)) {
-                            await fs.rmdir(parentPath)
-                        } 
-                    } catch {
-                        console.log(`INTERNAL ERROR: COULD NOT REMOVE ${parentPath}`)
-                    }
-                } catch {
-                    console.log(`INTERNAL ERROR: OUTPUT PATH ${entry.outputDir} DOES NOT EXIST!`)
-                }
                 
             delete cache.pages[file]
         }
