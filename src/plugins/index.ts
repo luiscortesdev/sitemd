@@ -1,0 +1,1 @@
+export { rehypeCustomAttributes } from "./rehypeCustomAttributes.js"
