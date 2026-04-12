@@ -17,7 +17,7 @@ export const DevConfigSchema = z.object({
 
 export const ConfigSchema = z.object({
     contentDir: z.string().default("content"),
-    outputDir: z.string().default("output"),
+    outputDir: z.string().default(".sitemd/output"),
     layoutsDir: z.string().default("layouts"),
     publicDir: z.string().default("public"),
     themeDir: z.string().default("theme"),
