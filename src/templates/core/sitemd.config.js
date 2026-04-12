@@ -1,6 +1,6 @@
 const config = {
     contentDir: "content",
-    outputDir: "output",
+    outputDir: ".sitemd/output",
     layoutsDir: "layouts",
     publicDir: "public",
     themeDir: "theme",
