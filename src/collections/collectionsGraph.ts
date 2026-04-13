@@ -8,12 +8,18 @@ export async function buildCollectionsGraph(parsedPages: ParsedPages[]) {
 
     let collectionsGraph: CollectionsGraph = {}
     
-    for (const { page, parsed } of parsedPages) {
+    for (const { page, parsed, hash } of parsedPages) {
+        const cached = cache.pages[page.absolutePath]
 
-        const { data } = parsed
-        const collections = data.collections
+        let collections;
 
-        if (!data || !collections) continue
+        if (cached && cached.hash === hash && cached.parsed?.data.collections) {
+            collections = cached.parsed.data.collections
+        } else {
+            collections = parsed.data.collections
+        }
+
+        if (!collections) continue
 
 
         for (const collection of collections) {
