@@ -11,6 +11,7 @@ export type Collections = Record<string, CollectionItem[]>
 export interface CollectionPages {
     page: PageFile;
     parsed: ParsedPageCache;
+    hash: string;
 }
 
 export type CollectionsGraph = Record<string, string[]>

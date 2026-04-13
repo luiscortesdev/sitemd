@@ -8,8 +8,12 @@ export async function buildCollections(pages: CollectionPages[]): Promise<Collec
     collections["all"] = []
 
     for (const page of pages) {
-        const { data } = page.parsed
         const { route, absolutePath } = page.page
+
+        const cached = cache.pages[absolutePath]
+
+        const { data } = page.parsed
+        
 
         if (!data?.collections) { 
             data.collections = ["none"]
