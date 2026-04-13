@@ -91,7 +91,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
         })
     }
 
-    const collections = buildCollections(parsedPages)
+    const collections = await buildCollections(parsedPages)
     const collectionsGraph = buildCollectionsGraph(parsedPages)
     console.log(collectionsGraph)
     const invalidLayoutCollections = invalidateCollections(cache, parsedPages, collectionsGraph)
