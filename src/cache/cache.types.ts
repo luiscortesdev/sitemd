@@ -1,11 +1,11 @@
-import type { Parsed } from "../build/build.types.js";
+import type { PageData } from "../build/build.types.js";
 
 interface PageCacheEntry {
     hash: string;
     layout: string;
     outputDir: string;
 
-    parsed: Parsed;
+    data: PageData;
 }
 
 interface LayoutCacheEntry {

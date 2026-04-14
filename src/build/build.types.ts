@@ -1,6 +1,6 @@
 import type { PageFile } from "../content/index.js";
 
-interface PageData {
+export interface PageData {
     title: string;
     description: string;
     layout: string;
