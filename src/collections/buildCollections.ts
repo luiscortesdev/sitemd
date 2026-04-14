@@ -1,8 +1,9 @@
 import { loadCache } from "../cache/index.js"
 
-import type { Collections, CollectionPages } from "./collections.types.js"
+import type { ParsedPages } from "../build/index.js"
+import type { Collections } from "./collections.types.js"
 
-export async function buildCollections(pages: CollectionPages[]): Promise<Collections> {
+export async function buildCollections(pages: ParsedPages[]): Promise<Collections> {
     const cache = await loadCache()
 
     const collections: Collections = {}
