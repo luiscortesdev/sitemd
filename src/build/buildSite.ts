@@ -80,10 +80,6 @@ export async function buildSite({ dev }: { dev: boolean }) {
             parsed = await parsePage(page.absolutePath)
         }
 
-        if (!parsed.data.layout) {
-            parsed.data.layout = "default"
-        }
-
         parsedPages.push({
             page,
             parsed,
@@ -99,11 +95,6 @@ export async function buildSite({ dev }: { dev: boolean }) {
     for (const {page, parsed, hash} of parsedPages) {
 
         const cached = cache.pages[page.absolutePath]
-
-        // Set the page's layout to default if a layout is not defined.
-        if (!parsed.data.layout) {
-            parsed.data.layout = "default"
-        }
 
         const pageLayout = parsed.data.layout.endsWith(".njk") ? parsed.data.layout : parsed.data.layout + ".njk"
 
