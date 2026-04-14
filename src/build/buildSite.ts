@@ -161,7 +161,6 @@ export async function buildSite({ dev }: { dev: boolean }) {
                     layout: parsed.data.layout,
                     outputDir: baseOutputPath,
                     parsed: {
-                        html: parsed.html,
                         data: parsed.data
                     }
                 }
@@ -199,7 +198,6 @@ export async function buildSite({ dev }: { dev: boolean }) {
                 layout: parsed.data.layout,
                 outputDir: outputPath,
                 parsed: {
-                    html: parsed.html,
                     data: parsed.data
                 }
             }

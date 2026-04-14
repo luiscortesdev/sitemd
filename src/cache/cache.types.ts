@@ -5,7 +5,7 @@ interface PageCacheEntry {
     layout: string;
     outputDir: string;
 
-    parsed?: Parsed;
+    parsed: Parsed;
 }
 
 interface LayoutCacheEntry {
