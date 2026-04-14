@@ -81,7 +81,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
         if (cached && cached.hash === hash && dev) {
             data = cached.data
             console.log("SKIPPED REBUILDING PAGE: ", page)
-            html = (await parsePage(page.absolutePath)).html
+            html = cached.html
         } else {
             const rawData = (await parsePage(page.absolutePath))
             console.log("REBUILDING PAGE: ", page)
@@ -176,6 +176,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
                     layout: data.layout,
                     outputDir: baseOutputPath,
                     data: data,
+                    html: html,
                 }
                 
                 cache.collections = collectionsGraph
@@ -211,6 +212,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
                 layout: data.layout,
                 outputDir: outputPath,
                 data: data,
+                html: html,
             }
 
             cache.collections = collectionsGraph

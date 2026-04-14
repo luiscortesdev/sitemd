@@ -4,7 +4,7 @@ interface PageCacheEntry {
     hash: string;
     layout: string;
     outputDir: string;
-
+    html: string;
     data: PageData;
 }
 
