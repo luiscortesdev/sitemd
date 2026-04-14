@@ -16,9 +16,9 @@ export async function buildCollections(pages: ParsedPages[]): Promise<Collection
         
         // If the page is cached, the cached hash matches the current hash, and it has an array of collections cached, then we can skip parsing its
         // collections.
-        if (cached && cached.hash === page.hash && cached.parsed?.data.collections) {
-            const collectionsArray = cached.parsed.data.collections
-            const { data } = cached.parsed
+        if (cached && cached.hash === page.hash && cached.data?.collections) {
+            const collectionsArray = cached.data.collections
+            const { data } = cached
 
             for (const collectionName of collectionsArray) {
 
@@ -33,7 +33,7 @@ export async function buildCollections(pages: ParsedPages[]): Promise<Collection
                 })
             }
         } else {
-            const { data } = page.parsed
+            const data = page.data
         
 
             if (!data?.collections) { 

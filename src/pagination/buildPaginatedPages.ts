@@ -2,13 +2,15 @@ import { buildPage } from "../build/buildPage.js";
 import { paginate } from "./paginate.js";
 
 import type { Collections } from "../collections/index.js";
-import type { Parsed } from "../build/build.types.js";
+import type { PageData } from "../build/build.types.js";
 import type { PageFile } from "../content/content.types.js";
 import type { Pagination, PaginatedOutputs } from "./pagination.types.js";
 
-export async function buildPaginatedPages(page: PageFile, parsed: Parsed, collections: Collections): Promise<Array<PaginatedOutputs> | undefined> {
-    const collectionName = parsed.data.paginate
-    const perPage = parsed.data.perPage ?? 10
+export async function buildPaginatedPages(page: PageFile, data: PageData, html: string, collections: Collections): Promise<Array<PaginatedOutputs> | undefined> {
+    const collectionName = data.paginate
+    const perPage =  data.perPage ?? 10
+
+    if (!collectionName) return
 
     const items = collections[collectionName] || []
     const outputs = []
@@ -42,10 +44,10 @@ export async function buildPaginatedPages(page: PageFile, parsed: Parsed, collec
             baseUrl: page.route,
         }
 
-        const html = await buildPage(collections, parsed, pagination)
+        const outputHtml = await buildPage(collections, data, html, pagination)
 
         outputs.push({
-            html,
+            html: outputHtml,
             pageNumber,
         })
     }

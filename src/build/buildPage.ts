@@ -4,7 +4,7 @@ import nunjucks from "nunjucks"
 import { loadConfig } from "../config/index.js";
 
 import type { Collections } from "../collections/index.js";
-import type { Parsed } from "./build.types.js";
+import type { PageData } from "./build.types.js";
 import type { Pagination } from "../pagination/index.js";
 
 // Create a new nunjucks environment each buildPage to prevent stale layouts and
@@ -19,13 +19,11 @@ function createNunjucksEnvironment(root: string) {
     )
 }
 
-export async function buildPage(collections: Collections, parsed: Parsed, pagination: Pagination | null = null): Promise<string> {
+export async function buildPage(collections: Collections, data: PageData, html: string, pagination: Pagination | null = null): Promise<string> {
     const config = await loadConfig()
     const root = process.cwd()
     
     const env = createNunjucksEnvironment(root)
-
-    const { html, data } = parsed
     
     const layoutName = data.layout ?? "default"
 
