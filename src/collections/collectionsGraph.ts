@@ -13,8 +13,8 @@ export async function buildCollectionsGraph(parsedPages: ParsedPages[]) {
 
         let collections;
 
-        if (cached && cached.hash === hash && cached.parsed?.data.collections) {
-            collections = cached.parsed.data.collections
+        if (cached && cached.hash === hash && cached.data?.collections) {
+            collections = cached.data.collections
         } else {
             collections = parsed.data.collections
         }

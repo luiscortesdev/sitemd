@@ -12,7 +12,7 @@ import { invalidateLayoutCascade, invalidateCollections } from "../cache/index.j
 import { buildCollections, buildCollectionsGraph } from "../collections/index.js"
 import { buildPaginatedPages } from "../pagination/index.js";
 
-import type { ParsedPages } from "./build.types.js";
+import type { ParsedPages, Parsed } from "./build.types.js";
 
 export async function buildSite({ dev }: { dev: boolean }) {
     const config = await loadConfig()
@@ -69,21 +69,26 @@ export async function buildSite({ dev }: { dev: boolean }) {
 
         const cached = cache.pages[page.absolutePath]
 
-        let parsed
+        let parsed: Parsed = {
+            html: "",
+            data: {
+                title: "",
+                description: "",
+                layout: "",
+            }
+        }
         
         // Only reused cached parse if we are in dev mode
         if (cached && cached.hash === hash && dev) {
-            parsed = cached.parsed
-        }
-        // Always run parsePage when not in dev
-        if (!parsed || !dev) {
+            parsed.data = cached.data
+        } else {
             parsed = await parsePage(page.absolutePath)
         }
 
         parsedPages.push({
             page,
             parsed,
-            hash
+            hash,
         })
     }
 
@@ -160,9 +165,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
                     hash,
                     layout: parsed.data.layout,
                     outputDir: baseOutputPath,
-                    parsed: {
-                        data: parsed.data
-                    }
+                    data: parsed.data,
                 }
                 
                 cache.collections = collectionsGraph
@@ -197,9 +200,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
                 hash,
                 layout: parsed.data.layout,
                 outputDir: outputPath,
-                parsed: {
-                    data: parsed.data
-                }
+                data: parsed.data,
             }
 
             cache.collections = collectionsGraph
