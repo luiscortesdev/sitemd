@@ -1,3 +1,5 @@
+import { areStringArraysEqual } from "../utils/comparisons.js";
+
 import type { SiteMDCache } from "./index.js";
 import type { CollectionsGraph } from "../collections/index.js";
 import type { ParsedPages } from "../build/index.js";
@@ -8,7 +10,14 @@ function getChangedPageCollections(cache: SiteMDCache, collectionsGraph: Collect
     const cachedCollections = cache.collections
 
     for (const key in collectionsGraph) {
-        if (!cachedCollections[key] || cachedCollections[key] !== collectionsGraph[key]) {
+        const oldCollection = cachedCollections[key]
+        const newCollection = collectionsGraph[key]
+        
+        if (!newCollection) continue
+
+        if (!oldCollection || !areStringArraysEqual(oldCollection, newCollection)) {
+            console.log("CACHED COLLECTION: ", cachedCollections[key])
+            console.log("NEW COLLECTION", collectionsGraph[key])
             changedPageCollections.push(key)
         }
     }
@@ -19,6 +28,8 @@ function getChangedPageCollections(cache: SiteMDCache, collectionsGraph: Collect
 export function invalidateCollections(cache: SiteMDCache, pages: ParsedPages[], collectionsGraph: CollectionsGraph) {
     const changedCollections: string[] = getChangedPageCollections(cache, collectionsGraph)
     const invalidLayoutCollections: string[] = []
+
+    console.log("CHANGED COLLECTIONS", changedCollections)
 
     for (const page of pages) {
         const data = page.data

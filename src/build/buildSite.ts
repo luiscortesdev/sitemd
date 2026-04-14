@@ -80,8 +80,10 @@ export async function buildSite({ dev }: { dev: boolean }) {
         // Only reused cached parse if we are in dev mode
         if (cached && cached.hash === hash && dev) {
             data = cached.data
+            console.log("SKIPPED REBUILDING PAGE: ", page)
         } else {
             const rawData = (await parsePage(page.absolutePath))
+            console.log("REBUILDING PAGE: ", page)
             data = rawData.data
             html = rawData.html ?? ""
         }
@@ -94,10 +96,15 @@ export async function buildSite({ dev }: { dev: boolean }) {
         })
     }
 
+    console.dir(parsedPages, { depth: null })
+
     const collections = await buildCollections(parsedPages)
     const collectionsGraph = await buildCollectionsGraph(parsedPages)
-    console.log(collectionsGraph)
+    console.log("COLLECTIONS GRAPH: ", collectionsGraph)
     const invalidLayoutCollections = invalidateCollections(cache, parsedPages, collectionsGraph)
+
+    console.log("INVALID LAYOUT COLLECTIONS: ", invalidLayoutCollections)
+    console.log("INVALIDATED LAYOUTS: ", invalidatedLayouts)
 
     for (const {page, data, html, hash} of parsedPages) {
 
