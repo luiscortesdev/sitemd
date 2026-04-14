@@ -18,7 +18,26 @@ function getChangedPageCollections(cache: SiteMDCache, collectionsGraph: Collect
         if (!oldCollection || !areStringArraysEqual(oldCollection, newCollection)) {
             console.log("CACHED COLLECTION: ", cachedCollections[key])
             console.log("NEW COLLECTION", collectionsGraph[key])
-            changedPageCollections.push(key)
+
+            if (!changedPageCollections.includes(key)) {
+                changedPageCollections.push(key)
+            }
+        }
+    }
+
+    for (const key in cachedCollections) {
+        const oldCollection = cachedCollections[key]
+        const newCollection = collectionsGraph[key]
+        
+        if (!oldCollection) continue
+
+        if (!newCollection || !areStringArraysEqual(oldCollection, newCollection)) {
+            console.log("CACHED COLLECTION: ", cachedCollections[key])
+            console.log("NEW COLLECTION", collectionsGraph[key])
+
+            if (!changedPageCollections.includes(key)) {
+                changedPageCollections.push(key)
+            }
         }
     }
 
