@@ -99,6 +99,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
     console.dir(parsedPages, { depth: null })
 
     const collections = await buildCollections(parsedPages)
+    console.log("COLLECTIONS: ", collections)
     const collectionsGraph = await buildCollectionsGraph(parsedPages)
     console.log("COLLECTIONS GRAPH: ", collectionsGraph)
     const invalidLayoutCollections = invalidateCollections(cache, parsedPages, collectionsGraph)
