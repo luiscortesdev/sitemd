@@ -1,14 +1,11 @@
-export interface ParsedPageCache {
-    html: string;
-    data: Record<string, any>;
-}
+import type { Parsed } from "../build/build.types.js";
 
 interface PageCacheEntry {
     hash: string;
     layout: string;
     outputDir: string;
 
-    parsed?: ParsedPageCache;
+    parsed?: Parsed;
 }
 
 interface LayoutCacheEntry {

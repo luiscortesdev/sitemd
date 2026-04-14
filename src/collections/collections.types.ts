@@ -1,4 +1,4 @@
-import type { ParsedPageCache } from "../cache/index.js";
+import type { Parsed } from "../build/index.js";
 import type { PageFile } from "../content/index.js"
 
 export interface CollectionItem {
@@ -10,7 +10,7 @@ export type Collections = Record<string, CollectionItem[]>
 
 export interface CollectionPages {
     page: PageFile;
-    parsed: ParsedPageCache;
+    parsed: Parsed;
     hash: string;
 }
 

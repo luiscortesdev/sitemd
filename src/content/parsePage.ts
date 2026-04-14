@@ -8,7 +8,9 @@ import { unified } from 'unified'
 import matter from "gray-matter"
 import { rehypeCustomAttributes } from '../plugins/index.js'
 
-export async function parsePage(path: string) {
+import type { Parsed } from '../build/index.js'
+
+export async function parsePage(path: string): Promise<Parsed> {
     const processor = unified()
         .use(remarkParse)
         .use(remarkGfm)
@@ -19,15 +21,22 @@ export async function parsePage(path: string) {
 
     const file = await fs.readFile(path, "utf-8")
 
-    const { content, data } = matter(file)
+    let { content, data } = matter(file)
 
     console.log("Parsing:", path)
     console.log("Frontmatter:", data)
 
     const html = String(await processor.process(content))
+    
+    const processedData = {
+        title: data.title ?? "A SiteMD Page",
+        description: data.description ?? "A page generated using SiteMD.",
+        layout: data.layout ?? "default.njk",
+        ...data,
+    }
 
     return {
         html,
-        data
+        data: processedData,
     }
 }

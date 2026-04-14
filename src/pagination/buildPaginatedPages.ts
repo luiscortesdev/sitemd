@@ -10,6 +10,8 @@ export async function buildPaginatedPages(page: PageFile, parsed: Parsed, collec
     const collectionName = parsed.data.paginate
     const perPage = parsed.data.perPage ?? 10
 
+    if (!collectionName) return
+
     const items = collections[collectionName] || []
     const outputs = []
 

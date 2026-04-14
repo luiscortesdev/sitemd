@@ -1,13 +1,22 @@
 import type { PageFile } from "../content/index.js";
-import type { ParsedPageCache } from "../cache/index.js";
+
+interface PageData {
+    title: string;
+    description: string;
+    layout: string;
+    collections?: string[];
+    paginate?: string;
+    perPage?: number;
+    usesCollections?: string[];
+}
 
 export interface Parsed {
     html: string;
-    data: Record<string, any>;
+    data: PageData;
 }
 
 export interface ParsedPages {
     page: PageFile;
-    parsed: ParsedPageCache;
+    parsed: Parsed;
     hash: string;
 }
