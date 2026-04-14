@@ -69,25 +69,27 @@ export async function buildSite({ dev }: { dev: boolean }) {
 
         const cached = cache.pages[page.absolutePath]
 
-        let parsed: Parsed = {
-            html: "",
-            data: {
-                title: "",
-                description: "",
-                layout: "",
-            }
+        let data = {
+            title: "",
+            description: "",
+            layout: "",
         }
+
+        let html = ""
         
         // Only reused cached parse if we are in dev mode
         if (cached && cached.hash === hash && dev) {
-            parsed.data = cached.data
+            data = cached.data
         } else {
-            parsed = await parsePage(page.absolutePath)
+            const rawData = (await parsePage(page.absolutePath))
+            data = rawData.data
+            html = rawData.html ?? ""
         }
 
         parsedPages.push({
             page,
-            parsed,
+            data,
+            html,
             hash,
         })
     }
@@ -97,11 +99,11 @@ export async function buildSite({ dev }: { dev: boolean }) {
     console.log(collectionsGraph)
     const invalidLayoutCollections = invalidateCollections(cache, parsedPages, collectionsGraph)
 
-    for (const {page, parsed, hash} of parsedPages) {
+    for (const {page, data, html, hash} of parsedPages) {
 
         const cached = cache.pages[page.absolutePath]
 
-        const pageLayout = parsed.data.layout.endsWith(".njk") ? parsed.data.layout : parsed.data.layout + ".njk"
+        const pageLayout = data.layout.endsWith(".njk") ? data.layout : data.layout + ".njk"
 
         // Only skip if we are in dev mode and all other conditions are true.
         if (
@@ -124,11 +126,10 @@ export async function buildSite({ dev }: { dev: boolean }) {
             delete cache.pages[page.absolutePath]
         }
 
-        const { data } = parsed
         const safeRoute = page.route.replace(/^\//, "")
 
         if (data.paginate) {
-            const paginatedOutputs = await buildPaginatedPages(page, parsed, collections)
+            const paginatedOutputs = await buildPaginatedPages(page, data, html, collections)
             if (!paginatedOutputs) continue
 
             for (const { html, pageNumber } of paginatedOutputs) {
@@ -163,9 +164,9 @@ export async function buildSite({ dev }: { dev: boolean }) {
             if (dev) {
                 cache.pages[page.absolutePath] = {
                     hash,
-                    layout: parsed.data.layout,
+                    layout: data.layout,
                     outputDir: baseOutputPath,
-                    data: parsed.data,
+                    data: data,
                 }
                 
                 cache.collections = collectionsGraph
@@ -176,7 +177,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
             continue
         }
         
-        let outputHtml = await buildPage(collections, parsed)
+        let outputHtml = await buildPage(collections, data, html)
 
         const outputPath = path.join(
             dev ? outputDir : _siteDir,
@@ -198,9 +199,9 @@ export async function buildSite({ dev }: { dev: boolean }) {
         if (dev) {
             cache.pages[page.absolutePath] = {
                 hash,
-                layout: parsed.data.layout,
+                layout: data.layout,
                 outputDir: outputPath,
-                data: parsed.data,
+                data: data,
             }
 
             cache.collections = collectionsGraph

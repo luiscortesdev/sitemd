@@ -33,7 +33,7 @@ export async function buildCollections(pages: ParsedPages[]): Promise<Collection
                 })
             }
         } else {
-            const { data } = page.parsed
+            const data = page.data
         
 
             if (!data?.collections) { 

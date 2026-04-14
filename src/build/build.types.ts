@@ -17,6 +17,7 @@ export interface Parsed {
 
 export interface ParsedPages {
     page: PageFile;
-    parsed: Parsed;
+    data: PageData;
+    html: string;
     hash: string;
 }

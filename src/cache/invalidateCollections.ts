@@ -1,5 +1,6 @@
 import type { SiteMDCache } from "./index.js";
-import type { CollectionPages, CollectionsGraph } from "../collections/index.js";
+import type { CollectionsGraph } from "../collections/index.js";
+import type { ParsedPages } from "../build/index.js";
 
 function getChangedPageCollections(cache: SiteMDCache, collectionsGraph: CollectionsGraph): string[] {
     const changedPageCollections: string[] = []
@@ -15,12 +16,12 @@ function getChangedPageCollections(cache: SiteMDCache, collectionsGraph: Collect
     return changedPageCollections
 }
 
-export function invalidateCollections(cache: SiteMDCache, pages: CollectionPages[], collectionsGraph: CollectionsGraph) {
+export function invalidateCollections(cache: SiteMDCache, pages: ParsedPages[], collectionsGraph: CollectionsGraph) {
     const changedCollections: string[] = getChangedPageCollections(cache, collectionsGraph)
     const invalidLayoutCollections: string[] = []
 
     for (const page of pages) {
-        const { data } = page.parsed
+        const data = page.data
         const pageUsedCollections: string[] = data.usesCollections ?? []
         const pageLayout = data.layout.endsWith(".njk") ? data.layout : data.layout + ".njk"
 
