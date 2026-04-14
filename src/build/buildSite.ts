@@ -81,11 +81,12 @@ export async function buildSite({ dev }: { dev: boolean }) {
         if (cached && cached.hash === hash && dev) {
             data = cached.data
             console.log("SKIPPED REBUILDING PAGE: ", page)
+            html = (await parsePage(page.absolutePath)).html
         } else {
             const rawData = (await parsePage(page.absolutePath))
             console.log("REBUILDING PAGE: ", page)
             data = rawData.data
-            html = rawData.html ?? ""
+            html = rawData.html
         }
 
         parsedPages.push({

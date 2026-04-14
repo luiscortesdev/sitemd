@@ -11,7 +11,7 @@ export interface PageData {
 }
 
 export interface Parsed {
-    html?: string;
+    html: string;
     data: PageData;
 }
 
