@@ -4,7 +4,7 @@ import fs from "fs/promises"
 import { loadConfig } from "../config/index.js";
 import { directoryEmpty } from "../utils/index.js";
 
-export async function deleteOutput(fullPath: string, relativePath: string) {
+export async function deleteOutput(relativePath: string) {
     const config = await loadConfig()
     const root = process.cwd()
 
