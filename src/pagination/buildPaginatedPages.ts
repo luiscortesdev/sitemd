@@ -1,4 +1,4 @@
-import { buildPage } from "../build/buildPage.js";
+import { buildPage } from "../build/index.js";
 import { paginate } from "./paginate.js";
 
 import type { Collections } from "../collections/index.js";
