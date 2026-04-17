@@ -27,6 +27,6 @@ export async function handleCleanup(path: string) {
     }
 
     if (topLevelDir === config.contentDir || topLevelDir === config.publicDir || topAndSecondLevelDir === PATH.join(config.themeDir, config.publicDir)) {
-        deleteOutput(fullPath, path)
+        deleteOutput(path)
     }
 }
