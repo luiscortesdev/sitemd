@@ -1,6 +1,6 @@
-import { createServer } from "http"
 import fs from "fs/promises"
 import path from "path"
+import { createServer } from "http"
 
 export async function startServer(outDir: string, port = 3000) {
 
