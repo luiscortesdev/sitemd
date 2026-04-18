@@ -4,8 +4,8 @@ import rehypeStringify from 'rehype-stringify'
 import remarkGfm from 'remark-gfm'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
-import { unified } from 'unified'
 import matter from "gray-matter"
+import { unified } from 'unified'
 
 import { rehypeCustomAttributes } from '../plugins/index.js'
 
