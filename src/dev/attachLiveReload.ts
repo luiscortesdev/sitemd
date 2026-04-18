@@ -1,5 +1,5 @@
-import { WebSocketServer } from "ws"
 import http from "http"
+import { WebSocketServer } from "ws"
 
 export function attachLiveReload(server: http.Server) {
     const wss = new WebSocketServer({ server })
