@@ -5,6 +5,7 @@ import chalk from "chalk"
 export async function resolveLayout(layoutName: string, userLayoutsDir: string, themeLayoutsDir: string): Promise<string> {
     const userLayout = path.join(userLayoutsDir, layoutName)
     const themeLayout = path.join(themeLayoutsDir, layoutName)
+    
     try {
         await fs.access(userLayout)
         return userLayout
