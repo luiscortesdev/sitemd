@@ -12,7 +12,7 @@ import { invalidateLayoutCascade, invalidateCollections } from "../cache/index.j
 import { buildCollections, buildCollectionsGraph } from "../collections/index.js"
 import { buildPaginatedPages } from "../pagination/index.js";
 
-import type { ParsedPages, Parsed } from "./build.types.js";
+import type { ParsedPages } from "./build.types.js";
 
 export async function buildSite({ dev }: { dev: boolean }) {
     const config = await loadConfig()
