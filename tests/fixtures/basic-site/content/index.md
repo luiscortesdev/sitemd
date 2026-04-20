@@ -1,5 +1,5 @@
 ---
-title: Test Site
+title: Home
 layout: default
 ---
 # Hello Vitest {.text-green}

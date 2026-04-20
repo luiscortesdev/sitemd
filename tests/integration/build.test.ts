@@ -22,4 +22,6 @@ describe("SiteMD Build Pipeline", () => {
     afterAll(() => {
         vi.restoreAllMocks()
     })
+
+    it("Should generate an index.html file")
 })
