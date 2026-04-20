@@ -93,8 +93,6 @@ describe("SiteMD Build Pipeline", () => {
 
         if (!outerUlTag) return
 
-        console.log(outerUlTag.innerHTML)
-
         Array.from(outerUlTag.children).forEach((child: any, index) => {
             expect(child.tagName).toBe("LI")
 
