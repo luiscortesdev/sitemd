@@ -8,9 +8,16 @@
     <title>{{ title }}</title>
 </head>
 <body>
+    <nav>
+        <ul>
+            <a href="/">Home</a>
+        </ul>
+    </nav>
     
-    {% block content %}
-        {{ content | safe }}
-    {% endblock %}
+    <main>
+        {% block content %}
+            {{ content | safe }}
+        {% endblock %}
+    </main>
 </body>
 </html>
