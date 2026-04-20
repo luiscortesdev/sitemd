@@ -5,4 +5,4 @@ layout: default
 collections: ["posts"]
 ---
 
-# Welcome to the first post! {.main-text}
+# Welcome to the first post! {.main-text #main}

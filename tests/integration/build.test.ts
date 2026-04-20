@@ -23,30 +23,36 @@ describe("SiteMD Build Pipeline", () => {
         vi.restoreAllMocks()
     })
 
+    // Paths to Expected Html Files
+    const indexPath = path.join(outDir, "index.html")
+    const aboutPath = path.join(outDir, "about", "index.html")
+    const blogPath = path.join(outDir, "blog", "index.html")
+    const post1Path = path.join(outDir, "blog", "posts", "post1", "index.html")
+    const post2Path = path.join(outDir, "blog", "posts", "post2", "index.html")
+
     // Basic file creation tests.
     it("Should generate an index.html file", () => {
-        const indexPath = path.join(outDir, "index.html")
-
         expect(fs.existsSync(indexPath)).toBe(true)
     })
     it("Should generate an about/index.html file", () => {
-        const aboutPath = path.join(outDir, "about", "index.html")
-
         expect(fs.existsSync(aboutPath)).toBe(true)
     })
     it("Should generate a blog/index.html file", () => {
-        const blogPath = path.join(outDir, "blog", "index.html")
-
         expect(fs.existsSync(blogPath)).toBe(true)
     })
     it("Should generate a blog/posts/post1/index.html file", () => {
-        const post1Path = path.join(outDir, "blog", "posts", "post1", "index.html")
-
         expect(fs.existsSync(post1Path)).toBe(true)
     })
     it("Should generate a blog/posts/post2/index.html file", () => {
-        const post2Path = path.join(outDir, "blog", "posts", "post2", "index.html")
-
         expect(fs.existsSync(post2Path)).toBe(true)
+    })
+
+    // Custom Attributes Tests
+    it("Should apply custom attributes", () => {
+        const homeHtml = fs.readFileSync(indexPath, "utf-8")
+        expect(homeHtml).toContain(`<h1 data-aria="home" id="home" class="text-green">Hello Vitest</h1>`)
+
+        const blogHtml = fs.readFileSync(blogPath, "utf-8")
+        expect(blogHtml).toContain(`<h2 class="text-green">Welcome to my test blog.</h2>`)
     })
 })

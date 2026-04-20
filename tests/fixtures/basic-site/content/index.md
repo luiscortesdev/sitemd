@@ -2,4 +2,4 @@
 title: Home
 layout: default
 ---
-# Hello Vitest {.text-green}
+# Hello Vitest {.text-green data-aria="home" #home}
