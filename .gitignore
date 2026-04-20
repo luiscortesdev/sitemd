@@ -15,3 +15,6 @@ dist
 
 # Development Config
 /sitemd.config.js
+
+# Testing Output Folders
+/tests/fixtures/basic-site/_site
