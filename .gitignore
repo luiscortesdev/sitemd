@@ -18,3 +18,4 @@ dist
 
 # Testing Output Folders
 /tests/fixtures/basic-site/_site
+/test/fixtures/dev-site

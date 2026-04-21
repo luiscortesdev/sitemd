@@ -40,6 +40,5 @@ export async function runDev() {
             timer("Cleanup", cleanupStart)
         }
     )
-
     return { server, watcher }
 }
