@@ -78,13 +78,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     })
 
     it("Should rebuild on file modifications", async () => {
-        const newIndexFile = `---
-title: Test Modification
-description: A test
-layout: default
----
-# I have been updated {.text-green}
-`   
+        const newIndexFile = fs.readFileSync(path.resolve(__dirname, "../fixtures/updates/newIndex.md"), "utf-8")
 
         fs.writeFileSync(indexContentPath, newIndexFile)
 
