@@ -12,9 +12,12 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     const devFixturePath = path.resolve(__dirname, "../fixtures/dev-site")
 
     const outDir = path.join(devFixturePath, ".sitemd", "output")
+    const tempFolderDir = path.join(devFixturePath, ".sitemd")
 
     const indexPath = path.join(outDir, "index.html")
     const indexContentPath = path.join(devFixturePath, "content", "index.md")
+
+    const devCache = path.join(tempFolderDir, "cache.json")
 
     let devServer: any
     let fileWatcher: any
@@ -69,12 +72,22 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
         vi.restoreAllMocks()
     }, 5000)
 
+    // Setup Tests
     it("Should initially build the page", () => {
         const indexDocument = new JSDOM(fs.readFileSync(indexPath, "utf-8")).window.document
 
         const mainHeading = indexDocument.getElementById("home")
         expect(mainHeading).not.toBeNull()
         expect(mainHeading?.innerHTML).toBe("Hello Vitest")
+    })
+    it("Should create a correct, initial cache", () => {
+        const rawDevCacheModel = fs.readFileSync(path.resolve(__dirname, "../fixtures/initial/devCache.json"), "utf-8")
+        const initialDevCacheModel = JSON.parse(rawDevCacheModel)
+
+        const rawDevCache = fs.readFileSync(devCache, "utf-8")
+        const initialDevCache = normalizePaths(JSON.parse(rawDevCache))
+
+        expect(initialDevCache).toEqual(initialDevCacheModel)
     })
 
     it("Should rebuild on file modifications", async () => {
@@ -96,4 +109,20 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
             }
         )
     })
+
+    function normalizePaths(obj: any) {
+        const cwd = devFixturePath
+        
+        
+        const escapedCwd = cwd.replace(/\\/g, '\\\\\\\\')
+        const regex = new RegExp(escapedCwd, 'gi')
+
+        
+        const str = JSON.stringify(obj).replace(regex, "ROOT")
+
+        console.log("DEV OATH", devFixturePath)
+        console.log("ORIGINAL DIR", originalDir)
+
+        return JSON.parse(str)
+    }
 })
