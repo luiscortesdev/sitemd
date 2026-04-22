@@ -120,9 +120,6 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
         
         const str = JSON.stringify(obj).replace(regex, "ROOT")
 
-        console.log("DEV OATH", devFixturePath)
-        console.log("ORIGINAL DIR", originalDir)
-
         return JSON.parse(str)
     }
 })
