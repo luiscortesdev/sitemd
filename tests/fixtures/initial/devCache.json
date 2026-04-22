@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "pages": {
+    "ROOT\\content\\about\\index.md": {
+      "hash": "d4f05539cb04ac1c45764be198f6f33f8f77173a01f200e5b76137a4fd1fe278",
+      "layout": "about.njk",
+      "outputDir": "ROOT\\.sitemd\\output\\about\\index.html",
+      "data": {
+        "title": "About",
+        "description": "I am the about page in the test site",
+        "layout": "about.njk",
+        "collections": [
+          "none",
+          "all"
+        ]
+      },
+      "html": "<h1 class=\"text-green\">Hi! I am just a test site.</h1>\n<h2>Hopefully, I don't cause any tests to fail...</h2>"
+    },
+    "ROOT\\content\\blog\\index.md": {
+      "hash": "06762b4eaef418da415cab7d4aaff09a6ec8417ede1b8066c4a24726ee14767a",
+      "layout": "blog",
+      "outputDir": "ROOT\\.sitemd\\output\\blog\\index.html",
+      "data": {
+        "title": "Blog",
+        "description": "A page generated using SiteMD.",
+        "layout": "blog",
+        "collections": [
+          "none",
+          "all"
+        ]
+      },
+      "html": "<h2 class=\"text-green\">Welcome to my test blog.</h2>"
+    },
+    "ROOT\\content\\blog\\posts\\post1\\index.md": {
+      "hash": "7526ead303f93288169285e49909b32a26622ffdad7c473f8c7cdc2aa57c6e68",
+      "layout": "default",
+      "outputDir": "ROOT\\.sitemd\\output\\blog\\posts\\post1\\index.html",
+      "data": {
+        "title": "Post 1",
+        "description": "The First Post",
+        "layout": "default",
+        "collections": [
+          "posts",
+          "all"
+        ]
+      },
+      "html": "<h1 id=\"main\" class=\"main-text\">Welcome to the first post!</h1>"
+    },
+    "ROOT\\content\\blog\\posts\\post2\\index.md": {
+      "hash": "97b0211fde61d96663d4dc7b7f7156fe145d5c92554b47911b772025ed393f86",
+      "layout": "default",
+      "outputDir": "ROOT\\.sitemd\\output\\blog\\posts\\post2\\index.html",
+      "data": {
+        "title": "Post 2",
+        "description": "The Second Post",
+        "layout": "default",
+        "collections": [
+          "posts",
+          "all"
+        ]
+      },
+      "html": "<h1 class=\"main-text\">Welcome to the second post!</h1>"
+    },
+    "ROOT\\content\\index.md": {
+      "hash": "cf7b9ef014691b12b329e5b782e65bf1cb3ff5c5222857c045c1ae4374ece876",
+      "layout": "default",
+      "outputDir": "ROOT\\.sitemd\\output\\index.html",
+      "data": {
+        "title": "Home",
+        "description": "A page generated using SiteMD.",
+        "layout": "default",
+        "collections": [
+          "none",
+          "all"
+        ]
+      },
+      "html": "<h1 data-aria=\"home\" id=\"home\" class=\"text-green\">Hello Vitest</h1>"
+    }
+  },
+  "layouts": {
+    "about.njk": {
+      "mtimeMs": 1776721884122.419
+    },
+    "blog.njk": {
+      "mtimeMs": 1776721884123.419
+    },
+    "default.njk": {
+      "mtimeMs": 1776721884124.4177
+    }
+  },
+  "collections": {
+    "none": [
+      "ROOT\\content\\about\\index.md",
+      "ROOT\\content\\blog\\index.md",
+      "ROOT\\content\\index.md"
+    ],
+    "all": [
+      "ROOT\\content\\about\\index.md",
+      "ROOT\\content\\blog\\index.md",
+      "ROOT\\content\\blog\\posts\\post1\\index.md",
+      "ROOT\\content\\blog\\posts\\post2\\index.md",
+      "ROOT\\content\\index.md"
+    ],
+    "posts": [
+      "ROOT\\content\\blog\\posts\\post1\\index.md",
+      "ROOT\\content\\blog\\posts\\post2\\index.md"
+    ]
+  }
+}

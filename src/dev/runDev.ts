@@ -23,7 +23,7 @@ export async function runDev() {
     const server = await startServer(outputDir, config.dev.port)
     const reload = attachLiveReload(server)
 
-    await watchFiles(
+    const watcher = await watchFiles(
         async () => {
             const reloadBuildStart = performance.now()
 
@@ -40,4 +40,5 @@ export async function runDev() {
             timer("Cleanup", cleanupStart)
         }
     )
+    return { server, watcher }
 }
