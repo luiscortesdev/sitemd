@@ -77,6 +77,7 @@ describe("SiteMD Build Pipeline", () => {
         expect(mainTag).not.toBeNull()
     })
 
+    // Collections Tests
     const posts = [
         {
             href: "/blog/posts/post1",
