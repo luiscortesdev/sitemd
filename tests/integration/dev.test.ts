@@ -33,9 +33,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
         const instances = await runDev()
         devServer = instances.server
         fileWatcher = instances.watcher
-
-        await new Promise(resolve => setTimeout(resolve, 2000))
-    }, 5000)
+    })
 
     // Clean up dev server after tests
     afterAll(async () => {
@@ -69,7 +67,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
         }
 
         vi.restoreAllMocks()
-    }, 10000)
+    }, 5000)
 
     it("Should initially build the page", () => {
         const indexDocument = new JSDOM(fs.readFileSync(indexPath, "utf-8")).window.document
@@ -87,7 +85,6 @@ layout: default
 ---
 # I have been updated {.text-green}
 `   
-        await new Promise(resolve => setTimeout(resolve, 1000));
 
         fs.writeFileSync(indexContentPath, newIndexFile)
 
@@ -101,7 +98,7 @@ layout: default
             },
             {
                 timeout: 3000,
-                interval: 500,
+                interval: 50,
             }
         )
     })
