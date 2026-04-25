@@ -1,7 +1,8 @@
-import { describe, it, expect, vi, beforeAll, afterAll } from "vitest"
-import { JSDOM } from "jsdom"
 import path from "path"
 import fs from "fs-extra"
+import { describe, it, expect, vi, beforeAll, afterAll } from "vitest"
+import { JSDOM } from "jsdom"
+
 import { build } from "../../src/commands/build"
 
 describe("SiteMD Build Pipeline", () => {

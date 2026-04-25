@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, beforeAll, afterAll } from "vitest"
 import path from "path"
 import fs from "fs-extra"
+import { describe, it, expect, vi, beforeAll, afterAll } from "vitest"
 import { JSDOM } from "jsdom"
 
 import { runDev } from "../../src/dev/runDev"
