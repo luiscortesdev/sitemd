@@ -5,7 +5,6 @@ import { JSDOM } from "jsdom"
 
 import { runDev } from "../../src/dev/runDev"
 
-
 describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     const originalDir = process.cwd()
     const fixturePath = path.resolve(__dirname, "../fixtures/basic-site")
@@ -14,7 +13,11 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     const outDir = path.join(devFixturePath, ".sitemd", "output")
 
     const indexPath = path.join(outDir, "index.html")
+    const aboutPath = path.join(outDir, "about", "index.html")
+
     const indexContentPath = path.join(devFixturePath, "content", "index.md")
+    
+    const defaultLayoutThemePath = path.join(devFixturePath, "theme", "layouts", "default.njk")
 
     let devServer: any
     let fileWatcher: any
@@ -91,6 +94,48 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
                 const mainHeading = indexDocument.querySelector(".text-green")
                 expect(mainHeading).not.toBeNull()
                 expect(mainHeading?.innerHTML).toBe("I have been updated")
+            },
+            {
+                timeout: 3000,
+                interval: 50,
+            }
+        )
+    })
+    
+    it("Should rebuild on layout modifications", async () => {
+        const newDefaultLayout = fs.readFileSync(path.resolve(__dirname, "../fixtures/updates/newDefault.njk"), "utf-8")
+
+        fs.writeFileSync(defaultLayoutThemePath, newDefaultLayout)
+
+        await vi.waitFor(
+            () => {
+                const indexDocument = new JSDOM(fs.readFileSync(indexPath, "utf-8")).window.document
+                const navBar = indexDocument.querySelector("nav > ul")
+
+                expect(navBar?.children.length).toBe(2)
+                expect(navBar?.children[1].innerHTML).toBe("Blog")
+                expect(navBar?.children[1].getAttribute("href")).toBe("/blog")
+            },
+            {
+                timeout: 3000,
+                interval: 50,
+            }
+        )
+    })
+    
+    it("Should rebuild dependent layouts when a base layout is changed", async () => {
+
+        const secondNewDefaultLayout = fs.readFileSync(path.resolve(__dirname, "../fixtures/updates/secondDefaultLayout.njk"), "utf-8")
+        fs.writeFileSync(defaultLayoutThemePath, secondNewDefaultLayout)
+
+        await vi.waitFor(
+            () => {
+                const aboutDocument = new JSDOM(fs.readFileSync(aboutPath, "utf-8")).window.document
+                const navBar = aboutDocument.querySelector("nav > ul")
+
+                expect(navBar?.children.length).toBe(3)
+                expect(navBar?.children[2].innerHTML).toBe("About")
+                expect(navBar?.children[2].getAttribute("href")).toBe("/about")
             },
             {
                 timeout: 3000,
