@@ -91,7 +91,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
         expect(initialDevCache).toEqual(initialDevCacheModel)
     })
 
-    
+    // Rebuild
     it("Should rebuild on file modifications", async () => {
         const newIndexFile = fs.readFileSync(path.resolve(__dirname, "../fixtures/updates/newIndex.md"), "utf-8")
 
