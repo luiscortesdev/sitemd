@@ -5,7 +5,6 @@ import { JSDOM } from "jsdom"
 
 import { runDev } from "../../src/dev/runDev"
 
-
 describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     const originalDir = process.cwd()
     const fixturePath = path.resolve(__dirname, "../fixtures/basic-site")
@@ -102,6 +101,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
             }
         )
     })
+    
     it("Should rebuild on layout modifications", async () => {
         const newDefaultLayout = fs.readFileSync(path.resolve(__dirname, "../fixtures/updates/newDefault.njk"), "utf-8")
 
