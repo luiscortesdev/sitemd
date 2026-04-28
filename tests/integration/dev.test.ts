@@ -98,4 +98,19 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
             }
         )
     })
+    it("Should rebuild on layout modifications", async () => {
+        const newDefaultLayout = fs.readFileSync(path.resolve(__dirname, "../fixtures/updates/newDefault.njk"), "utf-8")
+
+        fs.writeFileSync(indexContentPath, newDefaultLayout)
+
+        await vi.waitFor(
+            () => {
+                
+            },
+            {
+                timeout: 3000,
+                interval: 50,
+            }
+        )
+    })
 })
