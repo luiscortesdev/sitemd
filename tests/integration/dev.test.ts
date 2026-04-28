@@ -122,6 +122,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
             }
         )
     })
+    
     it("Should rebuild dependent layouts when a base layout is changed", async () => {
 
         const secondNewDefaultLayout = fs.readFileSync(path.resolve(__dirname, "../fixtures/updates/secondDefaultLayout.njk"), "utf-8")
