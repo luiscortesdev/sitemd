@@ -15,6 +15,8 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
 
     const indexPath = path.join(outDir, "index.html")
     const indexContentPath = path.join(devFixturePath, "content", "index.md")
+    
+    const defaultLayoutThemePath = path.join(devFixturePath, "theme", "layouts", "default.njk")
 
     let devServer: any
     let fileWatcher: any
@@ -101,7 +103,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     it("Should rebuild on layout modifications", async () => {
         const newDefaultLayout = fs.readFileSync(path.resolve(__dirname, "../fixtures/updates/newDefault.njk"), "utf-8")
 
-        fs.writeFileSync(indexContentPath, newDefaultLayout)
+        fs.writeFileSync(defaultLayoutThemePath, newDefaultLayout)
 
         await vi.waitFor(
             () => {
