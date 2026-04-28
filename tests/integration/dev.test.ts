@@ -15,7 +15,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
 
     const indexPath = path.join(outDir, "index.html")
     const aboutPath = path.join(outDir, "about", "index.html")
-    
+
     const indexContentPath = path.join(devFixturePath, "content", "index.md")
     
     const defaultLayoutThemePath = path.join(devFixturePath, "theme", "layouts", "default.njk")
@@ -124,14 +124,17 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     })
     it("Should rebuild dependent layouts when a base layout is changed", async () => {
 
+        const secondNewDefaultLayout = fs.readFileSync(path.resolve(__dirname, "../fixtures/updates/secondDefaultLayout.njk"), "utf-8")
+        fs.writeFileSync(defaultLayoutThemePath, secondNewDefaultLayout)
+
         await vi.waitFor(
             () => {
-                const indexDocument = new JSDOM(fs.readFileSync(indexPath, "utf-8")).window.document
-                const navBar = indexDocument.querySelector("nav > ul")
+                const aboutDocument = new JSDOM(fs.readFileSync(aboutPath, "utf-8")).window.document
+                const navBar = aboutDocument.querySelector("nav > ul")
 
-                expect(navBar?.children.length).toBe(2)
-                expect(navBar?.children[1].innerHTML).toBe("Blog")
-                expect(navBar?.children[1].getAttribute("href")).toBe("/blog")
+                expect(navBar?.children.length).toBe(3)
+                expect(navBar?.children[2].innerHTML).toBe("About")
+                expect(navBar?.children[2].getAttribute("href")).toBe("/about")
             },
             {
                 timeout: 3000,
