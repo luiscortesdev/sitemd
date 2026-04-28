@@ -80,6 +80,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
         expect(mainHeading).not.toBeNull()
         expect(mainHeading?.innerHTML).toBe("Hello Vitest")
     })
+
     it("Should create a correct, initial cache", () => {
         const rawDevCacheModel = fs.readFileSync(path.resolve(__dirname, "../fixtures/initial/devCache.json"), "utf-8")
         const initialDevCacheModel = JSON.parse(rawDevCacheModel)
@@ -90,6 +91,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
         expect(initialDevCache).toEqual(initialDevCacheModel)
     })
 
+    
     it("Should rebuild on file modifications", async () => {
         const newIndexFile = fs.readFileSync(path.resolve(__dirname, "../fixtures/updates/newIndex.md"), "utf-8")
 
