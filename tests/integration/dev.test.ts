@@ -17,8 +17,6 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     const indexPath = path.join(outDir, "index.html")
     const indexContentPath = path.join(devFixturePath, "content", "index.md")
 
-    const devCache = path.join(tempFolderDir, "cache.json")
-
     let devServer: any
     let fileWatcher: any
 
@@ -101,17 +99,4 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
             }
         )
     })
-
-    function normalizePaths(obj: any) {
-        const cwd = devFixturePath
-        
-        
-        const escapedCwd = cwd.replace(/\\/g, '\\\\\\\\')
-        const regex = new RegExp(escapedCwd, 'gi')
-
-        
-        const str = JSON.stringify(obj).replace(regex, "ROOT")
-
-        return JSON.parse(str)
-    }
 })
