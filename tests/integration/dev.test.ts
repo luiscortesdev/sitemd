@@ -107,7 +107,12 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
 
         await vi.waitFor(
             () => {
-                
+                const indexDocument = new JSDOM(fs.readFileSync(indexPath, "utf-8")).window.document
+                const navBar = indexDocument.querySelector("nav > ul")
+
+                expect(navBar?.children.length).toBe(2)
+                expect(navBar?.children[1].innerHTML).toBe("Blog")
+                expect(navBar?.children[1].getAttribute("href")).toBe("/blog")
             },
             {
                 timeout: 3000,
