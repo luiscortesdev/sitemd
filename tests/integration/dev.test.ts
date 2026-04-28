@@ -12,7 +12,6 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     const devFixturePath = path.resolve(__dirname, "../fixtures/dev-site")
 
     const outDir = path.join(devFixturePath, ".sitemd", "output")
-    const tempFolderDir = path.join(devFixturePath, ".sitemd")
 
     const indexPath = path.join(outDir, "index.html")
     const indexContentPath = path.join(devFixturePath, "content", "index.md")
