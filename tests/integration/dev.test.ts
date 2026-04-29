@@ -173,4 +173,28 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
             }
         )
     })
+
+    it("Should rebuild when a new file is added", async () => {
+        const newPost2File = fs.readFileSync(path.resolve(__dirname, "../fixtures/updates/newPost2.md"), "utf-8")
+        fs.outputFileSync(path.join(postsContentFolderPath, "post2", "index.md"), newPost2File)
+
+        await vi.waitFor(
+            () => {
+                expect(fs.existsSync(path.join(postsFolderPath, "post2"))).toBe(true)
+
+                const post2Document = new JSDOM(fs.readFileSync(path.join(postsFolderPath, "post2", "index.html"), "utf-8")).window.document
+                expect(post2Document.title).toBe("New Post 2")
+                
+                const postHeading = post2Document.querySelector("#new")
+                expect(postHeading?.innerHTML).toBe("Welcome to the new second post!")
+                expect(postHeading?.className).toBe("main-text heading")
+                
+                
+            },
+            {
+                timeout: 3000,
+                interval: 50,
+            }
+        )
+    })
 })
