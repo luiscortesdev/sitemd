@@ -7,25 +7,33 @@ import { runDev } from "../../src/dev/runDev"
 
 describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     const originalDir = process.cwd()
+
+    // Paths to the basic site fixture and the dev site fixture
     const fixturePath = path.resolve(__dirname, "../fixtures/basic-site")
     const devFixturePath = path.resolve(__dirname, "../fixtures/dev-site")
 
+    // Path to folder containing the ouput dev site
     const outDir = path.join(devFixturePath, ".sitemd", "output")
 
+    // Paths to top level html files in the output dev site
     const indexPath = path.join(outDir, "index.html")
     const aboutPath = path.join(outDir, "about", "index.html")
 
+    // Paths to the folder/files in the output/blog/posts directory in the output dev site
     const postsFolderPath = path.join(outDir, "blog", "posts")
     const post2Path = path.join(postsFolderPath, "post2", "index.html")
     const post3Path = path.join(postsFolderPath, "post3", "index.html")
 
+    // Paths to folder/files in the content folder of the dev site
     const postsContentFolderPath = path.join(devFixturePath, "content", "blog", "posts")
     const post2ContentFolderPath = path.join(postsContentFolderPath, "post2")
     const post3ContentFolderPath = path.join(postsContentFolderPath, "post3")
     const post2ContentPath = path.join(postsContentFolderPath, "post2", "index.md")
 
+    // Paths to top level files in the content folder of the dev site
     const indexContentPath = path.join(devFixturePath, "content", "index.md")
     
+    // Paths to top level files in the theme folder of the dev site
     const defaultLayoutThemePath = path.join(devFixturePath, "theme", "layouts", "default.njk")
 
     let devServer: any
