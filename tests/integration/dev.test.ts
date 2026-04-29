@@ -20,6 +20,8 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     const post3Path = path.join(postsFolderPath, "post3", "index.html")
 
     const postsContentFolderPath = path.join(devFixturePath, "content", "blog", "posts")
+    const post2ContentFolderPath = path.join(postsContentFolderPath, "post2")
+    const post3ContentFolderPath = path.join(postsContentFolderPath, "post3")
     const post2ContentPath = path.join(postsContentFolderPath, "post2", "index.md")
 
     const indexContentPath = path.join(devFixturePath, "content", "index.md")
@@ -142,8 +144,8 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     })
     
     it("Should rebuild dependent layouts when a base layout is changed", async () => {
-
         const secondNewDefaultLayout = fs.readFileSync(path.resolve(__dirname, "../fixtures/updates/secondDefaultLayout.njk"), "utf-8")
+
         fs.writeFileSync(defaultLayoutThemePath, secondNewDefaultLayout)
 
         await vi.waitFor(
@@ -163,7 +165,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     })
 
     it("Should rebuild when file names are edited and update routes", async () => {
-        fs.renameSync(path.join(postsContentFolderPath, "post2"), path.join(postsContentFolderPath, "post3"))
+        fs.renameSync(post2ContentFolderPath, post3ContentFolderPath)
 
         await vi.waitFor(
             () => {
@@ -179,6 +181,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
 
     it("Should rebuild when a new file is added", async () => {
         const newPost2File = fs.readFileSync(path.resolve(__dirname, "../fixtures/updates/newPost2.md"), "utf-8")
+
         fs.outputFileSync(post2ContentPath, newPost2File)
 
         await vi.waitFor(
