@@ -15,6 +15,10 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     const indexPath = path.join(outDir, "index.html")
     const aboutPath = path.join(outDir, "about", "index.html")
 
+    const postsFolderPath = path.join(outDir, "blog", "posts")
+
+    const postsContentFolderPath = path.join(devFixturePath, "content", "blog", "posts")
+
     const indexContentPath = path.join(devFixturePath, "content", "index.md")
     
     const defaultLayoutThemePath = path.join(devFixturePath, "theme", "layouts", "default.njk")
@@ -80,7 +84,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
         expect(mainHeading).not.toBeNull()
         expect(mainHeading?.innerHTML).toBe("Hello Vitest")
     })
-    
+
     it("Should apply custom attributes", () => {
         const indexDocument = new JSDOM(fs.readFileSync(indexPath, "utf-8")).window.document
 
@@ -147,6 +151,21 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
                 expect(navBar?.children.length).toBe(3)
                 expect(navBar?.children[2].innerHTML).toBe("About")
                 expect(navBar?.children[2].getAttribute("href")).toBe("/about")
+            },
+            {
+                timeout: 3000,
+                interval: 50,
+            }
+        )
+    })
+
+    it("Should rebuild when file names are edited and update routes", async () => {
+        fs.renameSync(path.join(postsContentFolderPath, "post2"), path.join(postsContentFolderPath, "post3"))
+
+        await vi.waitFor(
+            () => {
+                expect(fs.existsSync(path.join(postsFolderPath, "post2"))).toBe(false)
+                expect(fs.existsSync(path.join(postsFolderPath, "post3"))).toBe(true)
             },
             {
                 timeout: 3000,
