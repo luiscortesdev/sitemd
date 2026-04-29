@@ -29,6 +29,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     const post2ContentFolderPath = path.join(postsContentFolderPath, "post2")
     const post3ContentFolderPath = path.join(postsContentFolderPath, "post3")
     const post2ContentPath = path.join(postsContentFolderPath, "post2", "index.md")
+    const post3ContentPath = path.join(postsContentFolderPath, "post3", "index.md")
 
     // Paths to top level files in the content folder of the dev site
     const indexContentPath = path.join(devFixturePath, "content", "index.md")
@@ -202,6 +203,24 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
                 const postHeading = post2Document.querySelector("#new")
                 expect(postHeading?.innerHTML).toBe("Welcome to the new second post!")
                 expect(postHeading?.className).toBe("main-text heading")
+            },
+            {
+                timeout: 3000,
+                interval: 50,
+            }
+        )
+    })
+
+    it("Should rebuild when a file is deleted, cleanup the page in the output", async () => {
+        expect(fs.existsSync(post3Path)).toBe(true)
+        expect(fs.existsSync(post3ContentPath)).toBe(true)
+        
+        fs.rmSync(post3ContentFolderPath, { recursive: true })
+
+        await vi.waitFor(
+            () => {
+                expect(fs.existsSync(post3Path)).toBe(false)
+                expect(fs.existsSync(post2Path)).toBe(true)
             },
             {
                 timeout: 3000,
