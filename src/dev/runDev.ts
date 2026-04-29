@@ -23,14 +23,29 @@ export async function runDev() {
     const server = await startServer(outputDir, config.dev.port)
     const reload = attachLiveReload(server)
 
+    let isBuilding = false
     const watcher = await watchFiles(
         async () => {
-            const reloadBuildStart = performance.now()
+            if (isBuilding) {
+                console.log("⏳ BUILD ALREADY IN PROGRESS, SKIPPING...")
+                return
+            }
 
-            await buildSite({ dev: true })
+            isBuilding = true
 
-            timer("Reload", reloadBuildStart)
-            reload()
+            try {
+                const reloadBuildStart = performance.now()
+
+                await buildSite({ dev: true })
+
+                timer("Reload", reloadBuildStart)
+                reload()
+            } catch (error) {
+                console.error("❌ BUILD FAILED DURING RELOAD WITH ERROR: ", error);
+            } finally {
+                isBuilding = false
+            }
+            
         },
         async (path) => {
             const cleanupStart = performance.now()
