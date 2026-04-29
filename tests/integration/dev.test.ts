@@ -16,6 +16,8 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     const aboutPath = path.join(outDir, "about", "index.html")
 
     const postsFolderPath = path.join(outDir, "blog", "posts")
+    const post2Path = path.join(postsFolderPath, "post2", "index.html")
+    const post3Path = path.join(postsFolderPath, "post3", "index.html")
 
     const postsContentFolderPath = path.join(devFixturePath, "content", "blog", "posts")
 
@@ -164,8 +166,8 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
 
         await vi.waitFor(
             () => {
-                expect(fs.existsSync(path.join(postsFolderPath, "post2"))).toBe(false)
-                expect(fs.existsSync(path.join(postsFolderPath, "post3"))).toBe(true)
+                expect(fs.existsSync(post2Path)).toBe(false)
+                expect(fs.existsSync(post3Path)).toBe(true)
             },
             {
                 timeout: 3000,
@@ -180,16 +182,14 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
 
         await vi.waitFor(
             () => {
-                expect(fs.existsSync(path.join(postsFolderPath, "post2"))).toBe(true)
+                expect(fs.existsSync(post2Path)).toBe(true)
 
-                const post2Document = new JSDOM(fs.readFileSync(path.join(postsFolderPath, "post2", "index.html"), "utf-8")).window.document
+                const post2Document = new JSDOM(fs.readFileSync(post2Path, "utf-8")).window.document
                 expect(post2Document.title).toBe("New Post 2")
                 
                 const postHeading = post2Document.querySelector("#new")
                 expect(postHeading?.innerHTML).toBe("Welcome to the new second post!")
                 expect(postHeading?.className).toBe("main-text heading")
-                
-                
             },
             {
                 timeout: 3000,
