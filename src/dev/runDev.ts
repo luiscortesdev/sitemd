@@ -27,7 +27,7 @@ export async function runDev() {
     const watcher = await watchFiles(
         async () => {
             if (isBuilding) {
-                console.log("⏳ Build already in progress, skipping...")
+                console.log("⏳ BUILD ALREADY IN PROGRESS, SKIPPING...")
                 return
             }
 
@@ -41,7 +41,7 @@ export async function runDev() {
                 timer("Reload", reloadBuildStart)
                 reload()
             } catch (error) {
-                console.error("❌ Build failed during reload:", error);
+                console.error("❌ BUILD FAILED DURING RELOAD WITH ERROR: ", error);
             } finally {
                 isBuilding = false
             }
