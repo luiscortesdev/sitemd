@@ -80,6 +80,17 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
         expect(mainHeading).not.toBeNull()
         expect(mainHeading?.innerHTML).toBe("Hello Vitest")
     })
+    
+    it("Should apply custom attributes", () => {
+        const indexDocument = new JSDOM(fs.readFileSync(indexPath, "utf-8")).window.document
+
+        const mainHeading = indexDocument.querySelector(".text-green")
+        expect(mainHeading).not.toBeNull()
+        expect(mainHeading?.getAttribute("data-aria")).toBe("home")
+        const mainHeadingWithId = indexDocument.getElementById("home")
+        expect(mainHeadingWithId).not.toBeNull()
+    })
+
 
     // Rebuild
     it("Should rebuild on file modifications", async () => {
