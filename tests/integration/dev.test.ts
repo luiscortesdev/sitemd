@@ -20,6 +20,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     const post3Path = path.join(postsFolderPath, "post3", "index.html")
 
     const postsContentFolderPath = path.join(devFixturePath, "content", "blog", "posts")
+    const post2ContentPath = path.join(postsContentFolderPath, "post2", "index.md")
 
     const indexContentPath = path.join(devFixturePath, "content", "index.md")
     
@@ -178,7 +179,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
 
     it("Should rebuild when a new file is added", async () => {
         const newPost2File = fs.readFileSync(path.resolve(__dirname, "../fixtures/updates/newPost2.md"), "utf-8")
-        fs.outputFileSync(path.join(postsContentFolderPath, "post2", "index.md"), newPost2File)
+        fs.outputFileSync(post2ContentPath, newPost2File)
 
         await vi.waitFor(
             () => {
