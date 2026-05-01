@@ -65,6 +65,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
                     if (err) {
                         return reject(err)
                     }
+                    
                     console.log("TEST SERVER CLOSED.")
                     resolve()
                 })
@@ -73,6 +74,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
 
         if (fileWatcher) {
             fileWatcher.removeAllListeners()
+
             try {
                 fileWatcher.close();
             } catch (err) {
