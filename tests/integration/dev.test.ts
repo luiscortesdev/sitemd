@@ -37,6 +37,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     // Paths to top level files in the theme folder of the dev site
     const defaultLayoutThemePath = path.join(devFixturePath, "theme", "layouts", "default.njk")
 
+    // instances for devServer and fileWatcher for vitest
     let devServer: any
     let fileWatcher: any
 
