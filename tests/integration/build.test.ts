@@ -38,9 +38,11 @@ describe("SiteMD Build Pipeline", () => {
         homeDocument = homeDom.window.document
         blogDocument = blogDom.window.document
     })
+
     afterAll(() => {
         vi.restoreAllMocks()
     })
+    
 
     // Basic file creation tests.
     it("Should generate an index.html file", () => {
@@ -59,6 +61,7 @@ describe("SiteMD Build Pipeline", () => {
         expect(fs.existsSync(post2Path)).toBe(true)
     })
 
+
     // Custom Attributes Tests
     it("Should apply custom attributes", () => {
         const mainHeading = homeDocument.querySelector(".text-green")
@@ -72,11 +75,13 @@ describe("SiteMD Build Pipeline", () => {
         expect(blogHeading).not.toBeNull()
     })
 
+
     // Nunjucks Tests
     it("Should wrap content in nunjucks layout", () => {
         const mainTag = homeDocument.querySelector("main")
         expect(mainTag).not.toBeNull()
     })
+
 
     // Collections Tests
     const posts = [
@@ -89,6 +94,7 @@ describe("SiteMD Build Pipeline", () => {
             innerText: "Post 2 : The Second Post"
         },
     ]
+
     it("Should create a list of posts from 'posts' collection", () => {
         const outerUlTag = blogDocument.getElementById("posts")
         expect(outerUlTag).not.toBeNull()
