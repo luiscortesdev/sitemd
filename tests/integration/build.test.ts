@@ -111,7 +111,5 @@ describe("SiteMD Build Pipeline", () => {
             expect(childATag.href).toBe(childATagInfo.href)
             
         })
-
-        
     })
 })
