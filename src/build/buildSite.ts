@@ -182,7 +182,9 @@ export async function buildSite({ dev }: { dev: boolean }) {
                     html: html,
                 }
                 
-                cache.collections = collectionsGraph
+                if (!cache.pagination.includes(page.absolutePath)) {
+                    cache.pagination.push(page.absolutePath)
+                }
 
                 await saveCache(root, cache)
             }
@@ -218,12 +220,13 @@ export async function buildSite({ dev }: { dev: boolean }) {
                 html: html,
             }
 
-            cache.collections = collectionsGraph
-
             await saveCache(root, cache)
         }
 
         await fs.mkdir(path.dirname(outputPath), { recursive: true })
         await fs.writeFile(outputPath, outputHtml)
     }
+
+    cache.collections = collectionsGraph
+    await saveCache(root, cache)
 }
