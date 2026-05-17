@@ -103,7 +103,9 @@ export async function buildSite({ dev }: { dev: boolean }) {
     console.log("COLLECTIONS: ", collections)
     const collectionsGraph = await buildCollectionsGraph(parsedPages)
     console.log("COLLECTIONS GRAPH: ", collectionsGraph)
-    const invalidLayoutCollections = invalidateCollections(cache, parsedPages, collectionsGraph)
+    const invalidCollections = invalidateCollections(cache, parsedPages, collectionsGraph)
+    const invalidLayoutCollections = invalidCollections.invalidLayoutCollections
+    const changedCollections = invalidCollections.changedCollections
 
     console.log("INVALID LAYOUT COLLECTIONS: ", invalidLayoutCollections)
     console.log("INVALIDATED LAYOUTS: ", invalidatedLayouts)
@@ -121,6 +123,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
             await outputExists(cached.outputDir) &&
             !invalidatedLayouts.includes(pageLayout) &&
             !invalidLayoutCollections.includes(pageLayout) &&
+            (data.paginate ? !changedCollections.includes(data.paginate) : true) &&
             dev
         ) {
             // Page's current hash matches cached hash. Therefore, the file 

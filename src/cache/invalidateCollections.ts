@@ -62,5 +62,5 @@ export function invalidateCollections(cache: SiteMDCache, pages: ParsedPages[], 
         });
     }
 
-    return invalidLayoutCollections
+    return { changedCollections, invalidLayoutCollections }
 }
