@@ -15,10 +15,10 @@ export async function buildPaginatedPages(page: PageFile, data: PageData, html: 
     const items = collections[collectionName] || []
     const outputs = []
 
-    if (!items) {
+    if (items.length === 0) {
         console.log(`COLLECTION ${collectionName} COULD NOT BE PAGINATED! ENSURE THE COLLECTION EXISTS!`)
         
-        return
+        return []
     }
 
     const paginated = paginate(items, perPage)

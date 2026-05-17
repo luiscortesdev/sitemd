@@ -10,7 +10,7 @@ import { hashContent, outputExists, clearFolder } from "../utils/index.js"
 import { buildLayoutGraph, resolveLayout } from "../layouts/index.js"
 import { invalidateLayoutCascade, invalidateCollections } from "../cache/index.js"
 import { buildCollections, buildCollectionsGraph } from "../collections/index.js"
-import { buildPaginatedPages } from "../pagination/index.js";
+import { buildPaginatedPages, deletePagination } from "../pagination/index.js";
 
 import type { ParsedPages } from "./build.types.js";
 
@@ -137,10 +137,16 @@ export async function buildSite({ dev }: { dev: boolean }) {
         if (cached && !(await outputExists(cached.outputDir)) && dev) {
             delete cache.pages[page.absolutePath]
         }
+        
+        // If a paginated page last cycle in dev mode is no longer paginated we need to cleanup its pages.
+        if (!data.paginate && cache.pagination.includes(page.absolutePath) && dev) {
+            await deletePagination(outputDir, page)
+        }
 
         const safeRoute = page.route.replace(/^\//, "")
 
         if (data.paginate) {
+            console.log("BUILDING PAGINATED PAGE: ", page)
             const paginatedOutputs = await buildPaginatedPages(page, data, html, collections)
             if (!paginatedOutputs) continue
 
