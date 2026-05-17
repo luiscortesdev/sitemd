@@ -46,7 +46,7 @@ function getChangedPageCollections(cache: SiteMDCache, collectionsGraph: Collect
 
 export function invalidateCollections(cache: SiteMDCache, pages: ParsedPages[], collectionsGraph: CollectionsGraph) {
     const changedCollections: string[] = getChangedPageCollections(cache, collectionsGraph)
-    const invalidLayoutCollections: string[] = []
+    const layoutsWithChangedCollections: string[] = []
 
     console.log("CHANGED COLLECTIONS", changedCollections)
 
@@ -57,10 +57,10 @@ export function invalidateCollections(cache: SiteMDCache, pages: ParsedPages[], 
 
         pageUsedCollections.forEach(collection => {
             if (changedCollections.includes(collection)) {
-                invalidLayoutCollections.push(pageLayout)
+                layoutsWithChangedCollections.push(pageLayout)
             }
         });
     }
 
-    return { changedCollections, invalidLayoutCollections }
+    return { changedCollections, layoutsWithChangedCollections }
 }

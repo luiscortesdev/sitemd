@@ -104,10 +104,10 @@ export async function buildSite({ dev }: { dev: boolean }) {
     const collectionsGraph = await buildCollectionsGraph(parsedPages)
     console.log("COLLECTIONS GRAPH: ", collectionsGraph)
     const invalidCollections = invalidateCollections(cache, parsedPages, collectionsGraph)
-    const invalidLayoutCollections = invalidCollections.invalidLayoutCollections
+    const layoutsWithChangedCollections = invalidCollections.layoutsWithChangedCollections
     const changedCollections = invalidCollections.changedCollections
 
-    console.log("INVALID LAYOUT COLLECTIONS: ", invalidLayoutCollections)
+    console.log("INVALID LAYOUT COLLECTIONS: ", layoutsWithChangedCollections)
     console.log("INVALIDATED LAYOUTS: ", invalidatedLayouts)
 
     for (const {page, data, html, hash} of parsedPages) {
@@ -122,7 +122,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
             hash === cached.hash &&
             await outputExists(cached.outputDir) &&
             !invalidatedLayouts.includes(pageLayout) &&
-            !invalidLayoutCollections.includes(pageLayout) &&
+            !layoutsWithChangedCollections.includes(pageLayout) &&
             (data.paginate ? !changedCollections.includes(data.paginate) : true) &&
             dev
         ) {
