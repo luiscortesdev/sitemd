@@ -19,7 +19,8 @@ export async function loadCache(root=process.cwd()): Promise<SiteMDCache> {
             version: 1,
             pages: {},
             layouts: {},
-            collections: {}
+            collections: {},
+            pagination: [],
         }
     }
 }
