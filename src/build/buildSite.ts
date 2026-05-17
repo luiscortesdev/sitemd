@@ -10,7 +10,7 @@ import { hashContent, outputExists, clearFolder } from "../utils/index.js"
 import { buildLayoutGraph, resolveLayout } from "../layouts/index.js"
 import { invalidateLayoutCascade, invalidateCollections } from "../cache/index.js"
 import { buildCollections, buildCollectionsGraph } from "../collections/index.js"
-import { buildPaginatedPages } from "../pagination/index.js";
+import { buildPaginatedPages, deletePagination } from "../pagination/index.js";
 
 import type { ParsedPages } from "./build.types.js";
 
@@ -103,9 +103,11 @@ export async function buildSite({ dev }: { dev: boolean }) {
     console.log("COLLECTIONS: ", collections)
     const collectionsGraph = await buildCollectionsGraph(parsedPages)
     console.log("COLLECTIONS GRAPH: ", collectionsGraph)
-    const invalidLayoutCollections = invalidateCollections(cache, parsedPages, collectionsGraph)
+    const invalidCollections = invalidateCollections(cache, parsedPages, collectionsGraph)
+    const layoutsWithChangedCollections = invalidCollections.layoutsWithChangedCollections
+    const changedCollections = invalidCollections.changedCollections
 
-    console.log("INVALID LAYOUT COLLECTIONS: ", invalidLayoutCollections)
+    console.log("INVALID LAYOUT COLLECTIONS: ", layoutsWithChangedCollections)
     console.log("INVALIDATED LAYOUTS: ", invalidatedLayouts)
 
     for (const {page, data, html, hash} of parsedPages) {
@@ -120,7 +122,8 @@ export async function buildSite({ dev }: { dev: boolean }) {
             hash === cached.hash &&
             await outputExists(cached.outputDir) &&
             !invalidatedLayouts.includes(pageLayout) &&
-            !invalidLayoutCollections.includes(pageLayout) &&
+            !layoutsWithChangedCollections.includes(pageLayout) &&
+            (data.paginate ? !changedCollections.includes(data.paginate) : true) &&
             dev
         ) {
             // Page's current hash matches cached hash. Therefore, the file 
@@ -134,12 +137,24 @@ export async function buildSite({ dev }: { dev: boolean }) {
         if (cached && !(await outputExists(cached.outputDir)) && dev) {
             delete cache.pages[page.absolutePath]
         }
+        
+        // If a paginated page last cycle in dev mode is no longer paginated we need to cleanup its pages.
+        if (!data.paginate && cache.pagination.includes(page.absolutePath) && dev) {
+            await deletePagination(outputDir, page)
+        }
 
         const safeRoute = page.route.replace(/^\//, "")
 
         if (data.paginate) {
+            console.log("BUILDING PAGINATED PAGE: ", page)
             const paginatedOutputs = await buildPaginatedPages(page, data, html, collections)
-            if (!paginatedOutputs) continue
+            if (!paginatedOutputs || paginatedOutputs.length === 0) continue
+            
+            // In dev mode sometimes a page folder could be already there. If so, then we want to clear it.
+            const pageOutputFolder = path.join(outputDir, safeRoute, "page")
+            if (await outputExists(pageOutputFolder)) {
+                await clearFolder(pageOutputFolder)
+            }
 
             for (const { html, pageNumber } of paginatedOutputs) {
                 const pagePath = 
@@ -179,7 +194,9 @@ export async function buildSite({ dev }: { dev: boolean }) {
                     html: html,
                 }
                 
-                cache.collections = collectionsGraph
+                if (!cache.pagination.includes(page.absolutePath)) {
+                    cache.pagination.push(page.absolutePath)
+                }
 
                 await saveCache(root, cache)
             }
@@ -215,12 +232,13 @@ export async function buildSite({ dev }: { dev: boolean }) {
                 html: html,
             }
 
-            cache.collections = collectionsGraph
-
             await saveCache(root, cache)
         }
 
         await fs.mkdir(path.dirname(outputPath), { recursive: true })
         await fs.writeFile(outputPath, outputHtml)
     }
+
+    cache.collections = collectionsGraph
+    await saveCache(root, cache)
 }

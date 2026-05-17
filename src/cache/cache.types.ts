@@ -16,5 +16,6 @@ export interface SiteMDCache {
     version: number;
     pages: Record<string, PageCacheEntry>;
     layouts: Record<string, LayoutCacheEntry>;
-    collections: Record<string, string[]>
+    collections: Record<string, string[]>;
+    pagination: string[];
 }

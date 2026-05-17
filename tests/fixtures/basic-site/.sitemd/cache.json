@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "pages": {},
+  "layouts": {
+    "about.njk": {
+      "mtimeMs": 1776721884122.419
+    },
+    "blog.njk": {
+      "mtimeMs": 1776721884123.419
+    },
+    "default.njk": {
+      "mtimeMs": 1776721884124.4177
+    }
+  },
+  "collections": {
+    "none": [
+      "C:\\Users\\luisc\\OneDrive\\Documents\\CodingProjects\\sitemd-cli\\tests\\fixtures\\basic-site\\content\\about\\index.md",
+      "C:\\Users\\luisc\\OneDrive\\Documents\\CodingProjects\\sitemd-cli\\tests\\fixtures\\basic-site\\content\\blog\\index.md",
+      "C:\\Users\\luisc\\OneDrive\\Documents\\CodingProjects\\sitemd-cli\\tests\\fixtures\\basic-site\\content\\index.md"
+    ],
+    "all": [
+      "C:\\Users\\luisc\\OneDrive\\Documents\\CodingProjects\\sitemd-cli\\tests\\fixtures\\basic-site\\content\\about\\index.md",
+      "C:\\Users\\luisc\\OneDrive\\Documents\\CodingProjects\\sitemd-cli\\tests\\fixtures\\basic-site\\content\\blog\\index.md",
+      "C:\\Users\\luisc\\OneDrive\\Documents\\CodingProjects\\sitemd-cli\\tests\\fixtures\\basic-site\\content\\blog\\posts\\post1\\index.md",
+      "C:\\Users\\luisc\\OneDrive\\Documents\\CodingProjects\\sitemd-cli\\tests\\fixtures\\basic-site\\content\\blog\\posts\\post2\\index.md",
+      "C:\\Users\\luisc\\OneDrive\\Documents\\CodingProjects\\sitemd-cli\\tests\\fixtures\\basic-site\\content\\index.md"
+    ],
+    "posts": [
+      "C:\\Users\\luisc\\OneDrive\\Documents\\CodingProjects\\sitemd-cli\\tests\\fixtures\\basic-site\\content\\blog\\posts\\post1\\index.md",
+      "C:\\Users\\luisc\\OneDrive\\Documents\\CodingProjects\\sitemd-cli\\tests\\fixtures\\basic-site\\content\\blog\\posts\\post2\\index.md"
+    ]
+  },
+  "pagination": []
+}
