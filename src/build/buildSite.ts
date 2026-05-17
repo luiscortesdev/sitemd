@@ -148,7 +148,13 @@ export async function buildSite({ dev }: { dev: boolean }) {
         if (data.paginate) {
             console.log("BUILDING PAGINATED PAGE: ", page)
             const paginatedOutputs = await buildPaginatedPages(page, data, html, collections)
-            if (!paginatedOutputs) continue
+            if (!paginatedOutputs || paginatedOutputs.length === 0) continue
+            
+            // In dev mode sometimes a page folder could be already there. If so, then we want to clear it.
+            const pageOutputFolder = path.join(outputDir, safeRoute, "page")
+            if (await outputExists(pageOutputFolder)) {
+                await clearFolder(pageOutputFolder)
+            }
 
             for (const { html, pageNumber } of paginatedOutputs) {
                 const pagePath = 
