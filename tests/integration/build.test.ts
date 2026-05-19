@@ -152,6 +152,7 @@ describe("SiteMD Build Pipeline", () => {
 
         expect(indexPagePostA?.innerHTML).toBe(posts[0].innerText)
         expect(indexPagePostA?.getAttribute("href")).toBe("/blog/posts/post1")
+
         expect(indexHeading?.innerHTML).toBe("Welcome to the posts directory")
 
         pageFolder.forEach((page, index) => {
@@ -161,6 +162,7 @@ describe("SiteMD Build Pipeline", () => {
 
             expect(pagePostA?.innerHTML).toBe(posts[index + 1].innerText)
             expect(pagePostA?.getAttribute("href")).toBe(`/blog/posts/post${page}`)
+            
             expect(pageHeading?.innerHTML).toBe("Welcome to the posts directory")
         })
     })
@@ -170,7 +172,9 @@ describe("SiteMD Build Pipeline", () => {
 
         const indexPageDocument = new JSDOM(fs.readFileSync(path.join(directoryFolderPath, "index.html"), "utf-8")).window.document
         const indexPageNav = indexPageDocument.querySelector("#posts > nav")
+
         expect(indexPageNav?.children.length).toBe(1)
+
         expect(indexPageNav?.children[0].getAttribute("href")).toBe("/directory/page/2")
         expect(indexPageNav?.children[0].innerHTML.includes("Next")).toBe(true)
 
@@ -181,6 +185,7 @@ describe("SiteMD Build Pipeline", () => {
             // Last page should not have a next option
             if (index === (pageFolder.length - 1)) {
                 expect(pageNav?.children.length).toBe(1)
+
                 expect(pageNav?.children[0].getAttribute("href")).toBe(`/directory/page/${pageFolder[index - 1]}`)
                 expect(pageNav?.children[0].innerHTML.includes("Previous")).toBe(true)
 
@@ -188,9 +193,10 @@ describe("SiteMD Build Pipeline", () => {
             }
 
             expect(pageNav?.children.length).toBe(2)
-            console.log(path.join(directoryPagesFolder, page, "index.html"))
+
             expect(pageNav?.children[0].getAttribute("href")).toBe(((index - 1) === -1 ? `/directory/` : `/directory/page/${pageFolder[index - 1]}`))
             expect(pageNav?.children[0].innerHTML.includes("Previous")).toBe(true)
+
             expect(pageNav?.children[1].getAttribute("href")).toBe(`/directory/page/${pageFolder[index + 1]}`)
             expect(pageNav?.children[1].innerHTML.includes("Next")).toBe(true)
         })
