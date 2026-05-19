@@ -1,6 +1,6 @@
 ---
 title: Directory
-layout: default
+layout: directory
 paginate: "posts"
 perPage: 1
 ---
