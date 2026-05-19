@@ -165,4 +165,35 @@ describe("SiteMD Build Pipeline", () => {
             expect(pageHeading?.innerHTML).toBe("Welcome to the posts directory")
         })
     })
+
+    it("Should generate pages with the proper navigation controls", () => {
+        const pageFolder = fs.readdirSync(directoryPagesFolder)
+
+        const indexPageDocument = new JSDOM(fs.readFileSync(path.join(directoryFolderPath, "index.html"), "utf-8")).window.document
+        const indexPageNav = indexPageDocument.querySelector("#posts > nav")
+        expect(indexPageNav?.children.length).toBe(1)
+        expect(indexPageNav?.children[0].getAttribute("href")).toBe("/directory/page/2")
+        expect(indexPageNav?.children[0].innerHTML.includes("Next")).toBe(true)
+
+        pageFolder.forEach((page, index) => {
+            const pageDocument = new JSDOM(fs.readFileSync(path.join(directoryPagesFolder, page, "index.html"), "utf-8")).window.document
+            const pageNav = pageDocument.querySelector("#posts > nav")
+            
+            // Last page should not have a next option
+            if (index === (pageFolder.length - 1)) {
+                expect(pageNav?.children.length).toBe(1)
+                expect(pageNav?.children[0].getAttribute("href")).toBe(`/directory/page/${pageFolder[index - 1]}`)
+                expect(pageNav?.children[0].innerHTML.includes("Previous")).toBe(true)
+
+                return
+            }
+
+            expect(pageNav?.children.length).toBe(2)
+            console.log(path.join(directoryPagesFolder, page, "index.html"))
+            expect(pageNav?.children[0].getAttribute("href")).toBe(((index - 1) === -1 ? `/directory/` : `/directory/page/${pageFolder[index - 1]}`))
+            expect(pageNav?.children[0].innerHTML.includes("Previous")).toBe(true)
+            expect(pageNav?.children[1].getAttribute("href")).toBe(`/directory/page/${pageFolder[index + 1]}`)
+            expect(pageNav?.children[1].innerHTML.includes("Next")).toBe(true)
+        })
+    })
 })
