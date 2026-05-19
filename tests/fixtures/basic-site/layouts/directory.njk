@@ -1,0 +1,30 @@
+{% extends "default.njk" %}
+
+{% block content %}
+<h1>POSTS</h1>
+
+{{ content | safe }}
+
+<ul id="posts">
+    {% for post in pagination.items %}
+        <li>
+            <a href="{{ post.url }}">{{ post.title }} : {{ post.description }}</a>
+        </li>
+    {% endfor %}
+
+    <nav>
+        {% if pagination.hasPrev %}
+            <a href="{% if pagination.prevPage == 1 %}{{ pagination.baseUrl }}/{% else %}{{ pagination.baseUrl }}/page/{{ pagination.prevPage }}{% endif %}">
+                ← Previous
+            </a>
+        {% endif %}
+
+        {% if pagination.hasNext %}
+            <a href="{{ pagination.baseUrl }}/page/{{ pagination.nextPage }}">
+                Next →
+            </a>
+        {% endif %}
+    </nav>
+</ul>
+
+{% endblock %}
