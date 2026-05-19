@@ -16,6 +16,12 @@ describe("SiteMD Build Pipeline", () => {
     const post1Path = path.join(outDir, "blog", "posts", "post1", "index.html")
     const post2Path = path.join(outDir, "blog", "posts", "post2", "index.html")
 
+    // Paths to Expected Output Folders
+    const directoryPagesFolder = path.join(outDir, "directory", "page")
+
+    // Paths to Content Folders
+    const postsFolder = path.join(fixturePath, "content", "blog", "posts")
+
     // Placeholder for document object for html files we will test.
     let homeDocument: Document;
     let blogDocument: Document;
@@ -93,6 +99,14 @@ describe("SiteMD Build Pipeline", () => {
             href: "/blog/posts/post2",
             innerText: "Post 2 : The Second Post"
         },
+        {
+            href: "/blog/posts/post3",
+            innerText: "Post 3 : The Third Post"
+        },
+        {
+            href: "/blog/posts/post4",
+            innerText: "Post 4 : The Fourth Post"
+        },
     ]
 
     it("Should create a list of posts from 'posts' collection", () => {
@@ -116,6 +130,16 @@ describe("SiteMD Build Pipeline", () => {
 
     // Pagination Tests
     it("Should create the correct number of pages", () => {
-        // test
+        const numberOfPages = fs.readdirSync(directoryPagesFolder).length
+        const expectedNumberOfPages = (fs.readdirSync(postsFolder).length) - 1
+
+        expect(numberOfPages).toBe(expectedNumberOfPages)
+    })
+
+    const expectedPageNames = ["2", "3", "4"]
+    it("Should number the pages correctly", () => {
+        const pageFolder = fs.readdirSync(directoryPagesFolder)
+
+        pageFolder.forEach((page, index) => expect(page).toBe(expectedPageNames[index]))
     })
 })
