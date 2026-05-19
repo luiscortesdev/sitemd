@@ -17,7 +17,8 @@ describe("SiteMD Build Pipeline", () => {
     const post2Path = path.join(outDir, "blog", "posts", "post2", "index.html")
 
     // Paths to Expected Output Folders
-    const directoryPagesFolder = path.join(outDir, "directory", "page")
+    const directoryFolderPath = path.join(outDir, "directory")
+    const directoryPagesFolder = path.join(directoryFolderPath, "page")
 
     // Paths to Content Folders
     const postsFolder = path.join(fixturePath, "content", "blog", "posts")
@@ -141,5 +142,27 @@ describe("SiteMD Build Pipeline", () => {
         const pageFolder = fs.readdirSync(directoryPagesFolder)
 
         pageFolder.forEach((page, index) => expect(page).toBe(expectedPageNames[index]))
+    })
+
+    it("Should generate pages with the proper content", () => {
+        const pageFolder = fs.readdirSync(directoryPagesFolder)
+
+        const indexPageDocument = new JSDOM(fs.readFileSync(path.join(directoryFolderPath, "index.html"), "utf-8")).window.document
+        const indexPagePostA = indexPageDocument.querySelector("#posts > li > a")
+        const indexHeading = indexPageDocument.getElementById("heading")
+
+        expect(indexPagePostA?.innerHTML).toBe(posts[0].innerText)
+        expect(indexPagePostA?.getAttribute("href")).toBe("/blog/posts/post1")
+        expect(indexHeading?.innerHTML).toBe("Welcome to the posts directory")
+
+        pageFolder.forEach((page, index) => {
+            const pageDocument = new JSDOM(fs.readFileSync(path.join(directoryPagesFolder, page, "index.html"), "utf-8")).window.document
+            const pagePostA = pageDocument.querySelector("#posts > li > a")
+            const pageHeading = pageDocument.getElementById("heading")
+
+            expect(pagePostA?.innerHTML).toBe(posts[index + 1].innerText)
+            expect(pagePostA?.getAttribute("href")).toBe(`/blog/posts/post${page}`)
+            expect(pageHeading?.innerHTML).toBe("Welcome to the posts directory")
+        })
     })
 })
