@@ -10,8 +10,9 @@ dist
 /theme
 /_site
 
-# Development Cache Folders
-/.sitemd
+# Ignore all Development Cache Folders and Dist Folders
+.sitemd
+_site
 
 # Development Config
 /sitemd.config.js
