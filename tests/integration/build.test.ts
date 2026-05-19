@@ -137,11 +137,10 @@ describe("SiteMD Build Pipeline", () => {
         expect(numberOfPages).toBe(expectedNumberOfPages)
     })
 
-    const expectedPageNames = ["2", "3", "4"]
     it("Should number the pages correctly", () => {
         const pageFolder = fs.readdirSync(directoryPagesFolder)
 
-        pageFolder.forEach((page, index) => expect(page).toBe(expectedPageNames[index]))
+        pageFolder.forEach((page, index) => expect(page).toBe((index + 2).toString()))
     })
 
     it("Should generate pages with the proper content", () => {
