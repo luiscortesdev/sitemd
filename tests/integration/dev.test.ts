@@ -23,13 +23,16 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     const postsFolderPath = path.join(outDir, "blog", "posts")
     const post2Path = path.join(postsFolderPath, "post2", "index.html")
     const post3Path = path.join(postsFolderPath, "post3", "index.html")
+    const post5Path = path.join(postsFolderPath, "post5", "index.html")
 
-    // Paths to folder/files in the content folder of the dev site
+    // Paths to folders in the content folder of the dev site
     const postsContentFolderPath = path.join(devFixturePath, "content", "blog", "posts")
     const post2ContentFolderPath = path.join(postsContentFolderPath, "post2")
-    const post3ContentFolderPath = path.join(postsContentFolderPath, "post3")
+    const post5ContentFolderPath = path.join(postsContentFolderPath, "post5")
+
+    // Paths to files in the content folder of the dev site
     const post2ContentPath = path.join(postsContentFolderPath, "post2", "index.md")
-    const post3ContentPath = path.join(postsContentFolderPath, "post3", "index.md")
+    const post5ContentPath = path.join(postsContentFolderPath, "post5", "index.md")
 
     // Paths to top level files in the content folder of the dev site
     const indexContentPath = path.join(devFixturePath, "content", "index.md")
@@ -178,12 +181,12 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     })
 
     it("Should rebuild when file names are edited and update routes", async () => {
-        fs.renameSync(post2ContentFolderPath, post3ContentFolderPath)
+        fs.renameSync(post2ContentFolderPath, post5ContentFolderPath)
 
         await vi.waitFor(
             () => {
                 expect(fs.existsSync(post2Path)).toBe(false)
-                expect(fs.existsSync(post3Path)).toBe(true)
+                expect(fs.existsSync(post5Path)).toBe(true)
             },
             {
                 timeout: 3000,
@@ -216,14 +219,14 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     })
 
     it("Should rebuild when a file is deleted, cleanup the page in the output", async () => {
-        expect(fs.existsSync(post3Path)).toBe(true)
-        expect(fs.existsSync(post3ContentPath)).toBe(true)
+        expect(fs.existsSync(post5Path)).toBe(true)
+        expect(fs.existsSync(post5ContentPath)).toBe(true)
         
-        fs.rmSync(post3ContentFolderPath, { recursive: true })
+        fs.rmSync(post5ContentFolderPath, { recursive: true })
 
         await vi.waitFor(
             () => {
-                expect(fs.existsSync(post3Path)).toBe(false)
+                expect(fs.existsSync(post5Path)).toBe(false)
                 expect(fs.existsSync(post2Path)).toBe(true)
             },
             {
