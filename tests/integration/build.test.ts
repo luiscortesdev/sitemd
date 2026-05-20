@@ -16,6 +16,13 @@ describe("SiteMD Build Pipeline", () => {
     const post1Path = path.join(outDir, "blog", "posts", "post1", "index.html")
     const post2Path = path.join(outDir, "blog", "posts", "post2", "index.html")
 
+    // Paths to Expected Output Folders
+    const directoryFolderPath = path.join(outDir, "directory")
+    const directoryPagesFolder = path.join(directoryFolderPath, "page")
+
+    // Paths to Content Folders
+    const postsFolder = path.join(fixturePath, "content", "blog", "posts")
+
     // Placeholder for document object for html files we will test.
     let homeDocument: Document;
     let blogDocument: Document;
@@ -93,6 +100,14 @@ describe("SiteMD Build Pipeline", () => {
             href: "/blog/posts/post2",
             innerText: "Post 2 : The Second Post"
         },
+        {
+            href: "/blog/posts/post3",
+            innerText: "Post 3 : The Third Post"
+        },
+        {
+            href: "/blog/posts/post4",
+            innerText: "Post 4 : The Fourth Post"
+        },
     ]
 
     it("Should create a list of posts from 'posts' collection", () => {
@@ -110,6 +125,80 @@ describe("SiteMD Build Pipeline", () => {
             expect(childATag.innerHTML).toBe(childATagInfo.innerText)
             expect(childATag.href).toBe(childATagInfo.href)
             
+        })
+    })
+
+
+    // Pagination Tests
+    it("Should create the correct number of pages", () => {
+        const numberOfPages = fs.readdirSync(directoryPagesFolder).length
+        const expectedNumberOfPages = (fs.readdirSync(postsFolder).length) - 1
+
+        expect(numberOfPages).toBe(expectedNumberOfPages)
+    })
+
+    it("Should number the pages correctly", () => {
+        const pageFolder = fs.readdirSync(directoryPagesFolder)
+
+        pageFolder.forEach((page, index) => expect(page).toBe((index + 2).toString()))
+    })
+
+    it("Should generate pages with the proper content", () => {
+        const pageFolder = fs.readdirSync(directoryPagesFolder)
+
+        const indexPageDocument = new JSDOM(fs.readFileSync(path.join(directoryFolderPath, "index.html"), "utf-8")).window.document
+        const indexPagePostA = indexPageDocument.querySelector("#posts > li > a")
+        const indexHeading = indexPageDocument.getElementById("heading")
+
+        expect(indexPagePostA?.innerHTML).toBe(posts[0].innerText)
+        expect(indexPagePostA?.getAttribute("href")).toBe("/blog/posts/post1")
+
+        expect(indexHeading?.innerHTML).toBe("Welcome to the posts directory")
+
+        pageFolder.forEach((page, index) => {
+            const pageDocument = new JSDOM(fs.readFileSync(path.join(directoryPagesFolder, page, "index.html"), "utf-8")).window.document
+            const pagePostA = pageDocument.querySelector("#posts > li > a")
+            const pageHeading = pageDocument.getElementById("heading")
+
+            expect(pagePostA?.innerHTML).toBe(posts[index + 1].innerText)
+            expect(pagePostA?.getAttribute("href")).toBe(`/blog/posts/post${page}`)
+            
+            expect(pageHeading?.innerHTML).toBe("Welcome to the posts directory")
+        })
+    })
+
+    it("Should generate pages with the proper navigation controls", () => {
+        const pageFolder = fs.readdirSync(directoryPagesFolder)
+
+        const indexPageDocument = new JSDOM(fs.readFileSync(path.join(directoryFolderPath, "index.html"), "utf-8")).window.document
+        const indexPageNav = indexPageDocument.querySelector("#posts > nav")
+
+        expect(indexPageNav?.children.length).toBe(1)
+
+        expect(indexPageNav?.children[0].getAttribute("href")).toBe("/directory/page/2")
+        expect(indexPageNav?.children[0].innerHTML.includes("Next")).toBe(true)
+
+        pageFolder.forEach((page, index) => {
+            const pageDocument = new JSDOM(fs.readFileSync(path.join(directoryPagesFolder, page, "index.html"), "utf-8")).window.document
+            const pageNav = pageDocument.querySelector("#posts > nav")
+            
+            // Last page should not have a next option
+            if (index === (pageFolder.length - 1)) {
+                expect(pageNav?.children.length).toBe(1)
+
+                expect(pageNav?.children[0].getAttribute("href")).toBe(`/directory/page/${pageFolder[index - 1]}`)
+                expect(pageNav?.children[0].innerHTML.includes("Previous")).toBe(true)
+
+                return
+            }
+
+            expect(pageNav?.children.length).toBe(2)
+
+            expect(pageNav?.children[0].getAttribute("href")).toBe(((index - 1) === -1 ? `/directory/` : `/directory/page/${pageFolder[index - 1]}`))
+            expect(pageNav?.children[0].innerHTML.includes("Previous")).toBe(true)
+
+            expect(pageNav?.children[1].getAttribute("href")).toBe(`/directory/page/${pageFolder[index + 1]}`)
+            expect(pageNav?.children[1].innerHTML.includes("Next")).toBe(true)
         })
     })
 })
