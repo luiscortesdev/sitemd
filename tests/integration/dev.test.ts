@@ -22,7 +22,6 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     // Paths to the folder/files in the output/blog/posts directory in the output dev site
     const postsFolderPath = path.join(outDir, "blog", "posts")
     const post2Path = path.join(postsFolderPath, "post2", "index.html")
-    const post3Path = path.join(postsFolderPath, "post3", "index.html")
     const post5Path = path.join(postsFolderPath, "post5", "index.html")
 
     // Paths to folders in the content folder of the dev site
@@ -112,6 +111,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
         const mainHeading = indexDocument.querySelector(".text-green")
         expect(mainHeading).not.toBeNull()
         expect(mainHeading?.getAttribute("data-aria")).toBe("home")
+        
         const mainHeadingWithId = indexDocument.getElementById("home")
         expect(mainHeadingWithId).not.toBeNull()
     })
