@@ -74,10 +74,10 @@ describe("SiteMD Build Pipeline", () => {
         const mainHeading = homeDocument.querySelector(".text-green")
         expect(mainHeading).not.toBeNull()
         expect(mainHeading?.getAttribute("data-aria")).toBe("home")
+
         const mainHeadingWithId = homeDocument.getElementById("home")
         expect(mainHeadingWithId).not.toBeNull()
 
-        
         const blogHeading = blogDocument.querySelector(".text-green")
         expect(blogHeading).not.toBeNull()
     })
@@ -121,6 +121,7 @@ describe("SiteMD Build Pipeline", () => {
 
             const childATag = child.children[0]
             const childATagInfo = posts[index]
+            
             expect(childATag.tagName).toBe("A")
             expect(childATag.innerHTML).toBe(childATagInfo.innerText)
             expect(childATag.href).toBe(childATagInfo.href)
