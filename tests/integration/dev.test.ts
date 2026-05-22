@@ -202,6 +202,8 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
 
         await vi.waitFor(
             () => {
+                // This test is failing unexpectedly on slower PCs
+                // However, the tests below it pass properly.
                 expect(fs.existsSync(post2Path)).toBe(true)
 
                 const post2Document = new JSDOM(fs.readFileSync(post2Path, "utf-8")).window.document
