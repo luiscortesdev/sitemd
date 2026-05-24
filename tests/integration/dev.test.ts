@@ -18,6 +18,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     // Paths to top level html files in the output dev site
     const indexPath = path.join(outDir, "index.html")
     const aboutPath = path.join(outDir, "about", "index.html")
+    const blogPath = path.join(outDir, "blog", "index.html")
 
     // Paths to the folder/files in the output/blog/posts directory in the output dev site
     const postsFolderPath = path.join(outDir, "blog", "posts")
@@ -116,6 +117,45 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
         expect(mainHeadingWithId).not.toBeNull()
     })
 
+    // Setup Collection Tests
+    const posts = [
+        {
+            href: "/blog/posts/post1",
+            innerText: "Post 1 : The First Post"
+        },
+        {
+            href: "/blog/posts/post2",
+            innerText: "Post 2 : The Second Post"
+        },
+        {
+            href: "/blog/posts/post3",
+            innerText: "Post 3 : The Third Post"
+        },
+        {
+            href: "/blog/posts/post4",
+            innerText: "Post 4 : The Fourth Post"
+        },
+    ]
+
+    it("Should create a list of posts from 'posts' collection", () => {
+        const blogDocument = new JSDOM(fs.readFileSync(blogPath)).window.document
+        const outerUlTag = blogDocument.getElementById("posts")
+        expect(outerUlTag).not.toBeNull()
+
+        if (!outerUlTag) return
+
+        Array.from(outerUlTag.children).forEach((child: any, index) => {
+            expect(child.tagName).toBe("LI")
+
+            const childATag = child.children[0]
+            const childATagInfo = posts[index]
+
+            expect(childATag.tagName).toBe("A")
+            expect(childATag.innerHTML).toBe(childATagInfo.innerText)
+            expect(childATag.href).toBe(childATagInfo.href)
+
+        })
+    })
 
     // Rebuild
     it("Should rebuild on file modifications", async () => {
