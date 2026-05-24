@@ -24,6 +24,8 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     const postsFolderPath = path.join(outDir, "blog", "posts")
     const post2Path = path.join(postsFolderPath, "post2", "index.html")
     const post5Path = path.join(postsFolderPath, "post5", "index.html")
+    const directoryFolderPath = path.join(outDir, "directory")
+    const directoryPagesFolder = path.join(directoryFolderPath, "page")
 
     // Paths to folders in the content folder of the dev site
     const postsContentFolderPath = path.join(devFixturePath, "content", "blog", "posts")
@@ -155,6 +157,14 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
             expect(childATag.href).toBe(childATagInfo.href)
 
         })
+    })
+
+    // Setup pagination tests.
+    it("Should create the correct number of pages", () => {
+        const numberOfPages = fs.readdirSync(directoryPagesFolder).length
+        const expectedNumberOfPages = (fs.readdirSync(postsContentFolderPath).length) - 1
+    
+        expect(numberOfPages).toBe(expectedNumberOfPages)
     })
 
     // Rebuild
