@@ -167,6 +167,12 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
         expect(numberOfPages).toBe(expectedNumberOfPages)
     })
 
+    it("Should number the pages correctly", () => {
+        const pageFolder = fs.readdirSync(directoryPagesFolder)
+    
+        pageFolder.forEach((page, index) => expect(page).toBe((index + 2).toString()))
+    })
+
     // Rebuild
     it("Should rebuild on file modifications", async () => {
         const newIndexFile = fs.readFileSync(path.resolve(__dirname, "../fixtures/updates/newIndex.md"), "utf-8")
