@@ -50,7 +50,7 @@ export async function runDev() {
                     reload()
                 } catch (error) {
 
-                    console.error("❌ BUILD FAILED DURING RELOAD:", error);
+                    console.error("❌ BUILD FAILED DURING RELOAD WITH ERROR:", error);
                 }
             } while (buildPending)
 

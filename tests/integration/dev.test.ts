@@ -80,7 +80,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
             try {
                 fileWatcher.close();
             } catch (err) {
-                console.error("WATCHER CLOSE ERROR:", err);
+                console.error("FILE WATCHER CLOSED WITH ERROR:", err);
             }
         }
         
