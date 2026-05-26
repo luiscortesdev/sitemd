@@ -126,7 +126,6 @@ describe("SiteMD Build Pipeline", () => {
             expect(child.tagName).toBe("LI")
 
             const childATag = child.children[0]
-            const childATagInfo = posts[index]
             
             console.log(path.dirname(postsFolder))
 
