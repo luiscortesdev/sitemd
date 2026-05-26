@@ -90,51 +90,46 @@ describe("SiteMD Build Pipeline", () => {
         expect(mainTag).not.toBeNull()
     })
 
+    // Create database of expected posts data
+    const posts: { innerHTML: string, href: string }[] = []
+
+    const contentFolderPosts = fs.readdirSync(postsFolder)
+
+    contentFolderPosts.forEach(post => {
+        const currentPost = fs.readFileSync(path.join(postsFolder, post, "index.md"), "utf-8")
+        const postData = matter(currentPost)
+
+        const expectedTagInnerHTML = `${postData.data?.title} : ${postData.data?.description}`
+        const expectedTagHref = `/blog/posts/${post}`
+
+        posts.push(
+            {
+                innerHTML: expectedTagInnerHTML,
+                href: expectedTagHref,
+            }
+        )
+    })
+
 
     // Collections Tests
-    const posts = [
-        {
-            href: "/blog/posts/post1",
-            innerText: "Post 1 : The First Post"
-        },
-        {
-            href: "/blog/posts/post2",
-            innerText: "Post 2 : The Second Post"
-        },
-        {
-            href: "/blog/posts/post3",
-            innerText: "Post 3 : The Third Post"
-        },
-        {
-            href: "/blog/posts/post4",
-            innerText: "Post 4 : The Fourth Post"
-        },
-    ]
-
     it("Should create a list of posts from 'posts' collection", () => {
         const outerUlTag = blogDocument.getElementById("posts")
         expect(outerUlTag).not.toBeNull()
 
         if (!outerUlTag) return
 
-        const posts = fs.readdirSync(postsFolder)
-
         Array.from(outerUlTag.children).forEach((child: any, index) => {
-            const currentPost = fs.readFileSync(path.join(postsFolder, posts[index], "index.md"), "utf-8")
-            const postData = matter(currentPost)
 
             expect(child.tagName).toBe("LI")
 
             const childATag = child.children[0]
+            const childATagInfo = posts[index]
             
             console.log(path.dirname(postsFolder))
-
-            const expectedTagInnerHTML = `${postData.data?.title} : ${postData.data?.description}`
-            const expectedTagHref = `/blog/posts/${posts[index]}`
             
             expect(childATag.tagName).toBe("A")
-            expect(childATag.innerHTML).toBe(expectedTagInnerHTML)
-            expect(childATag.href).toBe(expectedTagHref)
+            expect(childATag.innerHTML).toBe(childATagInfo.innerHTML)
+            expect(childATag.href).toBe(childATagInfo.href)
             
         })
     })
@@ -161,7 +156,7 @@ describe("SiteMD Build Pipeline", () => {
         const indexPagePostA = indexPageDocument.querySelector("#posts > li > a")
         const indexHeading = indexPageDocument.getElementById("heading")
 
-        expect(indexPagePostA?.innerHTML).toBe(posts[0].innerText)
+        expect(indexPagePostA?.innerHTML).toBe(posts[0].innerHTML)
         expect(indexPagePostA?.getAttribute("href")).toBe("/blog/posts/post1")
 
         expect(indexHeading?.innerHTML).toBe("Welcome to the posts directory")
@@ -171,7 +166,7 @@ describe("SiteMD Build Pipeline", () => {
             const pagePostA = pageDocument.querySelector("#posts > li > a")
             const pageHeading = pageDocument.getElementById("heading")
 
-            expect(pagePostA?.innerHTML).toBe(posts[index + 1].innerText)
+            expect(pagePostA?.innerHTML).toBe(posts[index + 1].innerHTML)
             expect(pagePostA?.getAttribute("href")).toBe(`/blog/posts/post${page}`)
             
             expect(pageHeading?.innerHTML).toBe("Welcome to the posts directory")
