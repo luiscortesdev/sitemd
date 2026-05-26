@@ -2,6 +2,7 @@ import path from "path"
 import fs from "fs-extra"
 import { describe, it, expect, vi, beforeAll, afterAll } from "vitest"
 import { JSDOM } from "jsdom"
+import matter from "gray-matter"
 
 import { build } from "../../src/commands/build"
 
@@ -116,15 +117,25 @@ describe("SiteMD Build Pipeline", () => {
 
         if (!outerUlTag) return
 
+        const posts = fs.readdirSync(postsFolder)
+
         Array.from(outerUlTag.children).forEach((child: any, index) => {
+            const currentPost = fs.readFileSync(path.join(postsFolder, posts[index], "index.md"), "utf-8")
+            const postData = matter(currentPost)
+
             expect(child.tagName).toBe("LI")
 
             const childATag = child.children[0]
             const childATagInfo = posts[index]
             
+            console.log(path.dirname(postsFolder))
+
+            const expectedTagInnerHTML = `${postData.data?.title} : ${postData.data?.description}`
+            const expectedTagHref = `/blog/posts/${posts[index]}`
+            
             expect(childATag.tagName).toBe("A")
-            expect(childATag.innerHTML).toBe(childATagInfo.innerText)
-            expect(childATag.href).toBe(childATagInfo.href)
+            expect(childATag.innerHTML).toBe(expectedTagInnerHTML)
+            expect(childATag.href).toBe(expectedTagHref)
             
         })
     })
