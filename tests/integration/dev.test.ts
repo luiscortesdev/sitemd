@@ -2,6 +2,7 @@ import path from "path"
 import fs from "fs-extra"
 import { describe, it, expect, vi, beforeAll, afterAll } from "vitest"
 import { JSDOM } from "jsdom"
+import matter from "gray-matter"
 
 import { runDev } from "../../src/dev/runDev"
 
@@ -46,6 +47,9 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     let devServer: any
     let fileWatcher: any
 
+    // Data that will be used to test the posts
+    const posts: { innerHTML: string, href: string }[] = []
+
     // Setup dev server
     beforeAll(async () => {
         if (fs.existsSync(devFixturePath)) {
@@ -60,6 +64,24 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
         const instances = await runDev()
         devServer = instances.server
         fileWatcher = instances.watcher
+        
+        // Push to the posts array with the data of every post
+        const contentFolderPosts = fs.readdirSync(postsContentFolderPath)
+        
+        contentFolderPosts.forEach(post => {
+            const currentPost = fs.readFileSync(path.join(postsContentFolderPath, post, "index.md"), "utf-8")
+            const postData = matter(currentPost)
+        
+            const expectedTagInnerHTML = `${postData.data?.title} : ${postData.data?.description}`
+            const expectedTagHref = `/blog/posts/${post}`
+        
+            posts.push(
+                {
+                    innerHTML: expectedTagInnerHTML,
+                    href: expectedTagHref,
+                }
+            )
+        })
     })
 
     // Clean up dev server after tests
@@ -120,25 +142,6 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     })
 
     // Setup Collection Tests
-    const posts = [
-        {
-            href: "/blog/posts/post1",
-            innerText: "Post 1 : The First Post"
-        },
-        {
-            href: "/blog/posts/post2",
-            innerText: "Post 2 : The Second Post"
-        },
-        {
-            href: "/blog/posts/post3",
-            innerText: "Post 3 : The Third Post"
-        },
-        {
-            href: "/blog/posts/post4",
-            innerText: "Post 4 : The Fourth Post"
-        },
-    ]
-
     it("Should create a list of posts from 'posts' collection", () => {
         const blogDocument = new JSDOM(fs.readFileSync(blogPath)).window.document
         const outerUlTag = blogDocument.getElementById("posts")
@@ -153,7 +156,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
             const childATagInfo = posts[index]
 
             expect(childATag.tagName).toBe("A")
-            expect(childATag.innerHTML).toBe(childATagInfo.innerText)
+            expect(childATag.innerHTML).toBe(childATagInfo.innerHTML)
             expect(childATag.href).toBe(childATagInfo.href)
 
         })
