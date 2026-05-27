@@ -24,7 +24,6 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     // Paths to the folder/files in the output/blog/posts directory in the output dev site
     const postsFolderPath = path.join(outDir, "blog", "posts")
     const post2Path = path.join(postsFolderPath, "post2", "index.html")
-    const post3Path = path.join(postsFolderPath, "post3", "index.html")
     const post5Path = path.join(postsFolderPath, "post5", "index.html")
     const directoryFolderPath = path.join(outDir, "directory")
     const directoryPagesFolder = path.join(directoryFolderPath, "page")
@@ -417,5 +416,11 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
                 interval: 50,
             }
         )
+    })
+
+    
+    // Pagination Rebuild Tests
+    it("Should create a new page if a post is added to the collection", async () => {
+
     })
 })
