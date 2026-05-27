@@ -522,4 +522,25 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
             }
         ) 
     })
+
+    it("Should delete the pages if the collection is no longer paginated", async () => {
+        const directoryContent = fs.readFileSync(directoryContentPath, "utf-8")
+        const directoryContentData = matter(directoryContent)
+        directoryContentData.data.paginate = ""
+
+        const updatedDirectoryContent = matter.stringify(directoryContentData.content, directoryContentData.data)
+
+        fs.writeFileSync(directoryContentPath, updatedDirectoryContent)
+
+        await vi.waitFor(
+            () => {
+                expect(fs.existsSync(directoryPagesFolder)).toBe(false)
+                
+            },
+            {
+                timeout: 3000,
+                interval: 50,
+            }
+        ) 
+    })
 })
