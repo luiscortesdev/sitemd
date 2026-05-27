@@ -38,6 +38,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     const post2ContentPath = path.join(postsContentFolderPath, "post2", "index.md")
     const post3ContentPath = path.join(postsContentFolderPath, "post3", "index.md")
     const post5ContentPath = path.join(postsContentFolderPath, "post5", "index.md")
+    const post6ContentPath = path.join(postsContentFolderPath, "post6", "index.md")
 
     // Paths to top level files in the content folder of the dev site
     const indexContentPath = path.join(devFixturePath, "content", "index.md")
@@ -344,6 +345,36 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     })
 
     it("Should rebuild when a post is added to the collection", async () => {
-        
+        const newPost6File = fs.readFileSync(path.resolve(__dirname, "../fixtures/updates/newPost6.md"), "utf-8")
+
+        fs.outputFileSync(post6ContentPath, newPost6File)
+
+        await updatePostsCollection()
+
+        await vi.waitFor(
+            () => {
+                const blogDocument = new JSDOM(fs.readFileSync(blogPath)).window.document
+                const outerUlTag = blogDocument.getElementById("posts")
+                expect(outerUlTag).not.toBeNull()
+
+                if (!outerUlTag) return
+
+                Array.from(outerUlTag.children).forEach((child: any, index) => {
+                    expect(child.tagName).toBe("LI")
+
+                    const childATag = child.children[0]
+                    const childATagInfo = posts[index]
+
+                    expect(childATag.tagName).toBe("A")
+                    expect(childATag.innerHTML).toBe(childATagInfo.innerHTML)
+                    expect(childATag.href).toBe(childATagInfo.href)
+
+                })
+            },
+            {
+                timeout: 3000,
+                interval: 50,
+            }
+        )
     })
 })
