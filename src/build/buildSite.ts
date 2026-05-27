@@ -60,7 +60,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
 
     await copyPublic(publicDir, themeDir, dev ? outputDir : _siteDir) // Switch folders based on dev bool
 
-    const pages = await scanDir(contentDir, contentDir)
+    const pages = await scanDir(contentDir, contentDir) // Scan the directory for content pages
 
     const parsedPages: ParsedPages[] = []
     for (const page of pages) {
@@ -106,9 +106,11 @@ export async function buildSite({ dev }: { dev: boolean }) {
     const invalidCollections = invalidateCollections(cache, parsedPages, collectionsGraph)
     const layoutsWithChangedCollections = invalidCollections.layoutsWithChangedCollections
     const changedCollections = invalidCollections.changedCollections
+    const collectionsWithChangedPages = invalidCollections.collectionsWithChangedPages
 
     console.log("INVALID LAYOUT COLLECTIONS: ", layoutsWithChangedCollections)
     console.log("INVALIDATED LAYOUTS: ", invalidatedLayouts)
+    console.log("INVALID PAGES: ",  collectionsWithChangedPages)
 
     for (const {page, data, html, hash} of parsedPages) {
 
@@ -123,7 +125,8 @@ export async function buildSite({ dev }: { dev: boolean }) {
             await outputExists(cached.outputDir) &&
             !invalidatedLayouts.includes(pageLayout) &&
             !layoutsWithChangedCollections.includes(pageLayout) &&
-            (data.paginate ? !changedCollections.includes(data.paginate) : true) &&
+            !(data?.usesCollections?.some((collection) => collectionsWithChangedPages.has(collection))) &&
+            (data.paginate ? !changedCollections.has(data.paginate) && !collectionsWithChangedPages.has(data.paginate) : true) &&
             dev
         ) {
             // Page's current hash matches cached hash. Therefore, the file 
