@@ -37,6 +37,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     const post1ContentPath = path.join(postsContentFolderPath, "post1", "index.md")
     const post2ContentPath = path.join(postsContentFolderPath, "post2", "index.md")
     const post3ContentPath = path.join(postsContentFolderPath, "post3", "index.md")
+    const post4ContentPath = path.join(postsContentFolderPath, "post4", "index.md")
     const post5ContentPath = path.join(postsContentFolderPath, "post5", "index.md")
     const post6ContentPath = path.join(postsContentFolderPath, "post6", "index.md")
 
@@ -53,10 +54,12 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
 
     // Data that will be used to test the posts
     let posts: { innerHTML: string, href: string }[] = []
+    let featured: { innerHTML: string, href: string }[] = []
 
     // async function that updates the posts data with the markdown file content
     async function updatePostsCollection() {
         posts = []
+        featured = []
 
         const contentFolderPosts = fs.readdirSync(postsContentFolderPath)
         
@@ -64,11 +67,19 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
             const currentPost = fs.readFileSync(path.join(postsContentFolderPath, post, "index.md"), "utf-8")
             const postData = matter(currentPost)
 
-            if (postData.data?.collections?.includes("posts")) {
-                const expectedTagInnerHTML = `${postData.data?.title} : ${postData.data?.description}`
-                const expectedTagHref = `/blog/posts/${post}`
-            
+            const expectedTagInnerHTML = `${postData.data?.title} : ${postData.data?.description}`
+            const expectedTagHref = `/blog/posts/${post}`
+
+            if (postData.data?.collections?.includes("posts")) {            
                 posts.push(
+                    {
+                        innerHTML: expectedTagInnerHTML,
+                        href: expectedTagHref,
+                    }
+                )
+            }
+            if (postData.data?.collections?.includes("featured")) {            
+                featured.push(
                     {
                         innerHTML: expectedTagInnerHTML,
                         href: expectedTagHref,
@@ -595,6 +606,54 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
                 const pages = fs.readdirSync(directoryPagesFolder)
                 const numberOfPages = pages.length
                 const expectedNumberOfPages = (Math.ceil(posts.length / 3)) - 1
+
+                expect(numberOfPages).toBe(expectedNumberOfPages)
+
+                pages.forEach((page, index) => {
+                    expect(page).toBe((index + 2).toString())
+                })
+            },
+            {
+                timeout: 3000,
+                interval: 50,
+            }
+        ) 
+    })
+
+    it("Should rebuild the pages, number them correctly, and have the correct content if the paginated collection is changed", async () => {
+        const post1 = fs.readFileSync(post1ContentPath, "utf-8")
+        const post1Data = matter(post1)
+        post1Data.data.collections = ["featured"]
+        const updatedPost1 = matter.stringify(post1Data.content, post1Data.data)
+        fs.writeFileSync(post6ContentPath, updatedPost1)
+
+        const post4 = fs.readFileSync(post4ContentPath, "utf-8")
+        const post4Data = matter(post4)
+        post4Data.data.collections = ["featured", "posts"]
+        const updatedPost4 = matter.stringify(post4Data.content, post4Data.data)
+        fs.writeFileSync(post6ContentPath, updatedPost4)
+        
+        const post6 = fs.readFileSync(post6ContentPath, "utf-8")
+        const post6Data = matter(post6)
+        post6Data.data.collections = ["featured", "posts"]
+        const updatedPost6 = matter.stringify(post6Data.content, post6Data.data)
+        fs.writeFileSync(post6ContentPath, updatedPost6)
+
+        const directoryContent = fs.readFileSync(directoryContentPath, "utf-8")
+        const directoryContentData = matter(directoryContent)
+        directoryContentData.data.paginate = "featured"
+
+        const updatedDirectoryContent = matter.stringify(directoryContentData.content, directoryContentData.data)
+        fs.writeFileSync(directoryContentPath, updatedDirectoryContent)
+
+        await updatePostsCollection()
+
+        await vi.waitFor(
+            () => {
+                expect(fs.existsSync(directoryPagesFolder)).toBe(true)
+                const pages = fs.readdirSync(directoryPagesFolder)
+                const numberOfPages = pages.length
+                const expectedNumberOfPages = (Math.ceil(featured.length / 3)) - 1
 
                 expect(numberOfPages).toBe(expectedNumberOfPages)
 
