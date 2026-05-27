@@ -200,6 +200,30 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
         pageFolder.forEach((page, index) => expect(page).toBe((index + 2).toString()))
     })
 
+    it("Should generate pages with the proper content", () => {
+        const pageFolder = fs.readdirSync(directoryPagesFolder)
+    
+        const indexPageDocument = new JSDOM(fs.readFileSync(path.join(directoryFolderPath, "index.html"), "utf-8")).window.document
+        const indexPagePostA = indexPageDocument.querySelector("#posts > li > a")
+        const indexHeading = indexPageDocument.getElementById("heading")
+    
+        expect(indexPagePostA?.innerHTML).toBe(posts[0].innerHTML)
+        expect(indexPagePostA?.getAttribute("href")).toBe("/blog/posts/post1")
+    
+        expect(indexHeading?.innerHTML).toBe("Welcome to the posts directory")
+    
+        pageFolder.forEach((page, index) => {
+            const pageDocument = new JSDOM(fs.readFileSync(path.join(directoryPagesFolder, page, "index.html"), "utf-8")).window.document
+            const pagePostA = pageDocument.querySelector("#posts > li > a")
+            const pageHeading = pageDocument.getElementById("heading")
+    
+            expect(pagePostA?.innerHTML).toBe(posts[index + 1].innerHTML)
+            expect(pagePostA?.getAttribute("href")).toBe(`/blog/posts/post${page}`)
+                
+            expect(pageHeading?.innerHTML).toBe("Welcome to the posts directory")
+        })
+    })
+
     it("Should generate pages with the proper navigation controls", () => {
         const pageFolder = fs.readdirSync(directoryPagesFolder)
     
