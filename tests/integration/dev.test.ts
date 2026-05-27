@@ -24,6 +24,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     // Paths to the folder/files in the output/blog/posts directory in the output dev site
     const postsFolderPath = path.join(outDir, "blog", "posts")
     const post2Path = path.join(postsFolderPath, "post2", "index.html")
+    const post3Path = path.join(postsFolderPath, "post3", "index.html")
     const post5Path = path.join(postsFolderPath, "post5", "index.html")
     const directoryFolderPath = path.join(outDir, "directory")
     const directoryPagesFolder = path.join(directoryFolderPath, "page")
@@ -35,6 +36,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
 
     // Paths to files in the content folder of the dev site
     const post2ContentPath = path.join(postsContentFolderPath, "post2", "index.md")
+    const post3ContentPath = path.join(postsContentFolderPath, "post3", "index.md")
     const post5ContentPath = path.join(postsContentFolderPath, "post5", "index.md")
 
     // Paths to top level files in the content folder of the dev site
@@ -60,7 +62,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
             const currentPost = fs.readFileSync(path.join(postsContentFolderPath, post, "index.md"), "utf-8")
             const postData = matter(currentPost)
 
-            if (postData.data?.collections.includes("posts")) {
+            if (postData.data?.collections?.includes("posts")) {
                 const expectedTagInnerHTML = `${postData.data?.title} : ${postData.data?.description}`
                 const expectedTagHref = `/blog/posts/${post}`
             
@@ -307,6 +309,37 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
 
     // Collection Rebuild Tests
     it("Should rebuild when a post is removed from the collection", async () => {
+        // New post 3 markdown file is no longer a member of the "posts" collection
+        const newPost3 = fs.readFileSync(path.resolve(__dirname, "../fixtures/updates/newPost3.md"), "utf-8")
 
+        fs.writeFileSync(post3ContentPath, newPost3)
+
+        await updatePostsCollection()
+
+        await vi.waitFor(
+            () => {
+                const blogDocument = new JSDOM(fs.readFileSync(blogPath)).window.document
+                const outerUlTag = blogDocument.getElementById("posts")
+                expect(outerUlTag).not.toBeNull()
+
+                if (!outerUlTag) return
+
+                Array.from(outerUlTag.children).forEach((child: any, index) => {
+                    expect(child.tagName).toBe("LI")
+
+                    const childATag = child.children[0]
+                    const childATagInfo = posts[index]
+
+                    expect(childATag.tagName).toBe("A")
+                    expect(childATag.innerHTML).toBe(childATagInfo.innerHTML)
+                    expect(childATag.href).toBe(childATagInfo.href)
+
+                })
+            },
+            {
+                timeout: 3000,
+                interval: 50,
+            }
+        )
     })
 })

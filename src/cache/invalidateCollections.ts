@@ -4,8 +4,32 @@ import type { SiteMDCache } from "./index.js";
 import type { CollectionsGraph } from "../collections/index.js";
 import type { ParsedPages } from "../build/index.js";
 
-function getChangedPageCollections(cache: SiteMDCache, collectionsGraph: CollectionsGraph): string[] {
-    const changedPageCollections: string[] = []
+function getCollectionsWithChangedPages(cache: SiteMDCache, parsedPages: ParsedPages[], collectionsGraph: CollectionsGraph): Set<string> {
+    const collectionsWithChangedPages = new Set<string>()
+
+    for (const key in collectionsGraph) {
+        const currentCollection = collectionsGraph[key]
+
+        currentCollection?.forEach(path => {
+            let hash = ""
+            for (const page of parsedPages) {
+                if (page.page.absolutePath === path) {
+                    hash = page.hash
+                    break
+                }
+            }
+
+            if (cache.pages[path]?.hash !== hash) {
+                collectionsWithChangedPages.add(key)
+            }
+        })
+    }
+
+    return collectionsWithChangedPages
+}
+
+function getChangedPageCollections(cache: SiteMDCache, collectionsGraph: CollectionsGraph): Set<string> {
+    const changedPageCollections = new Set<string>()
 
     const cachedCollections = cache.collections
 
@@ -19,9 +43,7 @@ function getChangedPageCollections(cache: SiteMDCache, collectionsGraph: Collect
             console.log("CACHED COLLECTION: ", cachedCollections[key])
             console.log("NEW COLLECTION", collectionsGraph[key])
 
-            if (!changedPageCollections.includes(key)) {
-                changedPageCollections.push(key)
-            }
+            changedPageCollections.add(key)
         }
     }
 
@@ -35,18 +57,21 @@ function getChangedPageCollections(cache: SiteMDCache, collectionsGraph: Collect
             console.log("CACHED COLLECTION: ", cachedCollections[key])
             console.log("NEW COLLECTION", collectionsGraph[key])
 
-            if (!changedPageCollections.includes(key)) {
-                changedPageCollections.push(key)
-            }
+            changedPageCollections.add(key)
         }
     }
 
     return changedPageCollections
 }
 
-export function invalidateCollections(cache: SiteMDCache, pages: ParsedPages[], collectionsGraph: CollectionsGraph) {
-    const changedCollections: string[] = getChangedPageCollections(cache, collectionsGraph)
+export function invalidateCollections(
+    cache: SiteMDCache,
+    pages: ParsedPages[],
+    collectionsGraph: CollectionsGraph,
+): { changedCollections: Set<string>, layoutsWithChangedCollections: string[], collectionsWithChangedPages: Set<string> } {
+    const changedCollections = getChangedPageCollections(cache, collectionsGraph)
     const layoutsWithChangedCollections: string[] = []
+    const collectionsWithChangedPages = getCollectionsWithChangedPages(cache, pages, collectionsGraph)
 
     console.log("CHANGED COLLECTIONS", changedCollections)
 
@@ -56,11 +81,11 @@ export function invalidateCollections(cache: SiteMDCache, pages: ParsedPages[], 
         const pageLayout = data.layout.endsWith(".njk") ? data.layout : data.layout + ".njk"
 
         pageUsedCollections.forEach(collection => {
-            if (changedCollections.includes(collection)) {
+            if (changedCollections.has(collection)) {
                 layoutsWithChangedCollections.push(pageLayout)
             }
         });
     }
 
-    return { changedCollections, layoutsWithChangedCollections }
+    return { changedCollections, layoutsWithChangedCollections, collectionsWithChangedPages }
 }
