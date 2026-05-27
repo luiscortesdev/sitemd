@@ -649,13 +649,13 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
         const post1Data = matter(post1)
         post1Data.data.collections = ["featured"]
         const updatedPost1 = matter.stringify(post1Data.content, post1Data.data)
-        fs.writeFileSync(post6ContentPath, updatedPost1)
+        fs.writeFileSync(post1ContentPath, updatedPost1)
 
         const post4 = fs.readFileSync(post4ContentPath, "utf-8")
         const post4Data = matter(post4)
         post4Data.data.collections = ["featured", "posts"]
         const updatedPost4 = matter.stringify(post4Data.content, post4Data.data)
-        fs.writeFileSync(post6ContentPath, updatedPost4)
+        fs.writeFileSync(post4ContentPath, updatedPost4)
         
         const post6 = fs.readFileSync(post6ContentPath, "utf-8")
         const post6Data = matter(post6)
@@ -683,6 +683,26 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
 
                 pages.forEach((page, index) => {
                     expect(page).toBe((index + 2).toString())
+                })
+    
+                const indexPageDocument = new JSDOM(fs.readFileSync(path.join(directoryFolderPath, "index.html"), "utf-8")).window.document
+                const indexPagePostA = indexPageDocument.querySelector("#posts > li > a")
+                const indexHeading = indexPageDocument.getElementById("heading")
+            
+                expect(indexPagePostA?.innerHTML).toBe(featured[0].innerHTML)
+                expect(indexPagePostA?.getAttribute("href")).toBe("/blog/posts/post1")
+            
+                expect(indexHeading?.innerHTML).toBe("Welcome to the posts directory")
+            
+                pages.forEach((page, index) => {
+                    const pageDocument = new JSDOM(fs.readFileSync(path.join(directoryPagesFolder, page, "index.html"), "utf-8")).window.document
+                    const pagePostA = pageDocument.querySelector("#posts > li > a")
+                    const pageHeading = pageDocument.getElementById("heading")
+            
+                    expect(pagePostA?.innerHTML).toBe(featured[index + 1].innerHTML)
+                    expect(pagePostA?.getAttribute("href")).toBe(`/blog/posts/post${page}`)
+                        
+                    expect(pageHeading?.innerHTML).toBe("Welcome to the posts directory")
                 })
             },
             {
