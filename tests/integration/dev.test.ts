@@ -543,4 +543,34 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
             }
         ) 
     })
+
+    it("Should rebuild the pages if the collection is now paginated", async () => {
+        const directoryContent = fs.readFileSync(directoryContentPath, "utf-8")
+        const directoryContentData = matter(directoryContent)
+        directoryContentData.data.paginate = "posts"
+        directoryContentData.data.perPage = 3
+
+        const updatedDirectoryContent = matter.stringify(directoryContentData.content, directoryContentData.data)
+
+        fs.writeFileSync(directoryContentPath, updatedDirectoryContent)
+
+        await vi.waitFor(
+            () => {
+                expect(fs.existsSync(directoryPagesFolder)).toBe(true)
+                const pages = fs.readdirSync(directoryPagesFolder)
+                const numberOfPages = pages.length
+                const expectedNumberOfPages = (Math.ceil(posts.length / 3)) - 1
+
+                expect(numberOfPages).toBe(expectedNumberOfPages)
+
+                pages.forEach((page, index) => {
+                    expect(page).toBe((index + 2).toString())
+                })
+            },
+            {
+                timeout: 3000,
+                interval: 50,
+            }
+        ) 
+    })
 })
