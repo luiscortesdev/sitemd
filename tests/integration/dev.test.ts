@@ -420,7 +420,39 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
 
     
     // Pagination Rebuild Tests
-    it("Should create a new page if a post is added to the collection", async () => {
+    it("Should create a new page if a post is added to the collection and number them correctly", async () => {
+        const numberOfPages = fs.readdirSync(directoryPagesFolder).length
+        const expectedNumberOfPages = (posts.length) - 1
+        
+        expect(numberOfPages).toBe(expectedNumberOfPages)
 
+        const post3 = fs.readFileSync(post3ContentPath, "utf-8")
+        const post3Data = matter(post3)
+        post3Data.data.collections = ["posts"]
+
+        const updatedPost3 = matter.stringify(post3Data.content, post3Data.data)
+
+        fs.writeFileSync(post3ContentPath, updatedPost3)
+
+        await updatePostsCollection()
+
+        await vi.waitFor(
+            () => {
+                const pages = fs.readdirSync(directoryPagesFolder)
+                const numberOfPages = pages.length
+                const expectedNumberOfPages = (posts.length) - 1
+
+                expect(numberOfPages).toBe(expectedNumberOfPages)
+
+                pages.forEach((page, index) => {
+                    expect(page).toBe((index + 2).toString())
+                })
+            },
+            {
+                timeout: 3000,
+                interval: 50,
+            }
+        )
+        
     })
 })
