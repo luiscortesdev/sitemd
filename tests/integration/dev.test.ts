@@ -342,4 +342,8 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
             }
         )
     })
+
+    it("Should rebuild when a post is added to the collection", async () => {
+        
+    })
 })
