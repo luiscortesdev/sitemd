@@ -48,7 +48,31 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     let fileWatcher: any
 
     // Data that will be used to test the posts
-    const posts: { innerHTML: string, href: string }[] = []
+    let posts: { innerHTML: string, href: string }[] = []
+
+    // async function that updates the posts data with the markdown file content
+    async function updatePostsCollection() {
+        posts = []
+
+        const contentFolderPosts = fs.readdirSync(postsContentFolderPath)
+        
+        contentFolderPosts.forEach(post => {
+            const currentPost = fs.readFileSync(path.join(postsContentFolderPath, post, "index.md"), "utf-8")
+            const postData = matter(currentPost)
+
+            if (postData.data?.collections.includes("posts")) {
+                const expectedTagInnerHTML = `${postData.data?.title} : ${postData.data?.description}`
+                const expectedTagHref = `/blog/posts/${post}`
+            
+                posts.push(
+                    {
+                        innerHTML: expectedTagInnerHTML,
+                        href: expectedTagHref,
+                    }
+                )
+            }
+        })
+    }
 
     // Setup dev server
     beforeAll(async () => {
@@ -65,23 +89,8 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
         devServer = instances.server
         fileWatcher = instances.watcher
         
-        // Push to the posts array with the data of every post
-        const contentFolderPosts = fs.readdirSync(postsContentFolderPath)
-        
-        contentFolderPosts.forEach(post => {
-            const currentPost = fs.readFileSync(path.join(postsContentFolderPath, post, "index.md"), "utf-8")
-            const postData = matter(currentPost)
-        
-            const expectedTagInnerHTML = `${postData.data?.title} : ${postData.data?.description}`
-            const expectedTagHref = `/blog/posts/${post}`
-        
-            posts.push(
-                {
-                    innerHTML: expectedTagInnerHTML,
-                    href: expectedTagHref,
-                }
-            )
-        })
+        // Update our posts data
+        await updatePostsCollection()
     })
 
     // Clean up dev server after tests
@@ -293,5 +302,11 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
                 interval: 50,
             }
         )
+    })
+
+
+    // Collection Rebuild Tests
+    it("Should rebuild when a post is removed from the collection", async () => {
+
     })
 })
