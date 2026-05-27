@@ -42,6 +42,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
 
     // Paths to top level files in the content folder of the dev site
     const indexContentPath = path.join(devFixturePath, "content", "index.md")
+    const directoryContentPath = path.join(devFixturePath, "content", "directory", "index.md")
     
     // Paths to top level files in the theme folder of the dev site
     const defaultLayoutThemePath = path.join(devFixturePath, "theme", "layouts", "default.njk")
@@ -490,5 +491,35 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
             }
         )
         
+    })
+
+    it("Should create the correct amount of pages if the perPage property is changed", async () => {
+        const directoryContent = fs.readFileSync(directoryContentPath, "utf-8")
+        const directoryContentData = matter(directoryContent)
+        const newPerPage = 2
+
+        directoryContentData.data.perPage = newPerPage
+
+        const updatedDirectoryContent = matter.stringify(directoryContentData.content, directoryContentData.data)
+
+        fs.writeFileSync(directoryContentPath, updatedDirectoryContent)
+
+        await vi.waitFor(
+            () => {
+                const pages = fs.readdirSync(directoryPagesFolder)
+                const numberOfPages = pages.length
+                const expectedNumberOfPages = (Math.ceil(posts.length / newPerPage)) - 1
+
+                expect(numberOfPages).toBe(expectedNumberOfPages)
+
+                pages.forEach((page, index) => {
+                    expect(page).toBe((index + 2).toString())
+                })
+            },
+            {
+                timeout: 3000,
+                interval: 50,
+            }
+        ) 
     })
 })
