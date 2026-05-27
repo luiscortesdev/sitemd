@@ -455,4 +455,40 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
         )
         
     })
+
+    it("Should delete a page if a post is removed from the collection and number them correctly", async () => {
+        const numberOfPages = fs.readdirSync(directoryPagesFolder).length
+        const expectedNumberOfPages = (posts.length) - 1
+        
+        expect(numberOfPages).toBe(expectedNumberOfPages)
+
+        const post6 = fs.readFileSync(post6ContentPath, "utf-8")
+        const post6Data = matter(post6)
+        post6Data.data.collections = []
+
+        const updatedPost6 = matter.stringify(post6Data.content, post6Data.data)
+
+        fs.writeFileSync(post6ContentPath, updatedPost6)
+
+        await updatePostsCollection()
+
+        await vi.waitFor(
+            () => {
+                const pages = fs.readdirSync(directoryPagesFolder)
+                const numberOfPages = pages.length
+                const expectedNumberOfPages = (posts.length) - 1
+
+                expect(numberOfPages).toBe(expectedNumberOfPages)
+
+                pages.forEach((page, index) => {
+                    expect(page).toBe((index + 2).toString())
+                })
+            },
+            {
+                timeout: 3000,
+                interval: 50,
+            }
+        )
+        
+    })
 })
