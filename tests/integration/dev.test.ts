@@ -35,6 +35,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     const post5ContentFolderPath = path.join(postsContentFolderPath, "post5")
 
     // Paths to files in the content folder of the dev site
+    const post1ContentPath = path.join(postsContentFolderPath, "post1", "index.md")
     const post2ContentPath = path.join(postsContentFolderPath, "post2", "index.md")
     const post3ContentPath = path.join(postsContentFolderPath, "post3", "index.md")
     const post5ContentPath = path.join(postsContentFolderPath, "post5", "index.md")
@@ -378,7 +379,43 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
         )
     })
 
-    it("Should rebuild when a post is edited", async () => {
-        
+    it("Should rebuild the collection when a post is edited", async () => {
+        const newPost1 = fs.readFileSync(path.resolve(__dirname, "../fixtures/updates/newPost1.md"), "utf-8")
+
+        fs.writeFileSync(post1ContentPath, newPost1)
+
+        await updatePostsCollection()
+
+        console.log(posts)
+
+        await vi.waitFor(
+            () => {
+                const blogDocument = new JSDOM(fs.readFileSync(blogPath)).window.document
+                const outerUlTag = blogDocument.getElementById("posts")
+                expect(outerUlTag).not.toBeNull()
+
+                if (!outerUlTag) return
+
+                console.log(outerUlTag.innerHTML)
+
+                Array.from(outerUlTag.children).forEach((child: any, index) => {
+                    expect(child.tagName).toBe("LI")
+
+                    const childATag = child.children[0]
+                    const childATagInfo = posts[index]
+
+                    
+
+                    expect(childATag.tagName).toBe("A")
+                    expect(childATag.innerHTML).toBe(childATagInfo.innerHTML)
+                    expect(childATag.href).toBe(childATagInfo.href)
+
+                })
+            },
+            {
+                timeout: 3000,
+                interval: 50,
+            }
+        )
     })
 })
