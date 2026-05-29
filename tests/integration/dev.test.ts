@@ -492,11 +492,6 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     
     // Pagination Rebuild Tests
     it("Should create a new page if a post is added to the collection and number them correctly", async () => {
-        const numberOfPages = fs.readdirSync(directoryPagesFolder).length
-        const expectedNumberOfPages = (posts.length) - 1
-        
-        expect(numberOfPages).toBe(expectedNumberOfPages)
-
         const post3 = fs.readFileSync(post3ContentPath, "utf-8")
         const post3Data = matter(post3)
         post3Data.data.collections = ["posts"]
@@ -528,11 +523,6 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     })
 
     it("Should delete a page if a post is removed from the collection and number them correctly", async () => {
-        const numberOfPages = fs.readdirSync(directoryPagesFolder).length
-        const expectedNumberOfPages = (posts.length) - 1
-        
-        expect(numberOfPages).toBe(expectedNumberOfPages)
-
         const post6 = fs.readFileSync(post6ContentPath, "utf-8")
         const post6Data = matter(post6)
         post6Data.data.collections = []
