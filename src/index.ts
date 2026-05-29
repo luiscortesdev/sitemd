@@ -15,11 +15,13 @@ program
 
 program
     .command("build")
+    .option("--debug", "Enable debug logs.")
     .description("Builds your project into a ready to deploy static site.")
     .action(build)
 
 program
     .command("dev")
+    .option("--debug", "Enable debug logs.")
     .description("Starts up a development server to see your changes in real-time.")
     .action(dev)
 
