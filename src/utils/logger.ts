@@ -1,0 +1,27 @@
+let isDebugMode: boolean = false
+
+export function setDebugMode(state: boolean) {
+    isDebugMode = state
+}
+
+export const logger = {
+    info(args: any[]) {
+        console.log(...args)
+    },
+    
+    notice(args: any[]) {
+        console.log("❗ ", ...args)
+    },
+
+    success(args: any[]) {
+        console.log("✅ ", ...args)
+    },
+
+    warning(args: any[]) {
+        console.log("⚠️ ", ...args)
+    },
+
+    error(args: any[]) {
+        console.log("🚨 ", ...args)
+    },
+}
