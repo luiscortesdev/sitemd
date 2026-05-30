@@ -27,6 +27,10 @@ export const logger = {
         console.log("🚨 ", ...args)
     },
 
+    process(args: any[]) {
+        console.log("🛠️ ", ...args)
+    },
+
     debug(args: any[]) {
         if (isDebugMode) {
             console.log("[DEBUG] ", ...args)
