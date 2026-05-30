@@ -1,6 +1,6 @@
 import chokidar from "chokidar"
 
-import { loadConfig } from "../config/config.js"
+import { loadConfig } from "../config/index.js"
 import { logger } from "../utils/index.js"
 
 export async function watchFiles(onChange: () => Promise<void>, onDeletion: (path: string) => Promise<void>) {
