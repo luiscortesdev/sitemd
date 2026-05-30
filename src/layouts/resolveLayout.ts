@@ -1,6 +1,7 @@
 import fs from "fs/promises"
 import path from "path"
-import chalk from "chalk"
+
+import { logger } from "../utils/index.js"
 
 export async function resolveLayout(layoutName: string, userLayoutsDir: string, themeLayoutsDir: string): Promise<string> {
     const userLayout = path.join(userLayoutsDir, layoutName)
@@ -14,8 +15,10 @@ export async function resolveLayout(layoutName: string, userLayoutsDir: string, 
             await fs.access(themeLayout)
             return themeLayout
         } catch {
-            const noLayoutErrorMessage = chalk.redBright(`COULD NOT RESOLVE LAYOUT ${layoutName}.\n`) + chalk.blueBright(`CHECKED ${userLayout} AND ${themeLayout}.`)
-            throw new Error(noLayoutErrorMessage)
+            logger.error(`COULD NOT RESOLVE LAYOUT ${layoutName}.\n`)
+            logger.info(`CHECKED ${userLayout} AND ${themeLayout}.`)
+
+            throw new Error(`COULD NOT RESOLVE LAYOUT ${layoutName}`)
         }
     }
 }
