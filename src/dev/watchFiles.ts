@@ -1,6 +1,7 @@
 import chokidar from "chokidar"
 
 import { loadConfig } from "../config/config.js"
+import { logger } from "../utils/index.js"
 
 export async function watchFiles(onChange: () => Promise<void>, onDeletion: (path: string) => Promise<void>) {
     return new Promise(async (resolve) => {
@@ -17,12 +18,12 @@ export async function watchFiles(onChange: () => Promise<void>, onDeletion: (pat
         )
 
         watcher.on("unlink", async (path) => {
-            console.log("A FILE HAS BEEN DELETED!")
+            logger.debug("A FILE HAS BEEN DELETED!")
             await onDeletion(path)
         })
 
         watcher.on("all", async (event, changedPath) => {
-            console.log(`[CHOKIDAR] Event: '${event}' on file: ${changedPath}`)
+            logger.debug(`[CHOKIDAR] EVENT: '${event}' ON FILE: ${changedPath}`)
             await onChange()
         })
 
