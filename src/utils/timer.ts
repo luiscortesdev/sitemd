@@ -1,4 +1,6 @@
 import chalk from "chalk"
+import { logger } from "./logger.js"
+
 import type { TimerLabels } from "./utils.types.js"
 
 export function timer(label: TimerLabels, start: number) {

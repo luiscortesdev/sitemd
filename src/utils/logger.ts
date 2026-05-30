@@ -1,3 +1,5 @@
+import chalk from "chalk"
+
 let isDebugMode: boolean = false
 
 export function setDebugMode(state: boolean) {
@@ -8,27 +10,27 @@ export function setDebugMode(state: boolean) {
 
 export const logger = {
     info(args: any[]) {
-        console.log(...args)
+        console.log(chalk.cyanBright(...args))
     },
     
     notice(args: any[]) {
-        console.log("❗ ", ...args)
+        console.log(chalk.magentaBright.bold("❗ ", ...args))
     },
 
     success(args: any[]) {
-        console.log("✅ ", ...args)
+        console.log(chalk.greenBright.bold("✅ ", ...args))
     },
 
     warning(args: any[]) {
-        console.log("⚠️ ", ...args)
+        console.log(chalk.yellowBright.bold("⚠️ ", ...args))
     },
 
     error(args: any[]) {
-        console.log("🚨 ", ...args)
+        console.log(chalk.redBright.bold("🚨 ", ...args))
     },
 
     process(args: any[]) {
-        console.log("🛠️ ", ...args)
+        console.log(chalk.cyanBright.bold("🛠️ ", ...args))
     },
 
     debug(args: any[]) {
