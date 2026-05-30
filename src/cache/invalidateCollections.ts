@@ -1,4 +1,4 @@
-import { areStringArraysEqual } from "../utils/comparisons.js";
+import { areStringArraysEqual, logger } from "../utils/index.js";
 
 import type { SiteMDCache } from "./index.js";
 import type { CollectionsGraph } from "../collections/index.js";
@@ -40,8 +40,8 @@ function getChangedPageCollections(cache: SiteMDCache, collectionsGraph: Collect
         if (!newCollection) continue
 
         if (!oldCollection || !areStringArraysEqual(oldCollection, newCollection)) {
-            console.log("CACHED COLLECTION: ", cachedCollections[key])
-            console.log("NEW COLLECTION", collectionsGraph[key])
+            logger.debug("CACHED COLLECTION: ", cachedCollections[key])
+            logger.debug("NEW COLLECTION", collectionsGraph[key])
 
             changedPageCollections.add(key)
         }
@@ -54,8 +54,8 @@ function getChangedPageCollections(cache: SiteMDCache, collectionsGraph: Collect
         if (!oldCollection) continue
 
         if (!newCollection || !areStringArraysEqual(oldCollection, newCollection)) {
-            console.log("CACHED COLLECTION: ", cachedCollections[key])
-            console.log("NEW COLLECTION", collectionsGraph[key])
+            logger.debug("CACHED COLLECTION: ", cachedCollections[key])
+            logger.debug("NEW COLLECTION", collectionsGraph[key])
 
             changedPageCollections.add(key)
         }
@@ -73,7 +73,7 @@ export function invalidateCollections(
     const layoutsWithChangedCollections: string[] = []
     const collectionsWithChangedPages = getCollectionsWithChangedPages(cache, pages, collectionsGraph)
 
-    console.log("CHANGED COLLECTIONS", changedCollections)
+    logger.debug("CHANGED COLLECTIONS", changedCollections)
 
     for (const page of pages) {
         const data = page.data
