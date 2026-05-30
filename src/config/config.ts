@@ -1,9 +1,9 @@
 import path from "path"
 import fs from "fs/promises"
-import chalk from "chalk"
 
 import { pathToFileURL } from "url"
 import { ConfigSchema, DevConfigSchema } from "./schema.js"
+import { logger } from "../utils/index.js"
 
 import type { UserConfig, SiteMDConfig } from "./config.types.js"
 
@@ -14,14 +14,17 @@ export async function loadConfig(root=process.cwd()): Promise<SiteMDConfig> {
 
     let rawConfig: UserConfig
 
+    // Ensure the config exists
     try {
         await fs.access(configPath)
 
         const imported = await import(pathToFileURL(configPath).href)
         rawConfig = imported.default ?? imported
     } catch (err) {
-        const errorMessage = chalk.bold.red(`❌ Failed to load ${configPath}\n`) + chalk.blueBright("Make sure it exists and exports a default config object.")
-        throw new Error(errorMessage)
+        logger.error(`FAILED TO LOAD CONFIG AT ${configPath}.\n`)
+        logger.notice("MAKE SURE IT EXISTS AND EXPORTS A DEFAULT CONFIG OBJECT.")
+        
+        throw new Error(`FAILED TO LOAD CONFIG AT ${configPath}`)
     }
 
     const parsedConfig = ConfigSchema.parse(rawConfig)
@@ -41,8 +44,10 @@ export async function saveConfig(root=process.cwd(), config: SiteMDConfig): Prom
     try {
         await fs.access(configPath)
     } catch (err) {
-        const errorMessage = chalk.bold.red(`❌ Failed to load ${configPath}\n`) + chalk.blueBright("Make sure it exists and exports a default config object.")
-        throw new Error(errorMessage)
+        logger.error(`FAILED TO LOAD CONFIG AT ${configPath}.\n`)
+        logger.notice("MAKE SURE IT EXISTS AND EXPORTS A DEFAULT CONFIG OBJECT.")
+        
+        throw new Error(`FAILED TO LOAD CONFIG AT ${configPath}`)
     }
 
     const configObject = JSON.stringify(config, null, 4)
