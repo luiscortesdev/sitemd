@@ -1,24 +1,31 @@
 import fsSync from "fs"
 import path from "path"
-import chalk from "chalk"
 
 import { initTheme } from "./initTheme.js"
 import { initConfig } from "./initConfig.js"
 import { initFolders } from "./initFolders.js"
+import { logger } from "../utils/index.js"
 
 export async function runInit(options: { theme: string }) {
     const root = process.cwd()
 
     if (fsSync.existsSync(path.join(root, "/layouts")) && fsSync.existsSync(path.join(root, "/public")) && fsSync.existsSync(path.join(root, "/content")) && fsSync.existsSync(path.join(root, "/theme")) && fsSync.existsSync(path.join(root, "sitemd.config.js"))) {
-        console.log(chalk.yellowBright("🚨 PROJECT IS ALREADY INTIALIZED!"))
+        logger.notice("PROJECT IS ALREADY INTIALIZED!")
         return
     }
 
-    console.log(chalk.blue("INITIALIZING PROJECT..."))
+    logger.process("INITIALIZING PROJECT...")
     
-    await initFolders(["layouts", "public", "content"])
-    await initConfig()
-    await initTheme(options.theme)
+    try {
+        await initFolders(["layouts", "public", "content"])
+        await initConfig()
+        await initTheme(options.theme)
+    } catch (error) {
+        if (error instanceof Error) {
+            logger.error(error.message)
+        }
+        process.exit(1)
+    }
 
-    console.log(chalk.greenBright("✅ PROJECT INITIALIZED!"))
+    logger.success("PROJECT INITIALIZED!")
 }
