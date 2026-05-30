@@ -5,6 +5,7 @@ import { JSDOM } from "jsdom"
 import matter from "gray-matter"
 
 import { runDev } from "../../src/dev/runDev"
+import { setDebugMode} from "../../src/utils/index"
 
 describe("SiteMD Dev Server, Live Reload, and Caching", () => {
     const originalDir = process.cwd()
@@ -99,6 +100,8 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
         await new Promise(resolve => setTimeout(resolve, 1000))
 
         process.chdir(devFixturePath)
+        
+        setDebugMode(true)
 
         const instances = await runDev()
         devServer = instances.server
