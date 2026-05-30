@@ -2,6 +2,8 @@ import fs from "fs/promises"
 import path from "path"
 import { createServer } from "http"
 
+import { logger } from "../utils/index.js"
+
 export async function startServer(outDir: string, port = 3000) {
 
     const server = createServer(async (req, res) => {
@@ -24,7 +26,7 @@ export async function startServer(outDir: string, port = 3000) {
     })
 
     server.listen(port, () => {
-        console.log(`Dev server running at http://localhost:${port}`)
+        logger.info(`DEV SERVER RUNNING AT http://localhost:${port}`)
     })
 
     return server
