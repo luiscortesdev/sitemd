@@ -9,31 +9,31 @@ export function setDebugMode(state: boolean) {
 }
 
 export const logger = {
-    info(args: any[]) {
+    info(...args: any[]) {
         console.log(chalk.cyanBright(...args))
     },
     
-    notice(args: any[]) {
+    notice(...args: any[]) {
         console.log(chalk.magentaBright.bold("❗ ", ...args))
     },
 
-    success(args: any[]) {
+    success(...args: any[]) {
         console.log(chalk.greenBright.bold("✅ ", ...args))
     },
 
-    warning(args: any[]) {
+    warning(...args: any[]) {
         console.log(chalk.yellowBright.bold("⚠️ ", ...args))
     },
 
-    error(args: any[]) {
+    error(...args: any[]) {
         console.log(chalk.redBright.bold("🚨 ", ...args))
     },
 
-    process(args: any[]) {
+    process(...args: any[]) {
         console.log(chalk.cyanBright.bold("🛠️ ", ...args))
     },
 
-    debug(args: any[]) {
+    debug(...args: any[]) {
         if (isDebugMode) {
             console.log("[DEBUG] ", ...args)
         }

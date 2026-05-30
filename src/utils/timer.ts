@@ -9,6 +9,8 @@ export function timer(label: TimerLabels, start: number) {
     if (label === "Build") {
         const buildMessage = chalk.greenBright(`✅ Built project in ${ms.toFixed(1)}ms`)
         console.log(buildMessage)
+
+        logger.success(`✅ Built project in ${ms.toFixed(1)}ms`)
     }
 
     if (label === "Reload") {
