@@ -5,7 +5,7 @@ import inquirer from "inquirer";
 import { fileURLToPath } from "url";
 
 import { loadConfig, saveConfig } from "../config/index.js";
-import { clearFolder } from "../utils/index.js";
+import { clearFolder, logger } from "../utils/index.js";
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)

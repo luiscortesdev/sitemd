@@ -3,7 +3,7 @@ import chalk from "chalk"
 let isDebugMode: boolean = false
 
 export function setDebugMode(state: boolean) {
-    console.log("SET DEBUG MODE TO ", state)
+    console.log(chalk.green("SET DEBUG MODE TO ", state))
 
     isDebugMode = state
 }
@@ -14,7 +14,7 @@ export const logger = {
     },
     
     notice(...args: any[]) {
-        console.log(chalk.magentaBright.bold("❗ ", ...args))
+        console.log(chalk.magentaBright.bold("🚨 ", ...args))
     },
 
     success(...args: any[]) {
@@ -26,7 +26,7 @@ export const logger = {
     },
 
     error(...args: any[]) {
-        console.log(chalk.redBright.bold("🚨 ", ...args))
+        console.log(chalk.redBright.bold("❌ ", ...args))
     },
 
     process(...args: any[]) {
