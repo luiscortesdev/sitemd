@@ -2,6 +2,7 @@ import path from "path"
 import fs from "fs/promises"
 
 import { getLayoutParent } from "./getLayoutParent.js"
+import { logger } from "../utils/index.js"
 
 import type { LayoutMap } from "./layouts.types.js"
 
@@ -9,6 +10,8 @@ export async function buildLayoutGraph(layoutsDir: string, themeLayoutsDir: stri
     const graph: LayoutMap = new Map()
     const sources = new Map<string, string>() // layout: absolute path
 
+    // go through theme and user layout directories and add each layout to the map
+    // user layouts take priority over theme layouts. each layout name must be unique
     async function collect(dir: string) {
         try {
             for (const file of await fs.readdir(dir)) {
@@ -19,7 +22,7 @@ export async function buildLayoutGraph(layoutsDir: string, themeLayoutsDir: stri
                 }
             }
         } catch {
-            console.error(`Could not collect ${dir} in layout graph`)
+            logger.error(`INTERNAL ERROR: COULD NOT COLLECT ${dir} IN LAYOUT GRAPH`)
         }
     }
 
@@ -35,7 +38,7 @@ export async function buildLayoutGraph(layoutsDir: string, themeLayoutsDir: stri
         if (!filePath) return []
 
         const parent = await getLayoutParent(filePath)
-        console.log("PARENT OF", name, " IS ", parent)
+        logger.debug("PARENT OF ", name, " IS ", parent)
         if (!parent) return []
 
         return [
