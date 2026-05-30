@@ -4,6 +4,7 @@ import fs from "fs/promises"
 import { loadCache, saveCache } from "../cache/cache.js"
 import { loadConfig } from "../config/config.js"
 import { outputExists } from "../utils/fs.js"
+import { logger } from "../utils/index.js"
 
 export async function validateCache() {
     const root = process.cwd()
@@ -21,7 +22,7 @@ export async function validateCache() {
         try {
             await fs.access(file)
         } catch {
-            console.log(`${file} NO LONGER EXISTS IN USER'S PROJECT. DELETING FROM CACHE...`)
+            logger.debug(`${file} NO LONGER EXISTS IN USER'S PROJECT. DELETING FROM CACHE...`)
                 
             delete cache.pages[file]
         }

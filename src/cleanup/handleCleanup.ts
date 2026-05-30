@@ -3,6 +3,7 @@ import PATH from "path"
 import { loadConfig } from "../config/index.js"
 import { deleteCache } from "./deleteCache.js"
 import { deleteOutput } from "./deleteOutput.js"
+import { logger } from "../utils/index.js"
 
 export async function handleCleanup(path: string) {
     const root = process.cwd()
@@ -16,7 +17,7 @@ export async function handleCleanup(path: string) {
     const fullPath = PATH.join(root, path)
 
     if (!topLevelDir || !secondLevelDir || !fileName) {
-        console.log(`${fullPath} IS NOT A VALID PATH!`)
+        logger.error(`INTERNAL ERROR DURING CLEANUP: ${fullPath} IS NOT A VALID PATH TO BE DELETED IN OUTPUT!`)
         return
     }
     
