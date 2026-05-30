@@ -4,7 +4,7 @@ import { buildSite } from "../build/index.js"
 import { handleCleanup, validateCache } from "../cleanup/index.js"
 import { startServer, watchFiles, attachLiveReload } from "../dev/index.js"
 import { loadConfig } from "../config/index.js"
-import { timer, clearFolder } from "../utils/index.js"
+import { timer, clearFolder, logger } from "../utils/index.js"
 
 export async function runDev() {
     const config = await loadConfig()
@@ -29,7 +29,7 @@ export async function runDev() {
     const watcher = await watchFiles(
         async () => {
             if (isBuilding) {
-                console.log("⏳ BUILD ALREADY IN PROGRESS, QUEUEING...")
+                logger.notice("BUILD ALREADY IN PROGRESS, QUEUEING...")
                 
                 buildPending = true
                 return
@@ -50,7 +50,7 @@ export async function runDev() {
                     reload()
                 } catch (error) {
 
-                    console.error("❌ BUILD FAILED DURING RELOAD WITH ERROR:", error);
+                    logger.error("BUILD FAILED DURING RELOAD WITH ERROR:", error);
                 }
             } while (buildPending)
 
@@ -65,5 +65,6 @@ export async function runDev() {
             timer("Cleanup", cleanupStart)
         }
     )
+    
     return { server, watcher }
 }
