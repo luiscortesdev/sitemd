@@ -1,6 +1,8 @@
 let isDebugMode: boolean = false
 
 export function setDebugMode(state: boolean) {
+    console.log("SET DEBUG MODE TO ", state)
+
     isDebugMode = state
 }
 
