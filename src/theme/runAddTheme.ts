@@ -1,6 +1,5 @@
 import fs from "fs/promises"
 import path from "path";
-import chalk from "chalk";
 import inquirer from "inquirer";
 import { fileURLToPath } from "url";
 
@@ -20,7 +19,7 @@ export async function runAddTheme(theme: string) {
         await fs.access(requestedThemePath)
         
     } catch {
-        console.log(chalk.redBright(`❌ COULD NOT FIND ${theme} THEME. ENSURE IT EXISTS!`))
+        logger.error(`COULD NOT FIND ${theme} THEME. ENSURE IT EXISTS!`)
         return
     }
 
@@ -48,8 +47,8 @@ export async function runAddTheme(theme: string) {
 
             await saveConfig(root, config)
 
-            console.log(chalk.greenBright(`✅ SUCESSFULLY ADDED THE ${theme} THEME TO YOUR PROJECT!`))
-            console.log(chalk.blueBright("THE CONTENT FOLDER WAS KEPT IN THE THEME FOLDER TO PREVENT CONTENT LOSS!"))
+            logger.success(`SUCESSFULLY ADDED THE ${theme} THEME TO YOUR PROJECT!`)
+            logger.info("THE CONTENT FOLDER WAS KEPT IN THE THEME FOLDER TO PREVENT CONTENT LOSS!")
         }
     })
 }
