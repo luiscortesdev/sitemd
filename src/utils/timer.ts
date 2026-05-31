@@ -10,7 +10,7 @@ export function timer(label: TimerLabels, start: number) {
     }
 
     if (label === "Reload") {
-        logger.process(`Rebuilt project in ${ms.toFixed(1)}ms`)
+        logger.success(`Rebuilt project in ${ms.toFixed(1)}ms`)
     }
 
     if (label === "Cleanup") {

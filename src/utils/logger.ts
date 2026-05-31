@@ -30,7 +30,7 @@ export const logger = {
     },
 
     process(...args: any[]) {
-        console.log(chalk.cyanBright.bold("🛠️ ", ...args))
+        console.log(chalk.blueBright.bold("🛠️ ", ...args))
     },
 
     debug(...args: any[]) {
