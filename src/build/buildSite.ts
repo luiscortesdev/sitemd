@@ -106,10 +106,8 @@ export async function buildSite({ dev }: { dev: boolean }) {
     const collectionsGraph = await buildCollectionsGraph(parsedPages)
     logger.debug("COLLECTIONS GRAPH FOR CACHING: ", collectionsGraph)
 
-    const invalidCollections = invalidateCollections(cache, parsedPages, collectionsGraph)
-    const layoutsWithChangedCollections = invalidCollections.layoutsWithChangedCollections
-    const changedCollections = invalidCollections.changedCollections
-    const collectionsWithChangedPages = invalidCollections.collectionsWithChangedPages
+    
+    const { layoutsWithChangedCollections, changedCollections, collectionsWithChangedPages } = invalidateCollections(cache, parsedPages, collectionsGraph)
 
     logger.debug("INVALID LAYOUT COLLECTIONS: ", layoutsWithChangedCollections)
     logger.debug("INVALIDATED LAYOUTS: ", invalidatedLayouts)
