@@ -1,12 +1,13 @@
 import path from "path"
 import fs from "fs/promises"
+import util from "util"
 
 import { loadConfig } from "../config/index.js";
 import { parsePage, scanDir } from "../content/index.js"
 import { buildPage } from "./buildPage.js"
 import { copyPublic } from "./copyPublic.js"
 import { loadCache, saveCache } from "../cache/index.js"
-import { hashContent, outputExists, clearFolder } from "../utils/index.js"
+import { hashContent, outputExists, clearFolder, logger } from "../utils/index.js"
 import { buildLayoutGraph, resolveLayout } from "../layouts/index.js"
 import { invalidateLayoutCascade, invalidateCollections } from "../cache/index.js"
 import { buildCollections, buildCollectionsGraph } from "../collections/index.js"
@@ -80,11 +81,11 @@ export async function buildSite({ dev }: { dev: boolean }) {
         // Only reused cached parse if we are in dev mode
         if (cached && cached.hash === hash && dev) {
             data = cached.data
-            console.log("SKIPPED REBUILDING PAGE: ", page)
+            logger.debug("SKIPPED REBUILDING PAGE: ", page)
             html = cached.html
         } else {
             const rawData = (await parsePage(page.absolutePath))
-            console.log("REBUILDING PAGE: ", page)
+            logger.debug("REBUILDING PAGE: ", page)
             data = rawData.data
             html = rawData.html
         }
@@ -97,20 +98,22 @@ export async function buildSite({ dev }: { dev: boolean }) {
         })
     }
 
-    console.dir(parsedPages, { depth: null })
+    logger.debug("FULL PARSED PAGES OBJECT: ", util.inspect(parsedPages, { depth: null, colors: true }))
 
     const collections = await buildCollections(parsedPages)
-    console.log("COLLECTIONS: ", collections)
+    logger.debug("COLLECTIONS FOR BUILDING PAGE: ", collections)
+
     const collectionsGraph = await buildCollectionsGraph(parsedPages)
-    console.log("COLLECTIONS GRAPH: ", collectionsGraph)
+    logger.debug("COLLECTIONS GRAPH FOR CACHING: ", collectionsGraph)
+
     const invalidCollections = invalidateCollections(cache, parsedPages, collectionsGraph)
     const layoutsWithChangedCollections = invalidCollections.layoutsWithChangedCollections
     const changedCollections = invalidCollections.changedCollections
     const collectionsWithChangedPages = invalidCollections.collectionsWithChangedPages
 
-    console.log("INVALID LAYOUT COLLECTIONS: ", layoutsWithChangedCollections)
-    console.log("INVALIDATED LAYOUTS: ", invalidatedLayouts)
-    console.log("INVALID PAGES: ",  collectionsWithChangedPages)
+    logger.debug("INVALID LAYOUT COLLECTIONS: ", layoutsWithChangedCollections)
+    logger.debug("INVALIDATED LAYOUTS: ", invalidatedLayouts)
+    logger.debug("INVALID PAGES: ",  collectionsWithChangedPages)
 
     for (const {page, data, html, hash} of parsedPages) {
 
@@ -131,7 +134,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
         ) {
             // Page's current hash matches cached hash. Therefore, the file 
             // has not been changed and we don't need to rebuild it.
-            console.log("SKIPPED ", page)
+            logger.debug("SKIPPED BUILDING PAGE: ", page)
             
             continue
         }
@@ -149,7 +152,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
         const safeRoute = page.route.replace(/^\//, "")
 
         if (data.paginate) {
-            console.log("BUILDING PAGINATED PAGE: ", page)
+            logger.debug("BUILDING PAGINATED PAGE: ", page)
             const paginatedOutputs = await buildPaginatedPages(page, data, html, collections)
             if (!paginatedOutputs || paginatedOutputs.length === 0) continue
             
