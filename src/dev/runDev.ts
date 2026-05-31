@@ -42,6 +42,7 @@ export async function runDev() {
 
                 try {
                     const reloadBuildStart = performance.now()
+                    logger.process("CHANGED DETECTED. REBUILDING...")
 
                     await buildSite({ dev: true })
 
@@ -65,6 +66,6 @@ export async function runDev() {
             timer("Cleanup", cleanupStart)
         }
     )
-    
+
     return { server, watcher }
 }

@@ -14,7 +14,7 @@ export const logger = {
     },
     
     notice(...args: any[]) {
-        console.log(chalk.magentaBright.bold("🚨 ", ...args))
+        console.log(chalk.whiteBright.bold("🚨 ", ...args))
     },
 
     success(...args: any[]) {
