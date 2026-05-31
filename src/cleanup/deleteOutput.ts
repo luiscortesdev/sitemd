@@ -2,7 +2,7 @@ import path from "path"
 import fs from "fs/promises"
 
 import { loadConfig } from "../config/index.js";
-import { directoryEmpty } from "../utils/index.js";
+import { directoryEmpty, logger } from "../utils/index.js";
 
 export async function deleteOutput(relativePath: string) {
     const config = await loadConfig()
@@ -16,7 +16,7 @@ export async function deleteOutput(relativePath: string) {
         if (pathSplit[1] === config.layoutsDir || pathSplit[1] === config.publicDir) {
             pathWithoutTopLevelFolders = pathSplit.slice(2, pathSplit.length).join(path.sep)
         } else {
-            console.log("INVALID! DELETED FILE IS IN THE THEME FOLDER, BUT IS NOT IN LAYOUTS OR PUBLIC FOLDER!")
+            logger.error("INVALID PROJECT STRUCTURE! DELETED FILE IS IN THE THEME FOLDER, BUT IS NOT IN LAYOUTS OR PUBLIC FOLDER!")
         }
     } else {
         pathWithoutTopLevelFolders = pathSplit.slice(1, pathSplit.length).join(path.sep)
@@ -40,10 +40,10 @@ export async function deleteOutput(relativePath: string) {
                 await fs.rmdir(outputPathParentFolder)
             } 
         } catch {
-            console.log(`INTERNAL ERROR: COULD NOT REMOVE ${outputPathParentFolder}`)
+            logger.error(`INTERNAL ERROR: COULD NOT REMOVE ${outputPathParentFolder}`)
         }
     } catch {
-        console.log(`INTERNAL ERROR: OUTPUT PATH ${outputPath} DOES NOT EXIST!`)
+        logger.error(`INTERNAL ERROR: OUTPUT PATH ${outputPath} DOES NOT EXIST!`)
     }
     
 }   

@@ -1,8 +1,5 @@
-import chalk from "chalk"
-
 import { buildSite } from "../build/index.js"
-import { timer } from "../utils/index.js"
-import { setDebugMode } from "../utils/index.js"
+import { timer, logger, setDebugMode } from "../utils/index.js"
 
 export async function build(options: { debug: boolean }) {
     if (options.debug) {
@@ -11,7 +8,7 @@ export async function build(options: { debug: boolean }) {
         setDebugMode(false)
     }
 
-    console.log(chalk.blue("BUILDING SITE..."))
+    logger.process("BUILDING SITE...")
     const initialBuildStart = performance.now()
 
     await buildSite({ dev: false })

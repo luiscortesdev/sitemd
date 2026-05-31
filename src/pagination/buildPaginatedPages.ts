@@ -1,5 +1,6 @@
 import { buildPage } from "../build/index.js";
 import { paginate } from "./paginate.js";
+import { logger } from "../utils/index.js"
 
 import type { Collections } from "../collections/index.js";
 import type { PageData } from "../build/build.types.js";
@@ -16,7 +17,7 @@ export async function buildPaginatedPages(page: PageFile, data: PageData, html: 
     const outputs = []
 
     if (items.length === 0) {
-        console.log(`COLLECTION ${collectionName} COULD NOT BE PAGINATED! ENSURE THE COLLECTION EXISTS!`)
+        logger.error(`COLLECTION ${collectionName} COULD NOT BE PAGINATED! ENSURE THE COLLECTION EXISTS!`)
         
         return []
     }

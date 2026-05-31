@@ -1,3 +1,5 @@
+import { logger } from "../utils/index.js";
+
 import type { LayoutMap } from "../layouts/index.js";
 import type { SiteMDCache } from "./cache.types.js";
 
@@ -23,9 +25,8 @@ function getDependentLayouts(changed: string, graph: LayoutMap) {
 export function invalidateLayoutCascade(layout: string, graph: LayoutMap, cache: SiteMDCache): string[] {
     const affectedLayouts = getDependentLayouts(layout, graph)
 
-    console.log("AFFECTED LAYOUTS: ", affectedLayouts)
+    logger.debug(`AFFECTED LAYOUTS WHO WERE DEPENDENT ON THE CHANGED LAYOUT ${layout}: `, affectedLayouts)
     for (const page in cache.pages) {
-        console.log("CACHE PAGES PAGE LAYOUT", cache.pages[page]?.layout)
         if (cache.pages[page] && affectedLayouts.has(cache.pages[page].layout)) {
             delete cache.pages[page]
         }

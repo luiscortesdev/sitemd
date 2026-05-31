@@ -1,33 +1,39 @@
+import chalk from "chalk"
+
 let isDebugMode: boolean = false
 
 export function setDebugMode(state: boolean) {
-    console.log("SET DEBUG MODE TO ", state)
+    console.log(chalk.green("SET DEBUG MODE TO ", state))
 
     isDebugMode = state
 }
 
 export const logger = {
-    info(args: any[]) {
-        console.log(...args)
+    info(...args: any[]) {
+        console.log(chalk.cyanBright(...args))
     },
     
-    notice(args: any[]) {
-        console.log("❗ ", ...args)
+    notice(...args: any[]) {
+        console.log(chalk.whiteBright.bold("🚨 ", ...args))
     },
 
-    success(args: any[]) {
-        console.log("✅ ", ...args)
+    success(...args: any[]) {
+        console.log(chalk.greenBright.bold("✅ ", ...args))
     },
 
-    warning(args: any[]) {
-        console.log("⚠️ ", ...args)
+    warning(...args: any[]) {
+        console.log(chalk.yellowBright.bold("⚠️ ", ...args))
     },
 
-    error(args: any[]) {
-        console.log("🚨 ", ...args)
+    error(...args: any[]) {
+        console.log(chalk.redBright.bold("❌ ", ...args))
     },
 
-    debug(args: any[]) {
+    process(...args: any[]) {
+        console.log(chalk.blueBright.bold("🛠️ ", ...args))
+    },
+
+    debug(...args: any[]) {
         if (isDebugMode) {
             console.log("[DEBUG] ", ...args)
         }

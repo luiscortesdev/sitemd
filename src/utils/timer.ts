@@ -1,21 +1,19 @@
-import chalk from "chalk"
+import { logger } from "./logger.js"
+
 import type { TimerLabels } from "./utils.types.js"
 
 export function timer(label: TimerLabels, start: number) {
     const ms = performance.now() - start
 
     if (label === "Build") {
-        const buildMessage = chalk.greenBright(`✅ Built project in ${ms.toFixed(1)}ms`)
-        console.log(buildMessage)
+        logger.success(`Built project in ${ms.toFixed(1)}ms`)
     }
 
     if (label === "Reload") {
-        const reloadMessage = chalk.blueBright(`⚒️ Rebuilt project in ${ms.toFixed(1)}ms`)
-        console.log(reloadMessage)
+        logger.success(`Rebuilt project in ${ms.toFixed(1)}ms`)
     }
 
     if (label === "Cleanup") {
-        const cleanupMessage = chalk.yellowBright(`❗ Cleaned up file in ${ms.toFixed(1)}ms`)
-        console.log(cleanupMessage)
+        logger.process(`Cleaned up file in ${ms.toFixed(1)}ms`)
     }
 }

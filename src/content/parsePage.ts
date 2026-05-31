@@ -8,6 +8,7 @@ import matter from "gray-matter"
 import { unified } from 'unified'
 
 import { rehypeCustomAttributes } from '../plugins/index.js'
+import { logger } from '../utils/index.js'
 
 import type { Parsed } from '../build/index.js'
 
@@ -24,8 +25,8 @@ export async function parsePage(path: string): Promise<Parsed> {
 
     let { content, data } = matter(file)
 
-    console.log("Parsing:", path)
-    console.log("Frontmatter:", data)
+    logger.debug("PARSING: ", path)
+    logger.debug(`FRONTMATTER DATA FOR ${path}: `, data)
 
     const html = String(await processor.process(content))
     

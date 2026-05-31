@@ -1,11 +1,11 @@
-import fs from "fs/promises";
-import fsSync from "fs";
+import fs from "fs/promises"
+import fsSync from "fs"
 import path from "path"
-import chalk from "chalk";
-import { fileURLToPath } from "url";
+import chalk from "chalk"
+import { fileURLToPath } from "url"
 
-import { directoryEmpty } from "../utils/index.js";
-import { loadConfig, saveConfig } from "../config/index.js";
+import { loadConfig, saveConfig } from "../config/index.js"
+import { directoryEmpty, logger } from "../utils/index.js"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -15,18 +15,19 @@ export async function initTheme(theme: string) {
     const themeDir = path.join(__dirname, "../templates/themes", theme)
     const destinationDir = path.join(process.cwd(), config.themeDir)
     
-
     try {
         await fs.access(themeDir)
     } catch {
-        console.error(`${theme} DOES NOT EXIST IN ${themeDir}! PLEASE ENTER A VALID THEME! AN EMPTY THEME DIRECTORY HAS BEEN CREATED.`)
+        logger.error(`${theme} DOES NOT EXIST IN ${themeDir}! PLEASE ENTER A VALID THEME! AN EMPTY THEME DIRECTORY HAS BEEN CREATED.`)
         await fs.mkdir(destinationDir)
-        process.exit(1)
+        
+        throw new Error(`THEME ${theme} COULD NOT BE FOUND.`)
     }
 
     if (fsSync.existsSync(destinationDir)) {
-        console.error(chalk.redBright(`A THEME FOLDER ALREADY EXISTS AT ${destinationDir}!\n`) + chalk.blueBright(`RUN${chalk.cyan(" 'sitemd addtheme' ")}TO ADD A THEME TO AN EXISTING SITEMD PROJECT OR TO SWITCH THEMES.`))        
-        process.exit(1)
+        logger.error(`A THEME FOLDER ALREADY EXISTS AT ${destinationDir}!\n`, chalk.blueBright(`RUN 'sitemd addtheme' `), ` TO ADD A THEME TO AN EXISTING SITEMD PROJECT OR TO SWITCH THEMES.`)      
+
+        throw new Error("THEME FOLDER ALREADY EXISTS.")
     }
 
     await fs.cp(
@@ -41,8 +42,9 @@ export async function initTheme(theme: string) {
     
     if (fsSync.existsSync(contentPath)) {
         if (await directoryEmpty(userContentDir) === false) {
-            console.log(chalk.blueBright("THE THEME YOU ARE TRYING TO INITIALIZE HAS A DEFAULT CONTENT FOLDER.\n") + chalk.redBright("HOWEVER, YOUR PROJECT'S CONTENT FOLDER CONTAINS FILES."))
-            console.log(chalk.greenBright("TO PREVENT CONTENT LOSS, THE THEME'S CONTENT FOLDER HAS BEEN KEPT IN THE THEME FOLDER.\n"))
+            logger.warning("THE THEME YOU ARE TRYING TO INITIALIZE HAS A DEFAULT CONTENT FOLDER.\n")
+            logger.info("HOWEVER, YOUR PROJECT'S CONTENT FOLDER CONTAINS FILES.")
+            logger.notice("TO PREVENT CONTENT LOSS, THE THEME'S CONTENT FOLDER HAS BEEN KEPT IN THE THEME FOLDER.\n")
         }
 
         if (await directoryEmpty(userContentDir) === true) {
