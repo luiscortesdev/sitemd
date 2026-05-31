@@ -130,8 +130,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
             (data.paginate ? !changedCollections.has(data.paginate) && !collectionsWithChangedPages.has(data.paginate) : true) &&
             dev
         ) {
-            // Page's current hash matches cached hash. Therefore, the file 
-            // has not been changed and we don't need to rebuild it.
+            // If all conditions above passed, we can safely skip rebuilding this page.
             logger.debug("SKIPPED BUILDING PAGE: ", page)
             
             continue
