@@ -18,7 +18,7 @@ export async function scanDir(dir: string, baseDir: string): Promise<PageFile[]>
 
         if (entry.isFile() && entry.name.endsWith(".md")) {
             if (entry.name !== "index.md") {
-                throw new Error("Routes can only be defined with index.md")
+                throw new Error("ROUTES CAN ONLY BE DEFINED WITH index.md!")
             }
 
             const folderPath = path.dirname(fullPath)
