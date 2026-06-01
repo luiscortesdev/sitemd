@@ -82,6 +82,7 @@ export function invalidateCollections(
     for (const page of pages) {
         const data = page.data
         const pageUsedCollections: string[] = data.usesCollections ?? []
+
         const pageLayout = data.layout.endsWith(".njk") ? data.layout : data.layout + ".njk"
 
         pageUsedCollections.forEach(collection => {

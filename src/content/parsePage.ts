@@ -30,15 +30,22 @@ export async function parsePage(path: string): Promise<Parsed> {
 
     const html = String(await processor.process(content))
 
-    if (!data.layout || data.layout.length === 0) {
+    // ensure empty strings or data are set to default values.
+    if (!data.title|| data.title.trim().length === 0) {
+        data.title = "A SiteMD Page"
+    }
+    if (!data.description || data.description.trim().length === 0) {
+        data.description = "A page generated using SiteMD."
+    }
+    if (!data.layout || data.layout.trim().length === 0) {
         logger.warning(`THE LAYOUT PROPERTY IN ${path} IS EMPTY. THE FRAMEWORK WILL INSTEAD USE default.njk LAYOUT.`)
+        data.layout = "default"
     }
     
-    // ensure empty strings or data are set to default values.
     const processedData = {
-        title: data.title || "A SiteMD Page",
-        description: data.description || "A page generated using SiteMD.",
-        layout: data.layout || "default.njk",
+        title: data.title,
+        description: data.description,
+        layout: data.layout,
         ...data,
     }
 

@@ -94,6 +94,8 @@ export async function buildSite({ dev }: { dev: boolean }) {
             html = rawData.html
         }
 
+        logger.debug(`PAGE DATA ${path}: `, util.inspect(data, {depth:null}))
+
         parsedPages.push({
             page,
             data,
@@ -121,7 +123,6 @@ export async function buildSite({ dev }: { dev: boolean }) {
     logger.debug("INVALID PAGES: ",  collectionsWithChangedPages)
 
     for (const {page, data, html, hash} of parsedPages) {
-
         const cached = cache.pages[page.absolutePath]
 
         const pageLayout = data.layout.endsWith(".njk") ? data.layout : data.layout + ".njk"
