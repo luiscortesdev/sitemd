@@ -29,10 +29,13 @@ export async function buildSite({ dev }: { dev: boolean }) {
     const themeDir = path.join(root, config.themeDir)
     const themeLayouts = path.join(themeDir, "layouts")
 
+    // Get every layout and it's parents
     const layoutGraph = await buildLayoutGraph(layoutsDir, themeLayouts)
 
     let changedLayouts: string[] = []
     let invalidatedLayouts: string[] = []
+
+    // Invalidate the layouts whose content have been edited
     for (const layout of layoutGraph.keys()) {
         const resolvedLayout = await resolveLayout(layout, layoutsDir, themeLayouts)
         const stat = await fs.stat(resolvedLayout)
@@ -46,6 +49,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
         }
     }
 
+    // Invalidate all of the dependent layouts of a base layout if it has been edited.
     for (const layout of changedLayouts) {
         const allInvalidLayouts = invalidateLayoutCascade(layout, layoutGraph, cache)
         for (const invalidLayout of allInvalidLayouts) {
