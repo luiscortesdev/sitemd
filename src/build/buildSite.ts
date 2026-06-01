@@ -82,7 +82,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
 
         let html = ""
         
-        // Only reused cached parse if we are in dev mode
+        // Only reused cached page parse if we are in dev mode
         if (cached && cached.hash === hash && dev) {
             data = cached.data
             logger.debug("SKIPPED REBUILDING PAGE: ", page)
@@ -104,12 +104,13 @@ export async function buildSite({ dev }: { dev: boolean }) {
 
     logger.debug("FULL PARSED PAGES OBJECT: ", util.inspect(parsedPages, { depth: null, colors: true }))
 
+    // Get the full page objects for the pages belonging to each collection
     const collections = await buildCollections(parsedPages)
     logger.debug("COLLECTIONS FOR BUILDING PAGE: ", collections)
 
+    // Get just the absolute path for the pages belonging to each collection
     const collectionsGraph = await buildCollectionsGraph(parsedPages)
     logger.debug("COLLECTIONS GRAPH FOR CACHING: ", collectionsGraph)
-
     
     const { layoutsWithChangedCollections, collectionsWithMemberChanges, collectionsWithChangedPages } = invalidateCollections(cache, parsedPages, collectionsGraph)
 

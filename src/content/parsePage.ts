@@ -30,10 +30,11 @@ export async function parsePage(path: string): Promise<Parsed> {
 
     const html = String(await processor.process(content))
     
+    // ensure empty strings or data are set to default values.
     const processedData = {
-        title: data.title ?? "A SiteMD Page",
-        description: data.description ?? "A page generated using SiteMD.",
-        layout: data.layout ?? "default.njk",
+        title: data.title || "A SiteMD Page",
+        description: data.description || "A page generated using SiteMD.",
+        layout: data.layout || "default.njk",
         ...data,
     }
 
