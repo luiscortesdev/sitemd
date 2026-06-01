@@ -30,7 +30,7 @@ export async function parsePage(path: string): Promise<Parsed> {
 
     const html = String(await processor.process(content))
 
-    if (data.layout && data.layout.length === 0) {
+    if (!data.layout || data.layout.length === 0) {
         logger.warning(`THE LAYOUT PROPERTY IN ${path} IS EMPTY. THE FRAMEWORK WILL INSTEAD USE default.njk LAYOUT.`)
     }
     
