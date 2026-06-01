@@ -14,19 +14,19 @@ export const logger = {
     },
     
     notice(...args: any[]) {
-        console.log(chalk.whiteBright.bold("🚨 ", ...args))
+        console.log(chalk.whiteBright.bold("\n", "🚨 ", ...args, "\n"))
     },
 
     success(...args: any[]) {
-        console.log(chalk.greenBright.bold("✅ ", ...args))
+        console.log(chalk.greenBright.bold("✅ ", ...args, "\n"))
     },
 
     warning(...args: any[]) {
-        console.log(chalk.yellowBright.bold("⚠️ ", ...args))
+        console.log(chalk.yellowBright.bold("\n", "⚠️ ", ...args, "\n"))
     },
 
     error(...args: any[]) {
-        console.log(chalk.redBright.bold("❌ ", ...args))
+        console.log(chalk.redBright.bold("\n", "❌ ", ...args, "\n"))
     },
 
     process(...args: any[]) {
@@ -35,7 +35,7 @@ export const logger = {
 
     debug(...args: any[]) {
         if (isDebugMode) {
-            console.log("[DEBUG] ", ...args)
+            console.log("[DEBUG] ", ...args, "\n")
         }
     },
 }
