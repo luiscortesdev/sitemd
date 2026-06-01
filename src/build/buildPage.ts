@@ -25,7 +25,7 @@ export async function buildPage(collections: Collections, data: PageData, html: 
     
     const env = createNunjucksEnvironment(root)
     
-    const layoutName = data.layout ?? "default"
+    const layoutName = data.layout || "default"
 
     const layout = layoutName.endsWith(".njk") ? layoutName : layoutName + ".njk"
 
