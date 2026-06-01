@@ -109,7 +109,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
         
         // Update our posts data
         await updatePostsCollection()
-    })
+    }, 5000)
 
     // Clean up dev server after tests
     afterAll(async () => {

@@ -47,7 +47,9 @@ export async function clearFolder(path: string) {
         return
     } catch (error) {
         if (error instanceof Error) {
-            throw new Error(`INTERNAL ERROR CLEARING FILES IN ${path}: ${error.message}`)
+            if ((error as any).code !== "ENOENT") {
+                throw new Error(`INTERNAL ERROR CLEARING FILES IN ${path}: ${error.message}`)
+            }
         } else {
             throw new Error(`UNKNOWN INTERNAL ERROR OCCURRED IN clearFolder(): ${error}`);
         }
