@@ -112,6 +112,8 @@ export async function buildSite({ dev }: { dev: boolean }) {
     const collectionsGraph = await buildCollectionsGraph(parsedPages)
     logger.debug("COLLECTIONS GRAPH FOR CACHING: ", collectionsGraph)
     
+    // Get layouts who are being used in pages with changed collections, collections whose member pages have changed, and collections whose
+    // pages have been directly edited.
     const { layoutsWithChangedCollections, collectionsWithMemberChanges, collectionsWithChangedPages } = invalidateCollections(cache, parsedPages, collectionsGraph)
 
     logger.debug("INVALID LAYOUT COLLECTIONS: ", layoutsWithChangedCollections)
