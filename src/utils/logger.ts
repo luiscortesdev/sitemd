@@ -3,8 +3,9 @@ import chalk from "chalk"
 let isDebugMode: boolean = false
 
 export function setDebugMode(state: boolean) {
-    console.log(chalk.green("SET DEBUG MODE TO ", state))
-
+    if (state === true)
+        console.log(chalk.green("SET DEBUG MODE TO ", state))
+    
     isDebugMode = state
 }
 

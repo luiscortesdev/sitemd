@@ -22,7 +22,7 @@ export async function buildLayoutGraph(layoutsDir: string, themeLayoutsDir: stri
                 }
             }
         } catch {
-            logger.error(`INTERNAL ERROR: COULD NOT COLLECT ${dir} IN LAYOUT GRAPH`)
+            throw new Error(`INTERNAL ERROR: COULD NOT COLLECT ${dir} IN LAYOUT GRAPH. ENSURE ${dir} EXISTS IN THE PROJECT.`)
         }
     }
 

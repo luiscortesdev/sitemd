@@ -29,10 +29,13 @@ export async function buildSite({ dev }: { dev: boolean }) {
     const themeDir = path.join(root, config.themeDir)
     const themeLayouts = path.join(themeDir, "layouts")
 
+    // Get every layout and it's parents
     const layoutGraph = await buildLayoutGraph(layoutsDir, themeLayouts)
 
     let changedLayouts: string[] = []
     let invalidatedLayouts: string[] = []
+
+    // Invalidate the layouts whose content have been edited
     for (const layout of layoutGraph.keys()) {
         const resolvedLayout = await resolveLayout(layout, layoutsDir, themeLayouts)
         const stat = await fs.stat(resolvedLayout)
@@ -46,6 +49,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
         }
     }
 
+    // Invalidate all of the dependent layouts of a base layout if it has been edited.
     for (const layout of changedLayouts) {
         const allInvalidLayouts = invalidateLayoutCascade(layout, layoutGraph, cache)
         for (const invalidLayout of allInvalidLayouts) {
@@ -78,7 +82,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
 
         let html = ""
         
-        // Only reused cached parse if we are in dev mode
+        // Only reused cached page parse if we are in dev mode
         if (cached && cached.hash === hash && dev) {
             data = cached.data
             logger.debug("SKIPPED REBUILDING PAGE: ", page)
@@ -100,13 +104,16 @@ export async function buildSite({ dev }: { dev: boolean }) {
 
     logger.debug("FULL PARSED PAGES OBJECT: ", util.inspect(parsedPages, { depth: null, colors: true }))
 
+    // Get the full page objects for the pages belonging to each collection
     const collections = await buildCollections(parsedPages)
     logger.debug("COLLECTIONS FOR BUILDING PAGE: ", collections)
 
+    // Get just the absolute path for the pages belonging to each collection
     const collectionsGraph = await buildCollectionsGraph(parsedPages)
     logger.debug("COLLECTIONS GRAPH FOR CACHING: ", collectionsGraph)
-
     
+    // Get layouts who are being used in pages with changed collections, collections whose member pages have changed, and collections whose
+    // pages have been directly edited.
     const { layoutsWithChangedCollections, collectionsWithMemberChanges, collectionsWithChangedPages } = invalidateCollections(cache, parsedPages, collectionsGraph)
 
     logger.debug("INVALID LAYOUT COLLECTIONS: ", layoutsWithChangedCollections)

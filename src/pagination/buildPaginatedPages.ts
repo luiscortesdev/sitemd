@@ -17,9 +17,7 @@ export async function buildPaginatedPages(page: PageFile, data: PageData, html: 
     const outputs = []
 
     if (items.length === 0) {
-        logger.error(`COLLECTION ${collectionName} COULD NOT BE PAGINATED! ENSURE THE COLLECTION EXISTS!`)
-        
-        return []
+        throw new Error(`COLLECTION ${collectionName} COULD NOT BE PAGINATED! ENSURE THE COLLECTION EXISTS!`)
     }
 
     const paginated = paginate(items, perPage)

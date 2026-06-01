@@ -1,8 +1,6 @@
 import fs from "fs/promises"
 import PATH from "path"
 
-import { logger } from "./logger.js"
-
 export async function outputExists(path: string) {
     try {
         await fs.access(path)
@@ -22,12 +20,10 @@ export async function directoryEmpty(path: string) {
         return entry == null
     } catch (error) {
         if (error instanceof Error) {
-            logger.error(`INTERNAL ERROR CHECKING ITEMS IN ${path}: ${error.message}`)
+            throw new Error(`INTERNAL ERROR CHECKING ITEMS IN ${path}: ${error.message}`)
         } else {
-            logger.error(`UNKNOWN INTERNAL ERROR OCCURRED IN directoryEmpty(): ${error}`);
+            throw new Error(`UNKNOWN INTERNAL ERROR OCCURRED IN directoryEmpty(): ${error}`);
         }
-        
-        return false
     }
 }
 
@@ -51,11 +47,11 @@ export async function clearFolder(path: string) {
         return
     } catch (error) {
         if (error instanceof Error) {
-            logger.error(`INTERNAL ERROR CLEARING FILES IN ${path}: ${error.message}`)
+            if ((error as any).code !== "ENOENT") {
+                throw new Error(`INTERNAL ERROR CLEARING FILES IN ${path}: ${error.message}`)
+            }
         } else {
-            logger.error(`UNKNOWN INTERNAL ERROR OCCURRED IN clearFolder(): ${error}`);
+            throw new Error(`UNKNOWN INTERNAL ERROR OCCURRED IN clearFolder(): ${error}`);
         }
-
-        return
     }
 }
