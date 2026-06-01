@@ -126,7 +126,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
             await outputExists(cached.outputDir) &&
             !invalidatedLayouts.includes(pageLayout) &&
             !layoutsWithChangedCollections.includes(pageLayout) &&
-            !(data?.usesCollections?.some((collection) => collectionsWithChangedPages.has(collection))) &&
+            !(data?.usesCollections?.some((collection) => collectionsWithChangedPages.has(collection) || collectionsWithMemberChanges.has(collection))) &&
             (data.paginate ? !collectionsWithMemberChanges.has(data.paginate) && !collectionsWithChangedPages.has(data.paginate) : true) &&
             dev
         ) {
