@@ -107,7 +107,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
     logger.debug("COLLECTIONS GRAPH FOR CACHING: ", collectionsGraph)
 
     
-    const { layoutsWithChangedCollections, changedCollections, collectionsWithChangedPages } = invalidateCollections(cache, parsedPages, collectionsGraph)
+    const { layoutsWithChangedCollections, collectionsWithMemberChanges, collectionsWithChangedPages } = invalidateCollections(cache, parsedPages, collectionsGraph)
 
     logger.debug("INVALID LAYOUT COLLECTIONS: ", layoutsWithChangedCollections)
     logger.debug("INVALIDATED LAYOUTS: ", invalidatedLayouts)
@@ -127,7 +127,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
             !invalidatedLayouts.includes(pageLayout) &&
             !layoutsWithChangedCollections.includes(pageLayout) &&
             !(data?.usesCollections?.some((collection) => collectionsWithChangedPages.has(collection))) &&
-            (data.paginate ? !changedCollections.has(data.paginate) && !collectionsWithChangedPages.has(data.paginate) : true) &&
+            (data.paginate ? !collectionsWithMemberChanges.has(data.paginate) && !collectionsWithChangedPages.has(data.paginate) : true) &&
             dev
         ) {
             // If all conditions above passed, we can safely skip rebuilding this page.

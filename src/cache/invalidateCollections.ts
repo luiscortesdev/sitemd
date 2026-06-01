@@ -28,7 +28,7 @@ function getCollectionsWithChangedPages(cache: SiteMDCache, parsedPages: ParsedP
     return collectionsWithChangedPages
 }
 
-function getChangedPageCollections(cache: SiteMDCache, collectionsGraph: CollectionsGraph): Set<string> {
+function getCollectionsWithMemberChanges(cache: SiteMDCache, collectionsGraph: CollectionsGraph): Set<string> {
     // Ensure that the pages that are a part of each collection are the same.
     // If a page was entirely deleted or an entirely new page was create, we want to make 
     // the collection that page belongs to as changed.
@@ -72,12 +72,12 @@ export function invalidateCollections(
     cache: SiteMDCache,
     pages: ParsedPages[],
     collectionsGraph: CollectionsGraph,
-): { changedCollections: Set<string>, layoutsWithChangedCollections: string[], collectionsWithChangedPages: Set<string> } {
-    const changedCollections = getChangedPageCollections(cache, collectionsGraph)
+): { collectionsWithMemberChanges: Set<string>, layoutsWithChangedCollections: string[], collectionsWithChangedPages: Set<string> } {
+    const collectionsWithMemberChanges = getCollectionsWithMemberChanges(cache, collectionsGraph)
     const layoutsWithChangedCollections: string[] = []
     const collectionsWithChangedPages = getCollectionsWithChangedPages(cache, pages, collectionsGraph)
 
-    logger.debug("CHANGED COLLECTIONS", changedCollections)
+    logger.debug("COLLECTIONS WITH MEMBER CHANGES", collectionsWithMemberChanges)
 
     for (const page of pages) {
         const data = page.data
@@ -85,11 +85,11 @@ export function invalidateCollections(
         const pageLayout = data.layout.endsWith(".njk") ? data.layout : data.layout + ".njk"
 
         pageUsedCollections.forEach(collection => {
-            if (changedCollections.has(collection)) {
+            if (collectionsWithMemberChanges.has(collection)) {
                 layoutsWithChangedCollections.push(pageLayout)
             }
         });
     }
 
-    return { changedCollections, layoutsWithChangedCollections, collectionsWithChangedPages }
+    return { collectionsWithMemberChanges, layoutsWithChangedCollections, collectionsWithChangedPages }
 }
