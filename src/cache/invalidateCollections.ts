@@ -29,6 +29,10 @@ function getCollectionsWithChangedPages(cache: SiteMDCache, parsedPages: ParsedP
 }
 
 function getChangedPageCollections(cache: SiteMDCache, collectionsGraph: CollectionsGraph): Set<string> {
+    // Ensure that the pages that are a part of each collection are the same.
+    // If a page was entirely deleted or an entirely new page was create, we want to make 
+    // the collection that page belongs to as changed.
+    
     const changedPageCollections = new Set<string>()
 
     const cachedCollections = cache.collections
