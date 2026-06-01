@@ -12,6 +12,14 @@ import { logger } from '../utils/index.js'
 
 import type { Parsed } from '../build/index.js'
 
+function ensureValidString(value: any, fallback: string) {
+    if (value && typeof value === typeof fallback && value.trim().length > 0) {
+        return value.trim()
+    } else {
+        return fallback
+    }
+}
+
 export async function parsePage(path: string): Promise<Parsed> {
     const processor = unified()
         .use(remarkParse)
@@ -29,24 +37,18 @@ export async function parsePage(path: string): Promise<Parsed> {
     logger.debug(`FRONTMATTER DATA FOR ${path}: `, data)
 
     const html = String(await processor.process(content))
-
-    // ensure empty strings or data are set to default values.
-    if (!data.title|| data.title.trim().length === 0) {
-        data.title = "A SiteMD Page"
-    }
-    if (!data.description || data.description.trim().length === 0) {
-        data.description = "A page generated using SiteMD."
-    }
+    
+    // warn user of empty layouts
     if (!data.layout || data.layout.trim().length === 0) {
         logger.warning(`THE LAYOUT PROPERTY IN ${path} IS EMPTY. THE FRAMEWORK WILL INSTEAD USE default.njk LAYOUT.`)
-        data.layout = "default"
     }
-    
+
+    // ensure empty strings or data are set to default values.    
     const processedData = {
-        title: data.title,
-        description: data.description,
-        layout: data.layout,
         ...data,
+        title: ensureValidString(data.title, "A SiteMD Page"),
+        description: ensureValidString(data.description, "A page generated using SiteMD."),
+        layout: ensureValidString(data.layout, "default"),
     }
 
     return {
