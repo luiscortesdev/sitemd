@@ -11,7 +11,7 @@ export function setDebugMode(state: boolean) {
 
 export const logger = {
     info(...args: any[]) {
-        console.log(chalk.cyanBright(...args))
+        console.log(chalk.whiteBright(...args))
     },
     
     notice(...args: any[]) {
