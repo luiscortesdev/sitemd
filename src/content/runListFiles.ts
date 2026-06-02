@@ -12,5 +12,5 @@ export async function runListFiles() {
 
     let files = await scanDir(path.resolve(root, contentDir), path.resolve(root, contentDir))
     logger.success("SCANNED FILES SUCCESSFULLY")
-    logger.info(util.inspect(files, { depth: null }))
+    logger.info(`FILES IN CONTENT DIRECTORY ${path.resolve(root, contentDir)}:\n\n`, util.inspect(files, { depth: null }))
 }
