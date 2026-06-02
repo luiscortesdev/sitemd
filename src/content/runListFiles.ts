@@ -1,4 +1,5 @@
 import path from "path";
+import util from "util"
 
 import { scanDir } from "../content/index.js"
 import { loadConfig } from "../config/index.js";
@@ -11,5 +12,5 @@ export async function runListFiles() {
 
     let files = await scanDir(path.resolve(root, contentDir), path.resolve(root, contentDir))
     logger.success("SCANNED FILES SUCCESSFULLY")
-    logger.info(files)
+    logger.info(util.inspect(files, { depth: null }))
 }
