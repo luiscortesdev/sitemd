@@ -14,7 +14,7 @@ export async function buildLayoutGraph(layoutsDir: string, themeLayoutsDir: stri
     // user layouts take priority over theme layouts. each layout name must be unique
     async function collect(dir: string) {
         try {
-            for (const file of await fs.readdir(dir)) {
+            for (const file of await fs.readdir(dir, { recursive: true })) {
                 if (!file.endsWith(".njk")) continue
 
                 if (!sources.has(file)) {
