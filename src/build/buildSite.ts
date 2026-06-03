@@ -7,7 +7,7 @@ import { parsePage, scanDir } from "../content/index.js"
 import { buildPage } from "./buildPage.js"
 import { copyPublic } from "./copyPublic.js"
 import { loadCache, saveCache } from "../cache/index.js"
-import { hashContent, outputExists, clearFolder, logger } from "../utils/index.js"
+import { hashContent, outputExists, clearFolder, logger, normalizePath } from "../utils/index.js"
 import { buildLayoutGraph, resolveLayout } from "../layouts/index.js"
 import { invalidateLayoutCascade, invalidateCollections } from "../cache/index.js"
 import { buildCollections, buildCollectionsGraph } from "../collections/index.js"
@@ -199,7 +199,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
                 cache.pages[page.absolutePath] = {
                     hash,
                     layout: data.layout,
-                    outputDir: baseOutputPath,
+                    outputDir: normalizePath(baseOutputPath, path.sep),
                     data: data,
                     html: html,
                 }
@@ -237,7 +237,7 @@ export async function buildSite({ dev }: { dev: boolean }) {
             cache.pages[page.absolutePath] = {
                 hash,
                 layout: data.layout,
-                outputDir: outputPath,
+                outputDir: normalizePath(outputPath, path.sep),
                 data: data,
                 html: html,
             }
