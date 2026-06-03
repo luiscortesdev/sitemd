@@ -1,6 +1,8 @@
 import fs from "fs/promises"
 import path from "path"
 
+import { normalizePath } from "../utils/path.js"
+
 import type { PageFile } from "../content/content.types.js"
 
 export async function scanDir(dir: string, baseDir: string): Promise<PageFile[]> {
@@ -35,8 +37,8 @@ export async function scanDir(dir: string, baseDir: string): Promise<PageFile[]>
             if (route === "/.") route = "/"
 
             results.push({
-                absolutePath: fullPath,
-                relativePath: relativeFolder,
+                absolutePath: normalizePath(fullPath, path.sep),
+                relativePath: normalizePath(relativeFolder, path.sep),
                 route,
                 segments
             })
