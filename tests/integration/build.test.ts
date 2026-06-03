@@ -1,8 +1,8 @@
 import path from "path"
 import fs from "fs-extra"
+import matter from "gray-matter"
 import { describe, it, expect, vi, beforeAll, afterAll } from "vitest"
 import { JSDOM } from "jsdom"
-import matter from "gray-matter"
 
 import { build } from "../../src/commands/build"
 
