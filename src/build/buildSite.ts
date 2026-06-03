@@ -43,7 +43,6 @@ export async function buildSite({ dev }: { dev: boolean }) {
         const cached = cache.layouts[layout]
 
         if (!cached || stat.mtimeMs !== cached.mtimeMs) {
-            
             changedLayouts.push(layout)
             cache.layouts[layout] = { mtimeMs: stat.mtimeMs }
         }

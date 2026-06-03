@@ -2,7 +2,7 @@ import path from "path"
 import fs from "fs/promises"
 
 import { getLayoutParent } from "./getLayoutParent.js"
-import { logger } from "../utils/index.js"
+import { logger, normalizePath } from "../utils/index.js"
 
 import type { LayoutMap } from "./layouts.types.js"
 
@@ -14,8 +14,10 @@ export async function buildLayoutGraph(layoutsDir: string, themeLayoutsDir: stri
     // user layouts take priority over theme layouts. each layout name must be unique
     async function collect(dir: string) {
         try {
-            for (const file of await fs.readdir(dir, { recursive: true })) {
+            for (let file of await fs.readdir(dir, { recursive: true })) {
                 if (!file.endsWith(".njk")) continue
+
+                file = normalizePath(file, path.sep)
 
                 if (!sources.has(file)) {
                     sources.set(file, path.join(dir, file))
