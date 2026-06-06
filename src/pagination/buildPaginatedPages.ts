@@ -3,7 +3,7 @@ import { paginate } from "./paginate.js";
 
 import type { Collections } from "../collections/index.js";
 import type { PageData } from "../build/build.types.js";
-import type { PageFile } from "../content/content.types.js";
+import type { PageFile } from "../content/index.js";
 import type { Pagination, PaginatedOutputs } from "./pagination.types.js";
 
 export async function buildPaginatedPages(page: PageFile, data: PageData, html: string, collections: Collections): Promise<Array<PaginatedOutputs> | undefined> {
