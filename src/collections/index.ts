@@ -3,3 +3,4 @@ export { buildCollectionsGraph } from "./collectionsGraph.js"
 
 export type { Collections } from "./collections.types.js"
 export type { CollectionsGraph } from "./collections.types.js"
+export type { CollectionItem } from "./collections.types.js"

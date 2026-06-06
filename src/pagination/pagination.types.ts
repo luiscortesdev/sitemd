@@ -1,4 +1,4 @@
-import type { CollectionItem } from "../collections/collections.types.js"
+import type { CollectionItem } from "../collections/index.js"
 
 export interface Pagination {
     items: CollectionItem[]
