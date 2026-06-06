@@ -1,6 +1,5 @@
 import { buildPage } from "../build/index.js";
 import { paginate } from "./paginate.js";
-import { logger } from "../utils/index.js"
 
 import type { Collections } from "../collections/index.js";
 import type { PageData } from "../build/build.types.js";
