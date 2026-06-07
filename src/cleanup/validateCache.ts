@@ -1,9 +1,9 @@
 import path from "path"
 import fs from "fs/promises"
 
-import { loadCache, saveCache } from "../cache/cache.js"
-import { loadConfig } from "../config/config.js"
-import { outputExists } from "../utils/fs.js"
+import { loadCache, saveCache } from "../cache/index.js"
+import { loadConfig } from "../config/index.js"
+import { outputExists } from "../utils/index.js"
 import { logger } from "../utils/index.js"
 
 export async function validateCache() {
