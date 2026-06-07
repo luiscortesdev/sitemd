@@ -6,10 +6,9 @@ import { loadConfig } from "../config/index.js";
 import { parsePage, scanDir } from "../content/index.js"
 import { buildPage } from "./buildPage.js"
 import { copyPublic } from "./copyPublic.js"
-import { loadCache, saveCache } from "../cache/index.js"
+import { loadCache, saveCache, invalidateLayoutCascade, invalidateCollections } from "../cache/index.js"
 import { hashContent, outputExists, clearFolder, logger, normalizePath } from "../utils/index.js"
 import { buildLayoutGraph, resolveLayout } from "../layouts/index.js"
-import { invalidateLayoutCascade, invalidateCollections } from "../cache/index.js"
 import { buildCollections, buildCollectionsGraph } from "../collections/index.js"
 import { buildPaginatedPages, deletePagination } from "../pagination/index.js";
 
