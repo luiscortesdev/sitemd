@@ -3,8 +3,7 @@ import fs from "fs/promises"
 
 import { loadCache, saveCache } from "../cache/index.js"
 import { loadConfig } from "../config/index.js"
-import { outputExists } from "../utils/index.js"
-import { logger } from "../utils/index.js"
+import { outputExists, logger } from "../utils/index.js"
 
 export async function validateCache() {
     const root = process.cwd()
