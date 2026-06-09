@@ -175,3 +175,33 @@ To run the framework's internal test suite locally:
 npm install
 npm run test
 ```
+
+## 🤝 Contributing
+
+SiteMD is an open-source project, and contributions are highly appreciated!
+
+There are two main ways to contribute to SiteMD:
+
+### The Core Framework
+Help us make SiteMD faster, feature-rich, and more robust. We are always looking for help with:
+* Enhancing the AST Markdown parsing pipeline.
+* Optimizing the caching and layout dependency graph.
+* Adding new CLI features and DX improvements.
+* Writing and maintaining the Vitest integration tests.
+* Catching hard to find bugs
+
+### Community Themes
+SiteMD themes are simply HTML/CSS and Nunjucks templates encapsulated in a folder, making it incredibly easy to get started. But building visually pleasing and easy-to-use themes is much harder than it seems.
+You can help us by creating a beautiful blog, portfolio, or documentation theme, and submitting a pull request to get it added to the official `sitemd addtheme` CLI registry.
+
+### Getting Started:
+1. **Fork** the repository and clone it locally.
+2. **Install dependencies:** `npm install`
+3. **Create a branch:** `git checkout -b feature/my-awesome-feature` or `theme/my-new-theme`
+4. **Make your changes** and ensure all tests pass by running `npm run test`.
+5. **Commit & Push:** `git commit -m 'feat: Add some feature'` and `git push origin feature/my-awesome-feature`
+6. Open a **Pull Request**!
+
+*If you are planning a massive architectural change, please open an [**Issue**](https://github.com/luiscortesdev/sitemd/issues) first.*
+
+We are currently in the process of creating both a `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md` for the repository.
