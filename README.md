@@ -74,3 +74,39 @@ SiteMD comes with a powerful, intuitive CLI:
 | `sitemd help <command>` | Get more information about the specified command | `N/A` |
 
 Add the `--debug` flag to `sitemd dev` and `sitemd build` for detailed build and cache logging.
+
+---
+
+## ⚙️ Configuration
+SiteMD works out of the box with zero configuration, but you can customize it by editing the `sitemd.config.js` file in your project root.
+```javascript
+// sitemd.config.js
+
+const config = {
+    // Paths to project directories from project root
+    "contentDir": "content", // Folder for your page content
+    "outputDir": ".sitemd/output", // Output folder for dev server pages
+    "layoutsDir": "layouts", // Folder for your Nunjucks layouts
+    "publicDir": "public", // Folder for your public assets
+    "themeDir": "theme", // Folder for your current theme
+    "_siteDir": "_site", // Output folder for compiled, production-ready site
+
+    // Site metadata
+    "site": {
+        "title": "My SiteMD Website",
+        "description": "A website built using SiteMD.",
+        "url": "http://localhost:3000"
+    },
+
+    // Dev server port configuration
+    "dev": {
+        "port": 3000
+    },
+    
+    // Current SiteMD project theme
+    "theme": "default"
+}
+
+export default config
+
+```
