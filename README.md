@@ -4,7 +4,6 @@
     <h1>SiteMD</h1>
 </div>
 
-<br />
 <div align="center">
     <a href="LICENSE.md">
         <img src="https://img.shields.io/badge/License-MIT-black.svg?style=for-the-badge" alt="License: MIT">
@@ -22,7 +21,7 @@ It's the perfect solution for documentation, personal websites, blogs, and portf
 - ⚡**Lightning-Fast Dev Server:** File watching with WebSockets for instant live-reloading (<10ms reload times).
 - 🧠**Incremental Build Cache:** Advanced caching ensures only the pages you edit are rebuilt.
 - 🔗**Layout Dependency Graph:** Tracks layout inheritance (`{% extends %}`). Editing a base layout instantly updates all dependent pages.
-- 💪**Supercharged Markdown:** Native support for GitHub Flavored Markdown and custom HTML attributes (`# Hello World {.class #id my-data="example"}`) injected directly via custom AST parsers.
+- 💪**Supercharged Markdown:** Native support for GitHub Flavored Markdown and custom HTML attributes (e.g. `# Hello World {.class #id my-data="example"}`) injected directly via custom AST parsers.
 - 📖**Collections & Pagination:** Easily group pages by tags or folders and paginte them with zero configuration.
 - 🎨**Theme System:** Countless beautiful community themes that can be added to your site with the `addtheme` command. Themes are fully encapsulated in the `theme/` folder and act as a springboard for your project.
 - 🛠️**Fully Typed:** Built from the group up in TypeScript.
