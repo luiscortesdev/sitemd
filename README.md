@@ -1,11 +1,8 @@
 <div align="center">
     <img src="./assets/sitemd-logo.svg" alt="SiteMD Logo" width="300" />
     <br />
-    <br />
     <h1>SiteMD</h1>
 </div>
-
----
 
 <br />
 <div align="center">
@@ -14,8 +11,6 @@
     </a>
 </div>
 <br />
-
----
 
 <br />
 
