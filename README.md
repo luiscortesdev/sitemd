@@ -6,6 +6,14 @@
     <p><strong>An easy-to-use, lightning-fast static site generator.</strong></p>
 </div>
 
+---
+
+<br />
+<div align="center">
+    <a href="LICENSE.md">
+        <img src="https://img.shields.io/badge/License-MIT-black.svg?style=for-the-badge" alt="License: MIT">
+    </a>
+</div>
 <br />
 
 ---
@@ -205,3 +213,5 @@ You can help us by creating a beautiful blog, portfolio, or documentation theme,
 *If you are planning a massive architectural change, please open an [**Issue**](https://github.com/luiscortesdev/sitemd/issues) first.*
 
 We are currently in the process of creating both a `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md` for the repository.
+
+## ⚖️ License
