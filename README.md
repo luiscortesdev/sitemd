@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="./assets/sitemd-logo.svg" alt="SiteMD Logo" width="300" />
+    <img src="https://raw.githubusercontent.com/luiscortesdev/sitemd/refs/heads/main/assets/sitemd-logo.svg" alt="SiteMD Logo" width="300" />
     <br />
     <h1>SiteMD</h1>
 </div>
@@ -31,11 +31,11 @@ Get a SiteMD project running in under a minute.
 
 **1. Install SiteMD globally (or locally in your project):**
 ```bash
-npm install -g sitemd
+npm install -g @luiscortesdev/sitemd
 ```
 Or install locally
 ```bash
-npm install sitemd
+npm install @luiscortesdev/sitemd
 ```
 
 **2. Initialize a folder and Node.js project:**

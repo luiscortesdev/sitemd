@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "name": "sitemd-cli",
+  "name": "@luiscortesdev/sitemd",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -12,12 +12,22 @@
     "sitemd": "./dist/index.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "assets",
+    "README.md",
+    "LICENSE.md"
   ],
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "keywords": [
+    "markdown",
+    "static site generator",
+    "ssg",
+    "nunjucks",
+    "remark",
+    "rehype"
+  ],
+  "author": "luiscortesdev",
+  "license": "MIT",
+  "description": "A hassle-free static site generator designed to be braindead easy.",
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
     "@types/hast": "^3.0.4",
