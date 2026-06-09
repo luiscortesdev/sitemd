@@ -110,3 +110,24 @@ const config = {
 export default config
 
 ```
+
+## 📄 SiteMD Under the Hood
+SiteMD follows a clean separation of concerns in your static site. **Data** lives in Markdown; **UI** lives in Nunjucks. These two concerns should never
+become too intertwined.
+
+### 1. Frontmatter & Markdown Build Pipeline
+Every `.md` file in your `content/` folder is parsed. Frontmatter data is extracted, and the Markdown content is compiled into HTML using a custom `remark/rehype` pipeline, allowing you to easily add classes and IDs to Markdown.
+```markdown
+# My Title {.text-xl #hero}
+```
+Becomes: `<h1 class="text-xl" id="hero">My Title</h1>`
+
+#### Finally, the Frontmatter data, compiled HTML, and specified Nunjucks layout are passed to the Nunjucks renderer, turning it into a complete html page.
+
+### 2. Page and Layout Caching
+SiteMD creates a hash of each page's and layout's content. Each time a change is detected SiteMD compares these hashes and determines which pages must be rebuilt. 
+
+However, layouts can make this a bit trickier. When a Markdown file specifies a layout, SiteMD locates it in your `layouts/` directory. If a layout extends another layout, SiteMD maps the entire ancestry tree. Therefore, if a parent layout is changed, the framework intelligently invalidates and rebuilds all layouts who are children.
+
+### 3. Collections Caching
+The pages that belong to each collection are also cached by SiteMD. If the members of a collection are changed or edited, SiteMD rebuilds pages that paginate or loop through that collection in their Nunjucks layout. Pages that use collections in their layouts must define that in their `usesCollections` Frontmatter data.
