@@ -59,3 +59,18 @@ sitemd init --theme minimal
 sitemd dev
 ```
 Your SiteMD project is now running at `http://localhost:3000` with live-reloading enabled!
+
+---
+
+## 💻 CLI Commands
+SiteMD comes with a powerful, intuitive CLI:
+| Command | Description | Options |
+| :--- | :--- | ---: |
+| `sitemd init` | Initialize a ready-to-use SiteMD project | `-t, --theme <theme>` |
+| `sitemd dev` | Starts the local development server with file watching and live reload | `--debug` |
+| `sitemd build` | Compiles your SiteMD project into a production-ready site to your output directory | `--debug` |
+| `sitemd addtheme <theme>` | Adds the specified theme to your preexisting SiteMD project  | `N/A` |
+| `sitemd listfiles` | Lists all of the current files in your content directory  | `N/A` |
+| `sitemd help <command>` | Get more information about the specified command | `N/A` |
+
+Add the `--debug` flag to `sitemd dev` and `sitemd build` for detailed build and cache logging.
