@@ -213,5 +213,3 @@ You can help us by creating a beautiful blog, portfolio, or documentation theme,
 *If you are planning a massive architectural change, please open an [**Issue**](https://github.com/luiscortesdev/sitemd/issues) first.*
 
 We are currently in the process of creating both a `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md` for the repository.
-
-## ⚖️ License
