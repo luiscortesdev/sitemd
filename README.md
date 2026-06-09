@@ -111,7 +111,7 @@ export default config
 
 ```
 
-## 📄 SiteMD Under the Hood
+## 📄 SiteMD Architecture & Internals
 SiteMD follows a clean separation of concerns in your static site. **Data** lives in Markdown; **UI** lives in Nunjucks. These two concerns should never
 become too intertwined.
 
@@ -122,12 +122,29 @@ Every `.md` file in your `content/` folder is parsed. Frontmatter data is extrac
 ```
 Becomes: `<h1 class="text-xl" id="hero">My Title</h1>`
 
-#### Finally, the Frontmatter data, compiled HTML, and specified Nunjucks layout are passed to the Nunjucks renderer, turning it into a complete html page.
+#### Finally, the Frontmatter data, the compiled HTML, and the collections data are passed to the Nunjucks rendering engine to generate the final, static HTML page.
 
-### 2. Page and Layout Caching
-SiteMD creates a hash of each page's and layout's content. Each time a change is detected SiteMD compares these hashes and determines which pages must be rebuilt. 
+### 2. Incremental Caching & The Layout Graph
+To achieve lightning-fast rebuilds, SiteMD creates a content hash for every page and layout. When a file is saved, SiteMD compares these hashes to determine exactly which pages need to be rebuilt, skipping the rest.
 
-However, layouts can make this a bit trickier. When a Markdown file specifies a layout, SiteMD locates it in your `layouts/` directory. If a layout extends another layout, SiteMD maps the entire ancestry tree. Therefore, if a parent layout is changed, the framework intelligently invalidates and rebuilds all layouts who are children.
+However, template inheritance makes caching tricky. When a Markdown file specifies a layout, SiteMD locates it in your `layouts/` directory. If that layout (`{% extends %}`) another layout, SiteMD maps the entire ancestry tree into a **Layout Dependency Graph**. If a base layout changes, the framework cascades the invalidation and rebuilds all child pages that depend on it.
 
-### 3. Collections Caching
-The pages that belong to each collection are also cached by SiteMD. If the members of a collection are changed or edited, SiteMD rebuilds pages that paginate or loop through that collection in their Nunjucks layout. Pages that use collections in their layouts must define that in their `usesCollections` Frontmatter data.
+### 3. Collections Dependency Tracking
+Pages belonging to collections (like `blog` or `tags`) are also cached. If a collection changes (e.g., a new post is added), SiteMD automatically rebuilds any pages that paginate or loop through that collection.
+
+To make this hyper-efficient, pages that loop through collections simply declare their dependencies in their Frontmatter data:
+
+```markdown
+---
+usesCollections: ["posts"]
+---
+```
+
+### 4. Dev Server & File System Concurrency
+Watching a file system for changes is incredibly chaotic. After a user runs `sitemd dev`, SiteMD utilizes [**Chokidar**](https://github.com/paulmillr/chokidar) to monitor the project directory.
+
+In an effort to prevent infinite build loops, crashes during rapid file modifications, and inconsistent rebuilds on slower machines, SiteMD implements an industry standard event-handling architecture.
+* **Debouncing:** Rapid file-system events are debounced to group mass-file changes into a single rebuild.
+* **Queued Mutex Locks:** If a file changes *while* the framework is actively building, the event isn't dropped. Instead, it is queued and triggers a secondary build immediately after the first one completes. This ensures zero race conditions, consistency across different hardware, and deterministic outputs.
+* **Websockets:** Once the rebuild safely completes, a Websocket payload is sent to the browser to instantly trigger a live-reload.
+
