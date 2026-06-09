@@ -22,7 +22,7 @@ It's the perfect solution for documentation, personal websites, blogs, and portf
 - 🔗**Layout Dependency Graph:** Tracks layout inheritance (`{% extends %}`). Editing a base layout instantly updates all dependent pages.
 - 💪**Supercharged Markdown:** Native support for GitHub Flavored Markdown and custom HTML attributes (`# Hello World {.class #id my-data="example"}`) injected directly via custom AST parsers.
 - 📖**Collections & Pagination:** Easily group pages by tags or folders and paginte them with zero configuration.
-- 🎨**Theme System:** Countless beautiful community themes that can be added to your site with the `addtheme` command.
+- 🎨**Theme System:** Countless beautiful community themes that can be added to your site with the `addtheme` command. Themes are fully encapsulated in the `theme/` folder and act as a springboard for your project.
 - 🛠️**Fully Typed:** Built from the group up in TypeScript.
 
 ---
@@ -110,6 +110,24 @@ const config = {
 export default config
 
 ```
+
+## 🎨 Theme System
+SiteMD comes with a built-in theme system designed to help you launch sites quickly without locking you out of your own code. 
+
+Run `sitemd addtheme <theme-name>` to install a pre-built theme into a dedicated `theme/` folder in your project. Additionally, you can initialize projects with a theme using `sitemd init --theme <theme-name>`.
+
+### Theme Fallback Architecture
+SiteMD uses a **Layout Fallback Resolution** system. It allows you to easily override theme files without destroying the base theme or having to wrangle with the file system.
+
+For example, when you specify `layout: default` in your Markdown, the framework searches in this exact order:
+1. `layouts/default.njk` (User overrides)
+2. `theme/layouts/default.njk` (Base theme fallback)
+
+A similar process happens with the `public/` folder and `theme/public` folder:
+1. `theme/public` folder is copied
+2. `public/` folder is copied and overrides
+
+This means you can use an installed theme straight out of the box and easily override any part of it. SiteMD always prioritizes your content while keeping the rest of the theme intact!
 
 ## 📄 SiteMD Architecture & Internals
 SiteMD follows a clean separation of concerns in your static site. **Data** lives in Markdown; **UI** lives in Nunjucks. These two concerns should never
