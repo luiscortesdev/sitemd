@@ -148,3 +148,12 @@ In an effort to prevent infinite build loops, crashes during rapid file modifica
 * **Queued Mutex Locks:** If a file changes *while* the framework is actively building, the event isn't dropped. Instead, it is queued and triggers a secondary build immediately after the first one completes. This ensures zero race conditions, consistency across different hardware, and deterministic outputs.
 * **Websockets:** Once the rebuild safely completes, a Websocket payload is sent to the browser to instantly trigger a live-reload.
 
+## 🧪 Testing
+SiteMD is tested using Vitest and JSDOM to ensure file-system stability, cache integrity, functional core features, and accurate HTML generation.
+
+To run the framework's internal test suite locally:
+
+```bash
+npm install
+npm run test
+```
