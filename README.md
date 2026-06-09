@@ -26,8 +26,6 @@ It's the perfect solution for documentation, personal websites, blogs, and portf
 - 🎨**Theme System:** Countless beautiful community themes that can be added to your site with the `addtheme` command. Themes are fully encapsulated in the `theme/` folder and act as a springboard for your project.
 - 🛠️**Fully Typed:** Built from the group up in TypeScript.
 
----
-
 ## 🚀 Quick Start
 Get a SiteMD project running in under a minute.
 
@@ -61,8 +59,6 @@ sitemd dev
 ```
 Your SiteMD project is now running at `http://localhost:3000` with live-reloading enabled!
 
----
-
 ## 💻 CLI Commands
 SiteMD comes with a powerful, intuitive CLI:
 | Command | Description | Options |
@@ -75,8 +71,6 @@ SiteMD comes with a powerful, intuitive CLI:
 | `sitemd help <command>` | Get more information about the specified command | `N/A` |
 
 Add the `--debug` flag to `sitemd dev` and `sitemd build` for detailed build and cache logging.
-
----
 
 ## ⚙️ Configuration
 SiteMD works out of the box with zero configuration, but you can customize it by editing the `sitemd.config.js` file in your project root.
