@@ -5,12 +5,7 @@
 </div>
 
 <div align="center">
-    <a href="https://www.npmjs.com/package/@luiscortesdev/sitemd">
-        <img src="https://img.shields.io/npm/v/@luiscortesdev/sitemd.svg?color=0C4292&style=for-the-badge" alt="NPM Version">
-    </a>
-    <a href="LICENSE.md">
-        <img src="https://img.shields.io/badge/License-MIT-black.svg?style=for-the-badge" alt="License: MIT">
-    </a>
+    <a href="https://www.npmjs.com/package/@luiscortesdev/sitemd"><img src="https://img.shields.io/npm/v/@luiscortesdev/sitemd.svg?color=0C4292&style=for-the-badge" alt="NPM Version"></a><a href="LICENSE.md"><img src="https://img.shields.io/badge/License-MIT-black.svg?style=for-the-badge" alt="License: MIT"></a>
 </div>
 
 <br />
