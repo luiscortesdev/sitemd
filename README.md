@@ -5,7 +5,7 @@
 </div>
 
 <div align="center">
-    <a href="https://www.npmjs.com/package/@luiscortesdev/sitemd"><img src="https://img.shields.io/npm/v/@luiscortesdev/sitemd.svg?color=0C4292&style=for-the-badge" alt="NPM Version"></a>&nbsp;<a href="LICENSE.md"><img src="https://img.shields.io/badge/License-MIT-black.svg?style=for-the-badge" alt="License: MIT"></a>
+    <a href="https://github.com/luiscortesdev/sitemd/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/luiscortesdev/sitemd/ci.yml?branch=main&style=for-the-badge" alt="CI Status"></a>&nbsp;<a href="https://www.npmjs.com/package/@luiscortesdev/sitemd"><img src="https://img.shields.io/npm/v/@luiscortesdev/sitemd.svg?color=0C4292&style=for-the-badge" alt="NPM Version">&nbsp;<a href="https://www.npmjs.com/package/@luiscortesdev/sitemd"><img src="https://img.shields.io/npm/d18m/%40luiscortesdev%2Fsitemd?style=for-the-badge&color=ffbf00" alt="NPM Downloads"></a>&nbsp;<a href="LICENSE.md"><img src="https://img.shields.io/badge/License-MIT-black.svg?style=for-the-badge" alt="License: MIT"></a>
 </div>
 
 <br />
