@@ -112,7 +112,7 @@ SiteMD comes with a built-in theme system designed to help you launch sites quic
 Run `sitemd addtheme <theme-name>` to install a pre-built theme into a dedicated `theme/` folder in your project. Additionally, you can initialize projects with a theme using `sitemd init --theme <theme-name>`.
 
 ### Theme Fallback Architecture
-SiteMD uses a **Layout Fallback Resolution** system. It allows you to easily override theme files without destroying the base theme or having to wrangle with the file system.
+SiteMD uses a **layout fallback resolution** system. It allows you to easily override theme files without destroying the base theme or having to wrangle with the file system.
 
 For example, when you specify `layout: default` in your Markdown, the framework searches in this exact order:
 1. `layouts/default.njk` (User overrides)
@@ -187,7 +187,7 @@ Help us make SiteMD faster, feature-rich, and more robust. We are always looking
 
 ### Community Themes
 SiteMD themes are simply HTML/CSS and Nunjucks templates encapsulated in a folder, making it incredibly easy to get started. But building visually pleasing and easy-to-use themes is much harder than it seems.
-You can help us by creating a beautiful blog, portfolio, or documentation theme, and submitting a pull request to get it added to the official `sitemd addtheme` CLI registry.
+You can help us by creating a beautiful blog, portfolio, or documentation theme and submitting a pull request to get it added to the official `sitemd addtheme` CLI registry.
 
 ### Getting Started:
 1. **Fork** the repository and clone it locally.
