@@ -16,6 +16,7 @@ describe("SiteMD Build Pipeline", () => {
     const blogPath = path.join(outDir, "blog", "index.html")
     const post1Path = path.join(outDir, "blog", "posts", "post1", "index.html")
     const post2Path = path.join(outDir, "blog", "posts", "post2", "index.html")
+    const publicStylesPath = path.join(outDir, "styles.css")
 
     // Paths to Expected Output Folders
     const directoryFolderPath = path.join(outDir, "directory")
@@ -67,6 +68,10 @@ describe("SiteMD Build Pipeline", () => {
     })
     it("Should generate a blog/posts/post2/index.html file", () => {
         expect(fs.existsSync(post2Path)).toBe(true)
+    })
+    it("Should copy files from the public folder into the output site", () => {
+        expect(fs.existsSync(publicStylesPath)).toBe(true)
+        expect(fs.readFileSync(publicStylesPath, "utf-8")).toContain("color: lightgreen")
     })
 
 
