@@ -13,20 +13,20 @@
 
 <br />
 
-SiteMD is a hassle-free static site generator designed to be braindead easy to get started with. It combines the simplicity of Markdown with powerful Nunjucks templating, packaged with a modern incremental build development server.
+SiteMD is a hassle-free static site generator designed to be braindead easy to get started with. It combines the simplicity of Markdown with powerful Nunjucks templating and comes with a modern incremental build development server.
 
-It's the perfect solution for documentation, personal websites, blogs, and portfolios.
+SiteMD is the perfect solution for documentation, personal websites, blogs, and portfolios.
 
-## 🗝️ Key Features
-- ⚡**Lightning-Fast Dev Server:** File watching with WebSockets for instant live-reloading (<10ms reload times).
-- 🧠**Incremental Build Cache:** Advanced caching ensures only the pages you edit are rebuilt.
-- 🔗**Layout Dependency Graph:** Tracks layout inheritance (`{% extends %}`). Editing a base layout instantly updates all dependent pages.
-- 💪**Supercharged Markdown:** Native support for GitHub Flavored Markdown and custom HTML attributes (e.g. `# Hello World {.class #id my-data="example"}`) injected directly via custom AST parsers.
-- 📖**Collections & Pagination:** Easily group pages by tags or folders and paginte them with zero configuration.
-- 🎨**Theme System:** Countless beautiful community themes that can be added to your site with the `addtheme` command. Themes are fully encapsulated in the `theme/` folder and act as a springboard for your project.
-- 🛠️**Fully Typed:** Built from the group up in TypeScript.
+## Key Features
+- **Lightning-Fast Dev Server:** File watching with WebSockets for instant live-reloading (<10ms reload times).
+- **Incremental Build Cache:** Advanced caching ensures only the pages you edit are rebuilt.
+- **Layout Dependency Graph:** Tracks layout inheritance (`{% extends %}`). Editing a base layout instantly updates all dependent pages.
+- **Supercharged Markdown:** Native support for GitHub Flavored Markdown and custom HTML attributes (e.g. `# Hello World {.class #id my-data="example"}`) injected directly via custom AST parsers.
+- **Collections & Pagination:** Easily group pages by tags or folders and loop or paginate them with zero configuration.
+- **Theme System:** Countless beautiful community themes that can be added to your site with the `addtheme` command. Themes are fully encapsulated in the `theme/` folder and act as a springboard for your project.
+- **Fully Typed:** Built from the ground up in TypeScript.
 
-## 🚀 Quick Start
+## Quick Start
 Get a SiteMD project running in under a minute.
 
 **1. Install SiteMD globally (or locally in your project):**
@@ -59,7 +59,7 @@ sitemd dev
 ```
 Your SiteMD project is now running at `http://localhost:3000` with live-reloading enabled!
 
-## 💻 CLI Commands
+## CLI Commands
 SiteMD comes with a powerful, intuitive CLI:
 | Command | Description | Options |
 | :--- | :--- | ---: |
@@ -72,7 +72,7 @@ SiteMD comes with a powerful, intuitive CLI:
 
 Add the `--debug` flag to `sitemd dev` and `sitemd build` for detailed build and cache logging.
 
-## ⚙️ Configuration
+## Configuration
 SiteMD works out of the box with zero configuration, but you can customize it by editing the `sitemd.config.js` file in your project root.
 ```javascript
 // sitemd.config.js
@@ -106,13 +106,13 @@ export default config
 
 ```
 
-## 🎨 Theme System
+## Theme System
 SiteMD comes with a built-in theme system designed to help you launch sites quickly without locking you out of your own code. 
 
 Run `sitemd addtheme <theme-name>` to install a pre-built theme into a dedicated `theme/` folder in your project. Additionally, you can initialize projects with a theme using `sitemd init --theme <theme-name>`.
 
 ### Theme Fallback Architecture
-SiteMD uses a **Layout Fallback Resolution** system. It allows you to easily override theme files without destroying the base theme or having to wrangle with the file system.
+SiteMD uses a **layout fallback resolution** system. It allows you to easily override theme files without destroying the base theme or having to wrangle with the file system.
 
 For example, when you specify `layout: default` in your Markdown, the framework searches in this exact order:
 1. `layouts/default.njk` (User overrides)
@@ -124,7 +124,7 @@ A similar process happens with the `public/` folder and `theme/public` folder:
 
 This means you can use an installed theme straight out of the box and easily override any part of it. SiteMD always prioritizes your content while keeping the rest of the theme intact!
 
-## 📄 SiteMD Architecture & Internals
+## Architecture & Internals
 SiteMD follows a clean separation of concerns in your static site. **Data** lives in Markdown; **UI** lives in Nunjucks. These two concerns should never
 become too intertwined.
 
@@ -161,7 +161,7 @@ In an effort to prevent infinite build loops, crashes during rapid file modifica
 * **Queued Mutex Locks:** If a file changes *while* the framework is actively building, the event isn't dropped. Instead, it is queued and triggers a secondary build immediately after the first one completes. This ensures zero race conditions, consistency across different hardware, and deterministic outputs.
 * **Websockets:** Once the rebuild safely completes, a Websocket payload is sent to the browser to instantly trigger a live-reload.
 
-## 🧪 Testing
+## Testing
 SiteMD is tested using Vitest and JSDOM to ensure file-system stability, cache integrity, functional core features, and accurate HTML generation.
 
 To run the framework's internal test suite locally:
@@ -171,7 +171,7 @@ npm install
 npm run test
 ```
 
-## 🤝 Contributing
+## Contributing
 
 SiteMD is an open-source project, and contributions are highly appreciated!
 
@@ -187,7 +187,7 @@ Help us make SiteMD faster, feature-rich, and more robust. We are always looking
 
 ### Community Themes
 SiteMD themes are simply HTML/CSS and Nunjucks templates encapsulated in a folder, making it incredibly easy to get started. But building visually pleasing and easy-to-use themes is much harder than it seems.
-You can help us by creating a beautiful blog, portfolio, or documentation theme, and submitting a pull request to get it added to the official `sitemd addtheme` CLI registry.
+You can help us by creating a beautiful blog, portfolio, or documentation theme and submitting a pull request to get it added to the official `sitemd addtheme` CLI registry.
 
 ### Getting Started:
 1. **Fork** the repository and clone it locally.
