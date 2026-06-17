@@ -1,6 +1,7 @@
 # CLI Local Dependencies and Output
 node_modules
 dist
+.env
 
 # Development Folders
 /content
