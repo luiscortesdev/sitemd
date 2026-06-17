@@ -101,7 +101,9 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
 
         process.chdir(devFixturePath)
         
-        setDebugMode(true)
+        // Set debug option based on TEST_DEBUG environment variable
+        const testDebug = process.env.DEBUG === "true"
+        setDebugMode(testDebug)
 
         const instances = await runDev()
         devServer = instances.server

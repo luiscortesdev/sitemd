@@ -40,7 +40,7 @@ describe("SiteMD Build Pipeline", () => {
         }
 
         // Set debug option based on TEST_DEBUG environment variable
-        const testDebug = process.env.TEST_DEBUG === "true"
+        const testDebug = process.env.DEBUG === "true"
         await build({ debug: testDebug })
 
         const homeDom = new JSDOM(fs.readFileSync(indexPath, "utf-8"))
