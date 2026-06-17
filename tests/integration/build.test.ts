@@ -39,7 +39,9 @@ describe("SiteMD Build Pipeline", () => {
             fs.emptyDirSync(outDir)
         }
 
-        await build({ debug: true })
+        // Set debug option based on TEST_DEBUG environment variable
+        const testDebug = process.env.TEST_DEBUG === "true"
+        await build({ debug: testDebug })
 
         const homeDom = new JSDOM(fs.readFileSync(indexPath, "utf-8"))
         const blogDom = new JSDOM(fs.readFileSync(blogPath, "utf-8"))
