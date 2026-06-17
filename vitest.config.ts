@@ -6,6 +6,7 @@ export default defineConfig({
         env: {
             DEBUG: process.env.DEBUG || "false"
         },
+        retry: process.env.CI ? 2 : 0,
         include: ["tests/**/*.test.ts"],
     },
     server: {

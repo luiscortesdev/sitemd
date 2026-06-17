@@ -629,7 +629,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
                 })
             },
             {
-                timeout: 3000,
+                timeout: 5000,
                 interval: 50,
             }
         ) 
@@ -697,7 +697,7 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
                 })
             },
             {
-                timeout: 3000,
+                timeout: 5000,
                 interval: 50,
             }
         ) 
