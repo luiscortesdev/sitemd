@@ -18,7 +18,7 @@ SiteMD is a hassle-free static site generator designed to be braindead easy to g
 SiteMD is the perfect solution for documentation, personal websites, blogs, and portfolios.
 
 ## Key Features
-- **Lightning-Fast Dev Server:** File watching with WebSockets for instant live-reloading (<10ms reload times).
+- **Built-in Dev Server:** File watching with WebSockets for instant live-reloading.
 - **Incremental Build Cache:** Advanced caching ensures only the pages you edit are rebuilt.
 - **Layout Dependency Graph:** Tracks layout inheritance (`{% extends %}`). Editing a base layout instantly updates all dependent pages.
 - **Supercharged Markdown:** Native support for GitHub Flavored Markdown and custom HTML attributes (e.g. `# Hello World {.class #id my-data="example"}`) injected directly via custom AST parsers.
@@ -138,7 +138,7 @@ Becomes: `<h1 class="text-xl" id="hero">My Title</h1>`
 #### Finally, the Frontmatter data, the compiled HTML, and the collections data are passed to the Nunjucks rendering engine to generate the final, static HTML page.
 
 ### 2. Incremental Caching & The Layout Graph
-To achieve lightning-fast rebuilds, SiteMD creates a content hash for every page and layout. When a file is saved, SiteMD compares these hashes to determine exactly which pages need to be rebuilt, skipping the rest.
+To achieve faster rebuilds, SiteMD creates a content hash for every page and layout. When a file is saved, SiteMD compares these hashes to determine exactly which pages need to be rebuilt, skipping the rest.
 
 However, template inheritance makes caching tricky. When a Markdown file specifies a layout, SiteMD locates it in your `layouts/` directory. If that layout (`{% extends %}`) another layout, SiteMD maps the entire ancestry tree into a **Layout Dependency Graph**. If a base layout changes, the framework cascades the invalidation and rebuilds all child pages that depend on it.
 
@@ -197,6 +197,6 @@ You can help us by creating a beautiful blog, portfolio, or documentation theme 
 5. **Commit & Push:** `git commit -m 'feat: Add some feature'` and `git push origin feature/my-awesome-feature`
 6. Open a **Pull Request**!
 
-*If you are planning a massive architectural change, please open an [**Issue**](https://github.com/luiscortesdev/sitemd/issues) first.*
+*If you are planning a major change, please open an [**Issue**](https://github.com/luiscortesdev/sitemd/issues) first.*
 
 We are currently in the process of creating both a `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md` for the repository.
