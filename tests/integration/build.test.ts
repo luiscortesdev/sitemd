@@ -39,7 +39,9 @@ describe("SiteMD Build Pipeline", () => {
             fs.emptyDirSync(outDir)
         }
 
-        await build({ debug: true })
+        // Set debug option based on TEST_DEBUG environment variable
+        const testDebug = process.env.DEBUG === "true"
+        await build({ debug: testDebug })
 
         const homeDom = new JSDOM(fs.readFileSync(indexPath, "utf-8"))
         const blogDom = new JSDOM(fs.readFileSync(blogPath, "utf-8"))
@@ -129,8 +131,6 @@ describe("SiteMD Build Pipeline", () => {
 
             const childATag = child.children[0]
             const childATagInfo = posts[index]
-            
-            console.log(path.dirname(postsFolder))
             
             expect(childATag.tagName).toBe("A")
             expect(childATag.innerHTML).toBe(childATagInfo.innerHTML)

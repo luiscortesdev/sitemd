@@ -101,7 +101,9 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
 
         process.chdir(devFixturePath)
         
-        setDebugMode(true)
+        // Set debug option based on TEST_DEBUG environment variable
+        const testDebug = process.env.DEBUG === "true"
+        setDebugMode(testDebug)
 
         const instances = await runDev()
         devServer = instances.server
@@ -459,8 +461,6 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
 
         await updatePostsCollection()
 
-        console.log(posts)
-
         await vi.waitFor(
             () => {
                 const blogDocument = new JSDOM(fs.readFileSync(blogPath)).window.document
@@ -468,8 +468,6 @@ describe("SiteMD Dev Server, Live Reload, and Caching", () => {
                 expect(outerUlTag).not.toBeNull()
 
                 if (!outerUlTag) return
-
-                console.log(outerUlTag.innerHTML)
 
                 Array.from(outerUlTag.children).forEach((child: any, index) => {
                     expect(child.tagName).toBe("LI")
