@@ -9,7 +9,7 @@ export async function clearCache() {
     logger.process("CLEARING CACHE IN .sitemd!")
     
     try {
-        saveCache(root, DEFAULT_CACHE)
+        await saveCache(root, DEFAULT_CACHE)
 
         logger.success("SUCCESSFULLY CLEARED CACHE IN .sitemd!")
     } catch (error) {
