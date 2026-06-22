@@ -11,7 +11,7 @@ export default defineConfig({
     },
     server: {
         watch: {
-            ignored: ['**/tests/fixtures/dev-site/**']
+            ignored: ["**/tests/fixtures/dev-site/**", "**/tests/fixtures/cmd-site/**"]
         }
     }
 })

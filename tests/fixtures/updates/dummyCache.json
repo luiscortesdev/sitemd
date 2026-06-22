@@ -1,0 +1,157 @@
+{
+  "version": 1,
+  "pages": {
+    "C:/Users/dummy/sitemd-cli/content/about/index.md": {
+      "hash": "84c71c4b74bb837d88bd1c2c6711349f1896a6daf08a9b33706c048ee321dd3a",
+      "layout": "about",
+      "outputDir": "C:/Users/dummy/sitemd-cli/.sitemd/output/about/index.html",
+      "data": {
+        "title": "About",
+        "description": "I am the about page in the test site",
+        "layout": "about",
+        "collections": [
+          "none",
+          "all"
+        ]
+      },
+      "html": "<h1 class=\"text-green\">Hi! I am just a test site...</h1>\n<h2>Hopefully, I don't cause any tests to fail... lol</h2>"
+    },
+    "C:/Users/dummy/sitemd-cli/content/blog/index.md": {
+      "hash": "b16a15c80c734ba0af5aaea2d996f3c751c50865f742fed662a58e7451ef2413",
+      "layout": "blog",
+      "outputDir": "C:/Users/dummy/sitemd-cli/.sitemd/output/blog/index.html",
+      "data": {
+        "title": "Blog",
+        "layout": "blog",
+        "usesCollections": [
+          "posts"
+        ],
+        "description": "A page generated using SiteMD.",
+        "collections": [
+          "none",
+          "all"
+        ]
+      },
+      "html": "<h2 class=\"text-green\">Welcome to my test blog.</h2>"
+    },
+    "C:/Users/dummy/sitemd-cli/content/blog/posts/post1/index.md": {
+      "hash": "7526ead303f93288169285e49909b32a26622ffdad7c473f8c7cdc2aa57c6e68",
+      "layout": "default",
+      "outputDir": "C:/Users/dummy/sitemd-cli/.sitemd/output/blog/posts/post1/index.html",
+      "data": {
+        "title": "Post 1",
+        "description": "The First Post",
+        "layout": "default",
+        "collections": [
+          "posts",
+          "all"
+        ]
+      },
+      "html": "<h1 id=\"main\" class=\"main-text\">Welcome to the first post!</h1>"
+    },
+    "C:/Users/dummy/sitemd-cli/content/blog/posts/post2/index.md": {
+      "hash": "97b0211fde61d96663d4dc7b7f7156fe145d5c92554b47911b772025ed393f86",
+      "layout": "default",
+      "outputDir": "C:/Users/dummy/sitemd-cli/.sitemd/output/blog/posts/post2/index.html",
+      "data": {
+        "title": "Post 2",
+        "description": "The Second Post",
+        "layout": "default",
+        "collections": [
+          "posts",
+          "all"
+        ]
+      },
+      "html": "<h1 class=\"main-text\">Welcome to the second post!</h1>"
+    },
+    "C:/Users/dummy/sitemd-cli/content/blog/posts/post3/index.md": {
+      "hash": "280eccf1ee13b91dad7d92c0317ecf836f7081141d9deca3731a5c9acfb4bf22",
+      "layout": "default",
+      "outputDir": "C:/Users/dummy/sitemd-cli/.sitemd/output/blog/posts/post3/index.html",
+      "data": {
+        "title": "Post 3",
+        "description": "The Third Post",
+        "layout": "default",
+        "collections": [
+          "posts",
+          "all"
+        ]
+      },
+      "html": "<h1 class=\"main-text\">Welcome to the third post!</h1>"
+    },
+    "C:/Users/dummy/sitemd-cli/content/directory/index.md": {
+      "hash": "e63711d365042c084c9f50d8e62d28d6867a99ac9d0605dc10992b5d0b7635f8",
+      "layout": "directory",
+      "outputDir": "C:/Users/dummy/sitemd-cli/.sitemd/output/directory/index.html",
+      "data": {
+        "title": "Directory",
+        "layout": "directory",
+        "paginate": "posts",
+        "perPage": 2,
+        "description": "A page generated using SiteMD.",
+        "collections": [
+          "none",
+          "all"
+        ]
+      },
+      "html": "<h1 data-aria=\"directory\" id=\"heading\" class=\"text-green\">Welcome to the posts directory</h1>"
+    },
+    "C:/Users/dummy/sitemd-cli/content/index.md": {
+      "hash": "cbd3361b9a70449bfe1c91562896035787f81557502f06bdea5533174f64c760",
+      "layout": "main/default",
+      "outputDir": "C:/Users/dummy/sitemd-cli/.sitemd/output/index.html",
+      "data": {
+        "title": "Home",
+        "layout": "main/default",
+        "description": "A page generated using SiteMD.",
+        "collections": [
+          "none",
+          "all"
+        ]
+      },
+      "html": "<h1 my-data=\"home\" id=\"home\" class=\"text-green\">Hello Vitest</h1>"
+    }
+  },
+  "layouts": {
+    "about.njk": {
+      "mtimeMs": 1780491316027.517
+    },
+    "blog.njk": {
+      "mtimeMs": 1780191234171.222
+    },
+    "directory.njk": {
+      "mtimeMs": 1779237575777.7222
+    },
+    "main/default.njk": {
+      "mtimeMs": 1780492767432.5747
+    },
+    "default.njk": {
+      "mtimeMs": 1776721884124.4177
+    }
+  },
+  "collections": {
+    "none": [
+      "C:/Users/dummy/sitemd-cli/content/about/index.md",
+      "C:/Users/dummy/sitemd-cli/content/blog/index.md",
+      "C:/Users/dummy/sitemd-cli/content/directory/index.md",
+      "C:/Users/dummy/sitemd-cli/content/index.md"
+    ],
+    "all": [
+      "C:/Users/dummy/sitemd-cli/content/about/index.md",
+      "C:/Users/dummy/sitemd-cli/content/blog/index.md",
+      "C:/Users/dummy/sitemd-cli/content/blog/posts/post1/index.md",
+      "C:/Users/dummy/sitemd-cli/content/blog/posts/post2/index.md",
+      "C:/Users/dummy/sitemd-cli/content/blog/posts/post3/index.md",
+      "C:/Users/dummy/sitemd-cli/content/directory/index.md",
+      "C:/Users/dummy/sitemd-cli/content/index.md"
+    ],
+    "posts": [
+      "C:/Users/dummy/sitemd-cli/content/blog/posts/post1/index.md",
+      "C:/Users/dummy/sitemd-cli/content/blog/posts/post2/index.md",
+      "C:/Users/dummy/sitemd-cli/content/blog/posts/post3/index.md"
+    ]
+  },
+  "pagination": [
+    "C:/Users/dummy/sitemd-cli/content/directory/index.md"
+  ]
+}

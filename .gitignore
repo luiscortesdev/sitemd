@@ -20,3 +20,4 @@ _site
 
 # Testing Output Folders
 /test/fixtures/dev-site
+/test/fixtures/cmd-site

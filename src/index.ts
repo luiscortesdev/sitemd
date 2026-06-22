@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { program } from "commander"
-import { listfiles, build, dev, init, addtheme } from "./commands/index.js"
+import { listfiles, build, dev, init, addtheme, clear } from "./commands/index.js"
 
 program
     .command("listfiles")
@@ -30,5 +30,9 @@ program
     .description("Adds the specified theme to your project.")
     .action(addtheme)
 
+program
+    .command("clear")
+    .description("Safely clears the development cache.json in the .sitemd folder.")
+    .action(clear)
 
 program.parse()
