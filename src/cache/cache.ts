@@ -6,6 +6,14 @@ import type { SiteMDCache } from "./cache.types.js"
 const CACHE_DIR = ".sitemd"
 const CACHE_FILE = "cache.json"
 
+export const DEFAULT_CACHE: SiteMDCache = {
+    version: 1,
+    pages: {},
+    layouts: {},
+    collections: {},
+    pagination: [],
+}
+
 export async function loadCache(root=process.cwd()): Promise<SiteMDCache> {
     try {
         const file = await fs.readFile(
@@ -15,13 +23,7 @@ export async function loadCache(root=process.cwd()): Promise<SiteMDCache> {
 
         return JSON.parse(file)
     } catch {
-        return {
-            version: 1,
-            pages: {},
-            layouts: {},
-            collections: {},
-            pagination: [],
-        }
+        return DEFAULT_CACHE
     }
 }
 
