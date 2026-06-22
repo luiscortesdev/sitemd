@@ -14,7 +14,7 @@ describe("SiteMD CLI Commands Integration Tests", () => {
     // Paths to files in the updates folder
     const dummyCache = path.join(path.resolve(__dirname, "../fixtures/updates/dummyCache.json"))
 
-    // Paths to folders we need in the site
+    // Paths to files we need in the site
     const tempFolder = path.join(cmdFixturePath, ".sitemd")
     const cacheFile = path.join(tempFolder, "cache.json")
 
@@ -29,7 +29,6 @@ describe("SiteMD CLI Commands Integration Tests", () => {
         }
         fs.ensureDirSync(tempFolder)
 
-        fs.ensureDirSync(cacheFile)
         fs.copyFileSync(dummyCache, cacheFile)
 
         process.chdir(cmdFixturePath)
@@ -38,7 +37,7 @@ describe("SiteMD CLI Commands Integration Tests", () => {
     afterAll(async () => {
         process.chdir(originalDir)
 
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise(resolve => setTimeout(resolve, 1000))
 
         if (fs.existsSync(cmdFixturePath)) {
             fs.rmSync(cmdFixturePath, { recursive: true, force: true })
@@ -47,5 +46,28 @@ describe("SiteMD CLI Commands Integration Tests", () => {
         vi.restoreAllMocks()
     }, 5000)
 
+    // Test the clear command
+    it("Should sucessfully clear the cache", async () => {
+        // Make sure the cache file exists
+        expect(fs.existsSync(cacheFile)).toBe(true)
+        
+        // Load the current cache and check it is not already cleared
+        const cacheData = JSON.parse(fs.readFileSync(cacheFile, "utf-8"))
+        // Ensure these properties are not empty
+        expect(Object.keys(cacheData["pages"]).length).toBeGreaterThan(0)
+        expect(Object.keys(cacheData["layouts"]).length).toBeGreaterThan(0)
+        expect(Object.keys(cacheData["collections"]).length).toBeGreaterThan(0)
+        expect(cacheData["pagination"].length).toBeGreaterThan(0)
+        
+        // Run clear command
+        await clear()
 
+        // Reload cache and ensure properties have been cleared
+        const clearedCache = JSON.parse(fs.readFileSync(cacheFile, "utf-8"))
+        
+        expect(Object.keys(clearedCache["pages"]).length).toBe(0)
+        expect(Object.keys(clearedCache["layouts"]).length).toBe(0)
+        expect(Object.keys(clearedCache["collections"]).length).toBe(0)
+        expect(clearedCache["pagination"].length).toBe(0)
+    })
 })
