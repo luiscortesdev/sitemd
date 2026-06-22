@@ -6,7 +6,7 @@ import { DEFAULT_CACHE } from "../cache/cache.js"
 export async function clearCache() {
     const root = process.cwd()
 
-    logger.notice("CLEARING CACHE IN .sitemd!")
+    logger.process("CLEARING CACHE IN .sitemd!")
     
     try {
         saveCache(root, DEFAULT_CACHE)
