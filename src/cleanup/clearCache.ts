@@ -1,10 +1,20 @@
-import path from "path"
-import fs from "fs/promises"
+import { saveCache } from "../cache/index.js"
+import { logger } from "../utils/index.js"
 
-import { loadCache, saveCache } from "../cache/index.js"
+import { DEFAULT_CACHE } from "../cache/cache.js"
 
 export async function clearCache() {
     const root = process.cwd()
+
+    logger.notice("CLEARING CACHE IN .sitemd!")
     
-    const cache = await loadCache(root)
+    try {
+        saveCache(root, DEFAULT_CACHE)
+
+        logger.success("SUCCESSFULLY CLEARED CACHE IN .sitemd!")
+    } catch (error) {
+        if (error instanceof Error) {
+            throw new Error(`COULD NOT CLEAR CACHE IN .sitemd!\n ERROR: ${error.message}!`)
+        }
+    }
 }
