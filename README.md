@@ -67,6 +67,7 @@ SiteMD comes with a powerful, intuitive CLI:
 | `sitemd dev` | Starts the local development server with file watching and live reload | `--debug` |
 | `sitemd build` | Compiles your SiteMD project into a production-ready site to your output directory | `--debug` |
 | `sitemd addtheme <theme>` | Adds the specified theme to your preexisting SiteMD project  | `N/A` |
+| `sitemd clear` | Clears the development server cache in your .sitemd folder  | `N/A` |
 | `sitemd listfiles` | Lists all of the current files in your content directory  | `N/A` |
 | `sitemd help <command>` | Get more information about the specified command | `N/A` |
 
@@ -135,7 +136,7 @@ Every `.md` file in your `content/` folder is parsed. Frontmatter data is extrac
 ```
 Becomes: `<h1 class="text-xl" id="hero">My Title</h1>`
 
-#### Finally, the Frontmatter data, the compiled HTML, and the collections data are passed to the Nunjucks rendering engine to generate the final, static HTML page.
+Finally, the Frontmatter data, the compiled HTML, and the collections data are passed to the Nunjucks rendering engine to generate the final, static HTML page.
 
 ### 2. Incremental Caching & The Layout Graph
 To achieve faster rebuilds, SiteMD creates a content hash for every page and layout. When a file is saved, SiteMD compares these hashes to determine exactly which pages need to be rebuilt, skipping the rest.
