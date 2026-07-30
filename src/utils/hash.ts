@@ -1,4 +1,4 @@
-import cypto from "crypto"
+import cypto from "node:crypto"
 
 export function hashContent(input: string) {
     return cypto.createHash("sha256").update(input).digest("hex")
