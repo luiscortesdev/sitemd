@@ -41,11 +41,20 @@ export async function loadCache(root=process.cwd()): Promise<SiteMDCache> {
 }
 
 export async function saveCache(root=process.cwd(), cache: SiteMDCache): Promise<void> {
-    const dir = path.join(root, CACHE_DIR)
+    const cacheDir = path.join(root, CACHE_DIR)
+    const cachePath = path.join(root, CACHE_DIR, CACHE_FILE)
 
-    await fs.mkdir(dir, { recursive: true })
+    try {
+        await fs.access(cachePath)
+    } catch (err) {
+        logger.notice(`CREATING NEW CACHE FILE AT ${cachePath}.\n`)
+    }
+
+    const parsedCache = SiteMDCacheSchema.parse(cache)
+
+    await fs.mkdir(cacheDir, { recursive: true })
     await fs.writeFile(
-        path.join(dir, CACHE_FILE),
-        JSON.stringify(cache, null, 2)
+        path.join(cacheDir, CACHE_FILE),
+        JSON.stringify(parsedCache, null, 2)
     )
 }
