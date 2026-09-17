@@ -1,6 +1,5 @@
 import path from "path"
 import fs from "fs/promises"
-import { pathToFileURL } from "url"
 
 import { SiteMDCacheSchema } from "./schema.js"
 
