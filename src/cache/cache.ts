@@ -1,7 +1,11 @@
 import path from "path"
 import fs from "fs/promises"
 
-import type { SiteMDCache } from "./cache.types.js"
+import { SiteMDCacheSchema } from "./schema.js"
+
+import type { UserCache, SiteMDCache } from "./cache.types.js"
+
+import { logger } from "../utils/logger.js"
 
 const CACHE_DIR = ".sitemd"
 const CACHE_FILE = "cache.json"
@@ -15,24 +19,44 @@ export const DEFAULT_CACHE: SiteMDCache = {
 }
 
 export async function loadCache(root=process.cwd()): Promise<SiteMDCache> {
+    const cachePath = path.join(root, CACHE_DIR, CACHE_FILE)
+    
+    let rawCache: UserCache
+
+    // ensure cache exists
     try {
-        const file = await fs.readFile(
+        await fs.access(cachePath)
+
+        let rawJson = await fs.readFile(
             path.join(root, CACHE_DIR, CACHE_FILE),
             "utf-8",
         )
-
-        return JSON.parse(file)
-    } catch {
-        return DEFAULT_CACHE
+        rawCache = JSON.parse(rawJson)
+    } catch (err) {
+        // create a default cache from schema if it doesn't exist
+        return SiteMDCacheSchema.parse({})
     }
+
+    const parsedCache = SiteMDCacheSchema.parse(rawCache)
+
+    return parsedCache
 }
 
 export async function saveCache(root=process.cwd(), cache: SiteMDCache): Promise<void> {
-    const dir = path.join(root, CACHE_DIR)
+    const cacheDir = path.join(root, CACHE_DIR)
+    const cachePath = path.join(root, CACHE_DIR, CACHE_FILE)
 
-    await fs.mkdir(dir, { recursive: true })
+    try {
+        await fs.access(cachePath)
+    } catch (err) {
+        logger.notice(`CREATING NEW CACHE FILE AT ${cachePath}.\n`)
+    }
+
+    const parsedCache = SiteMDCacheSchema.parse(cache)
+
+    await fs.mkdir(cacheDir, { recursive: true })
     await fs.writeFile(
-        path.join(dir, CACHE_FILE),
-        JSON.stringify(cache, null, 2)
+        path.join(cacheDir, CACHE_FILE),
+        JSON.stringify(parsedCache, null, 2)
     )
 }
