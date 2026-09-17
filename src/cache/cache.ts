@@ -1,7 +1,12 @@
 import path from "path"
 import fs from "fs/promises"
+import { pathToFileURL } from "url"
 
-import type { SiteMDCache } from "./cache.types.js"
+import { SiteMDCacheSchema } from "./schema.js"
+
+import type { UserCache, SiteMDCache } from "./cache.types.js"
+
+import { logger } from "../utils/logger.js"
 
 const CACHE_DIR = ".sitemd"
 const CACHE_FILE = "cache.json"
@@ -15,16 +20,24 @@ export const DEFAULT_CACHE: SiteMDCache = {
 }
 
 export async function loadCache(root=process.cwd()): Promise<SiteMDCache> {
-    try {
-        const file = await fs.readFile(
-            path.join(root, CACHE_DIR, CACHE_FILE),
-            "utf-8",
-        )
+    const cachePath = path.join(root, CACHE_DIR, CACHE_FILE)
+    
+    let rawCache: UserCache
 
-        return JSON.parse(file)
-    } catch {
-        return DEFAULT_CACHE
+    // ensure cache exists
+    try {
+        await fs.access(cachePath)
+
+        const imported = await import(pathToFileURL(cachePath).href)
+        rawCache = imported.defualt ?? imported
+    } catch (err) {
+        // create a default cache from schema if it doesn't exist
+        return SiteMDCacheSchema.parse({})
     }
+
+    const parsedCache = SiteMDCacheSchema.parse(rawCache)
+
+    return parsedCache
 }
 
 export async function saveCache(root=process.cwd(), cache: SiteMDCache): Promise<void> {
