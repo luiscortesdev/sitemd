@@ -29,7 +29,7 @@ export async function loadCache(root=process.cwd()): Promise<SiteMDCache> {
         await fs.access(cachePath)
 
         const imported = await import(pathToFileURL(cachePath).href)
-        rawCache = imported.defualt ?? imported
+        rawCache = imported.default ?? imported
     } catch (err) {
         // create a default cache from schema if it doesn't exist
         return SiteMDCacheSchema.parse({})
