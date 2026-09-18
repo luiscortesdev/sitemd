@@ -41,7 +41,7 @@ npm install @luiscortesdev/sitemd
 **2. Initialize a folder and Node.js project:**
 ```bash
 mkdir my-blog && cd my-blog
-npm init -y
+npm init es6 -y
 ```
 
 **3. Initialize your SiteMD project:**
